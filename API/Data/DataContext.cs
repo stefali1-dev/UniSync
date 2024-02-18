@@ -21,7 +21,7 @@ public class DataContext : DbContext
     public DbSet<Server> Servers { get; set; }
     public DbSet<Channel> Channels { get; set; }
     public DbSet<Message> Messages { get; set; }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configuration for User and its subclasses
@@ -62,7 +62,7 @@ public class DataContext : DbContext
 
         // Configuration for Course
         modelBuilder.Entity<Course>()
-            .HasKey(c => c.CourseID);
+            .HasKey(c => c.CourseId);
 
         modelBuilder.Entity<Course>()
             .HasOne(c => c.Professor)
@@ -77,6 +77,13 @@ public class DataContext : DbContext
             .HasOne<Course>()
             .WithMany()
             .HasForeignKey(r => r.CourseId);
+        
+        // One-to-many relationship between Course and Resource
+        modelBuilder.Entity<Course>()
+            .HasMany(c => c.Resources)
+            .WithOne(r => r.Course)
+            .HasForeignKey(r => r.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Configuration for Server and Channel
         modelBuilder.Entity<Server>()
@@ -89,6 +96,15 @@ public class DataContext : DbContext
             .HasOne<Server>()
             .WithMany()
             .HasForeignKey(c => c.ServerId);
+        
+        // One-to-many relationship between Server and Channel
+        modelBuilder.Entity<Server>()
+            .HasMany(s => s.Channels)
+            .WithOne(c => c.Server)
+            .HasForeignKey(c => c.ServerId) 
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        
 
         // Configuration for Message
         modelBuilder.Entity<Message>()

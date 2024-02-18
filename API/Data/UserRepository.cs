@@ -1,4 +1,3 @@
-using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,15 +7,13 @@ namespace API.Data;
 public class UserRepository : IUserRepository
 {
     private readonly DataContext _context;
-    private readonly ITmdbApiService _tmdbApiService;
 
-    public UserRepository(DataContext context, ITmdbApiService tmdbApiService)
+    public UserRepository(DataContext context)
     {
         _context = context;
-        _tmdbApiService = tmdbApiService;
     }
 
-    public void Update(AppUser user)
+    public void Update(User user)
     {
         _context.Entry(user).State = EntityState.Modified;
     }
@@ -26,46 +23,21 @@ public class UserRepository : IUserRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<IEnumerable<AppUser>> GetUsersAsync()
+    public async Task<IEnumerable<User>> GetUsersAsync()
     {
-        return await _context.Users
-            .Include(x => x.FavoriteGenres)
-            .Include(x => x.FavoriteMovies)
-            .ToListAsync();
+        return await _context.Users.ToListAsync();
     }
 
-    public async Task<AppUser> GetUserByIdAsync(int id)
+    public async Task<User> GetUserByIdAsync(int id)
     {
-        var user = await _context.Users
-            .Include(x => x.FavoriteGenres)
-            .Include(x => x.FavoriteMovies)
-            .SingleOrDefaultAsync(x => x.Id == id);
+        var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == id);
         return user;
     }
 
-    public async Task<AppUser> GetUserByEmailAsync(string email)
+    public async Task<User> GetUserByEmailAsync(string email)
     {
-        var user = await _context.Users
-            .Include(x => x.FavoriteGenres)
-            .Include(x => x.FavoriteMovies)
-            .SingleOrDefaultAsync(x => x.Email == email);
+        var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
         return user;
     }
 
-    public async Task<IEnumerable<MovieDto>> GetRecommendedMoviesAsync(int id)
-    {
-        var user = await GetUserByIdAsync(id);
-        
-        //var favoriteGenresIds = user.FavoriteGenres.Select(x => x.Id).ToList();
-        var favoriteMoviesIds = user.FavoriteMovies.Select(x => x.MovieId).ToList();
-        List<MovieDto> recommendedMoviesList = new List<MovieDto>();
-        // iterate through favoriteGenresIds
-        foreach (var movieId in favoriteMoviesIds)
-        {
-            IEnumerable<MovieDto> movieList = await _tmdbApiService.GetRecommendedMoviesAsync(movieId, favoriteMoviesIds);
-            recommendedMoviesList.AddRange(movieList);
-        }
-
-        return recommendedMoviesList;
-    }
 }
