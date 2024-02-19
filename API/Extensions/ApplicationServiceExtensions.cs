@@ -18,9 +18,9 @@ public static class ApplicationServiceExtensions
             options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
                 .AllowAnyMethod().WithOrigins("http://localhost:4200"));
         });
-        services.AddScoped<ITokenService, TokenService>();
-
+        
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IServerRepository, ServerRepository>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         return services;
     }
