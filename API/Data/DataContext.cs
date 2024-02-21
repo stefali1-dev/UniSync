@@ -14,6 +14,7 @@ public class DataContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Professor> Professors { get; set; }
     public DbSet<Staff> StaffMembers { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
     public DbSet<Evaluation> Evaluations { get; set; }
     public DbSet<Course> Courses { get; set; }
@@ -21,6 +22,7 @@ public class DataContext : DbContext
     public DbSet<Server> Servers { get; set; }
     public DbSet<Channel> Channels { get; set; }
     public DbSet<Message> Messages { get; set; }
+    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +34,12 @@ public class DataContext : DbContext
         modelBuilder.Entity<Professor>().HasBaseType<User>();
         modelBuilder.Entity<Staff>().HasBaseType<User>();
 
+        // Configure many-to-many relationship
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity(j => j.ToTable("UserRoles")); // Name of the join table
+        
         // Configuration for Enrollment
         modelBuilder.Entity<Enrollment>()
             .HasKey(e => e.EnrollmentID);

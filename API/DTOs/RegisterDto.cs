@@ -6,7 +6,7 @@ namespace API.DTOs;
 public class RegisterDto
 {
     [Required(ErrorMessage = "Registration Id is required.")]
-    public string RegistrationId { get; set; }
+    public int RegistrationId { get; set; }
     
     [Required(ErrorMessage = "Email is required.")]
     [EmailAddress(ErrorMessage = "Invalid email format.")]

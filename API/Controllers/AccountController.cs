@@ -12,11 +12,14 @@ namespace API.Controllers;
 public class AccountController : BaseApiController
 {
     private readonly DataContext _context;
+
+    private readonly RegistrationDataContext _registrationContext;
     private readonly ITokenService _tokenService;
 
-    public AccountController(DataContext context, ITokenService tokenService)
+    public AccountController(DataContext context, RegistrationDataContext registrationContext, ITokenService tokenService)
     {
         _context = context;
+        _registrationContext = registrationContext;
         _tokenService = tokenService;
     }
     
@@ -37,7 +40,7 @@ public class AccountController : BaseApiController
             PasswordSalt = hmac.Key,
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,
-            Role = "Student"
+            Roles = GetRolesByRegistrationId(registerDto.RegistrationId).Result
             
             // TODO: Set the role based on the RegistrationId
         };
@@ -82,11 +85,30 @@ public class AccountController : BaseApiController
         };
     }
     
-    private async Task<bool> UserExists(string RegistrationId)
+    private async Task<bool> UserExists(int registrationId)
     {
         // TODO: Check if the RegistrationId exists in the unregistered users database
         //return await _context.Users.AnyAsync(x => x.RegistrationId == RegistrationId);
         return false;
     }
-    
+
+    public async Task<List<Role>> GetRolesByRegistrationId(int registrationId)
+    {
+        // Query the database to find matching records and select only the RoleId
+        var roleIds = await _registrationContext.UserRegistrationRoles
+            .Where(x => x.RegistrationId == registrationId)
+            .Select(x => x.RoleId)
+            .ToListAsync();
+
+        List<Role> roles = new List<Role>();
+        foreach (var roleId in roleIds)
+        {
+            roles.Add(new Role
+            {
+                RoleId = roleId,
+                Name = "RoleName"
+            });
+        }
+        return roles;
+    }
 }

@@ -13,6 +13,12 @@ public static class ApplicationServiceExtensions
         {
             opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
         });
+        
+        services.AddDbContext<RegistrationDataContext>(opt =>
+        {
+            opt.UseSqlite(config.GetConnectionString("SecondaryConnection"));
+        });
+        
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy => policy.AllowAnyHeader()

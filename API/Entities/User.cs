@@ -7,7 +7,8 @@ public class User
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public string Role { get; set; } // Student, Professor, Administrative Staff
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
+    public ICollection<Role> Roles { get; set; }
+
 }
