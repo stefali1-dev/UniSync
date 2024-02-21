@@ -15,4 +15,5 @@ public interface IServerRepository
     Task<IEnumerable<Channel>> GetChannelsByServerIdAsync(int serverId);
     void AddChannel(Channel channel);
     void DeleteChannel(Channel channel);
+    void UpdateChannel(Channel channel);
 }

@@ -63,4 +63,8 @@ public class ServerRepository : IServerRepository
         return await _context.Channels.Where(x => x.ServerId == serverId).ToListAsync();
     }
     
+    public void UpdateChannel(Channel channel)
+    {
+        _context.Entry(channel).State = EntityState.Modified;
+    }
 }
