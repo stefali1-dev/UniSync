@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using UniSync.Application.Persistence;
 
 namespace UniSync.Identity
 {
@@ -21,7 +22,7 @@ namespace UniSync.Identity
                options =>
                options.UseNpgsql(
                    configuration.GetConnectionString
-                   ("GlobalTicketsUserConnection"),
+                   ("UniSyncUserConnection"),
                    builder =>
                    builder.MigrationsAssembly(
                        typeof(ApplicationDbContext)
@@ -54,6 +55,8 @@ namespace UniSync.Identity
                                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!))
                             };
                         });
+            services.AddScoped<IUserManager, ApplicationUserManager>();
+
             services.AddScoped
                <IAuthService, AuthService>();
             return services;

@@ -27,6 +27,9 @@ namespace UniSync.Infrastructure
         public DbSet<Channel> Channels { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Server> Servers { get; set; }
+        public DbSet<UserPhoto> UserPhotos { get; set; }
+
+        public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }
 
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)

@@ -1,5 +1,4 @@
 ﻿
-
 namespace UniSync.Domain.Common
 {
     public class Result<T> where T : class
@@ -24,6 +23,6 @@ namespace UniSync.Domain.Common
             return new Result<T>(false, null!, error);
         }
 
-       
+
     }
 }

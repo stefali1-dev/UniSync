@@ -1,16 +1,18 @@
 ﻿using UniSync.Application.Contracts;
 using UniSync.Application.Persistence;
-using UniSync.Infrastructure.Repositories;
-using UniSync.Infrastructure.Services;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UniSync.Infrastructure.Repositories;
+using UniSync.Infrastructure;
 
-namespace UniSync.Infrastructure
+namespace Infrastructure
 {
     public static class InfrastructureRegistrationDI
     {
-        public static IServiceCollection AddInfrastrutureToDI(
+        public static IServiceCollection AddInfrastructureToDI(
             this IServiceCollection services,
             IConfiguration configuration)
         {
@@ -18,21 +20,20 @@ namespace UniSync.Infrastructure
                 options =>
                 options.UseNpgsql(
                     configuration.GetConnectionString
-                    ("GlobalTicketsConnection"),
+                    ("UniSyncConnection"),
                     builder =>
                     builder.MigrationsAssembly(
                         typeof(UniSyncContext)
                         .Assembly.FullName)));
-            
             services.AddScoped
                 (typeof(IAsyncRepository<>),
                 typeof(BaseRepository<>));
-            services.AddScoped
-                <ICategoryRepository, CategoryRepository>();
-            services.AddScoped
-                <IEventRepository, EventRepository>();
-            services.AddScoped
-                <IEmailService, EmailService>();
+            services.AddScoped<
+                IUserRepository, UserRepository>();
+            services.AddScoped<IPasswordResetCode, PasswordResetCodeRepository>();
+            services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+
             return services;
         }
     }

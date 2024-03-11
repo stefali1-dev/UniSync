@@ -1,9 +1,9 @@
-﻿using UniSync.API.Models;
-using UniSync.Application.Contracts.Identity;
+﻿using UniSync.Application.Contracts.Identity;
 using UniSync.Application.Contracts.Interfaces;
 using UniSync.Application.Models.Identity;
 using UniSync.Identity.Models;
 using Microsoft.AspNetCore.Mvc;
+using UniSync.API.Models;
 
 namespace UniSync.API.Controllers
 {
@@ -13,15 +13,13 @@ namespace UniSync.API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ILogger<AuthenticationController> _logger;
-        private readonly ICurrentUserService _currentUserService;
-        private readonly IRoleAssignmentService _roleAssignmentService;
+        private readonly ICurrentUserService currentUserService;
 
-        public AuthenticationController(IAuthService authService, ILogger<AuthenticationController> logger, ICurrentUserService currentUserService, IRoleAssignmentService roleAssignmentService)
+        public AuthenticationController(IAuthService authService, ILogger<AuthenticationController> logger, ICurrentUserService currentUserService)
         {
             _authService = authService;
             _logger = logger;
-            _currentUserService = currentUserService;
-            _roleAssignmentService = roleAssignmentService;
+            this.currentUserService = currentUserService;
         }
 
         [HttpPost]
@@ -61,9 +59,8 @@ namespace UniSync.API.Controllers
                 {
                     return BadRequest("Invalid payload");
                 }
-                
-                var userRole = _roleAssignmentService.GetUserRoleByRegistrationId(model.RegistrationId);
-                var (status, message) = await _authService.Registeration(model, userRole);
+
+                var (status, message) = await _authService.Registeration(model, UserRoles.User);
 
                 if (status == 0)
                 {
@@ -78,7 +75,6 @@ namespace UniSync.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        
         [HttpPost]
         [Route("logout")]
         public async Task<IActionResult> Logout()
@@ -87,23 +83,74 @@ namespace UniSync.API.Controllers
             return Ok();
         }
 
+
         [HttpGet]
         [Route("currentuserinfo")]
         public CurrentUser CurrentUserInfo()
         {
-            if (_currentUserService.GetCurrentUserId() == null)
+            if (this.currentUserService.GetCurrentUserId() == null)
             {
                 return new CurrentUser
                 {
                     IsAuthenticated = false
                 };
             }
+
+            var claims = this.currentUserService.GetCurrentClaimsPrincipal().Claims
+                .GroupBy(c => c.Type)
+                .ToDictionary(g => g.Key, g => string.Join(", ", g.Select(c => c.Value)));
+
             return new CurrentUser
             {
                 IsAuthenticated = true,
-                UserName = _currentUserService.GetCurrentUserId(),
-                Claims = _currentUserService.GetCurrentClaimsPrincipal().Claims.ToDictionary(c => c.Type, c => c.Value)
+                UserName = this.currentUserService.GetCurrentUserId(),
+                Claims = claims
             };
+        }
+        [HttpPost]
+        [Route("reset-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+
+                var (status, message) = await _authService.ResetPassword(model);
+
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] string token)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid payload");
+            }
+
+            var (status, message) = await _authService.LoginWithGoogle(token);
+
+            if (status == 0)
+            {
+                return BadRequest(message);
+            }
+
+            return Ok(new { Token = message });
         }
 
     }

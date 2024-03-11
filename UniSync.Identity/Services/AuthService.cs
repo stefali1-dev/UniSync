@@ -1,34 +1,46 @@
 ﻿using UniSync.Application.Contracts.Identity;
 using UniSync.Application.Models.Identity;
+using UniSync.Application.Persistence;
 using UniSync.Identity.Models;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
+
 
 namespace UniSync.Identity.Services
 {
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserRepository userRepository;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager)
+        private readonly IPasswordResetCode passwordResetCodeRepository;
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IUserRepository userRepository, IPasswordResetCode passwordResetCodeRepository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.configuration = configuration;
             this.signInManager = signInManager;
+            this.userRepository = userRepository;
+            this.passwordResetCodeRepository = passwordResetCodeRepository;
         }
         public async Task<(int, string)> Registeration(RegistrationModel model, string role)
         {
-            var userExists = await userManager.FindByNameAsync(model.Username!);
+            var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return (0, "User already exists");
-
+            var userExistsByEmail = await userManager.FindByEmailAsync(model.Email);
+            if (userExistsByEmail != null)
+                return (0, "User with this email already exists");
+            if (!IsPasswordValid(model.Password))
+                return (0, "Password is not valid! The password must have at least 7 characters and needs to include a capital letter, a symbol, a digit.");
             ApplicationUser user = new ApplicationUser()
             {
                 Email = model.Email,
@@ -36,16 +48,22 @@ namespace UniSync.Identity.Services
                 UserName = model.Username,
                 Name = model.Name
             };
-            var createUserResult = await userManager.CreateAsync(user, model.Password!);
+            var createUserResult = await userManager.CreateAsync(user, model.Password);
+
+
             if (!createUserResult.Succeeded)
+            {
                 return (0, "User creation failed! Please check user details and try again.");
+            }
 
             if (!await roleManager.RoleExistsAsync(role))
                 await roleManager.CreateAsync(new IdentityRole(role));
 
-            if (await roleManager.RoleExistsAsync(UserRole.User))
+            if (await roleManager.RoleExistsAsync(UserRoles.User))
                 await userManager.AddToRoleAsync(user, role);
 
+            var userDomain = User.Create(Guid.Parse(user.Id));
+            await userRepository.AddAsync(userDomain.Value);
             return (1, "User created successfully!");
         }
 
@@ -61,6 +79,8 @@ namespace UniSync.Identity.Services
             var authClaims = new List<Claim>
             {
                new Claim(ClaimTypes.Name, user.UserName!),
+               new Claim(ClaimTypes.Email, user.Email!),
+               new Claim(ClaimTypes.NameIdentifier, user.Id!),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
@@ -70,6 +90,87 @@ namespace UniSync.Identity.Services
             }
             string token = GenerateToken(authClaims);
             return (1, token);
+        }
+        public async Task<(int, string)> LoginWithGoogle(string googleToken)
+        {
+            GoogleJsonWebSignature.Payload payload;
+            try
+            {
+                payload = await GoogleJsonWebSignature.ValidateAsync(googleToken);
+            }
+            catch (Exception)
+            {
+                return (0, "Invalid Google Token");
+            }
+
+            var user = await userManager.FindByEmailAsync(payload.Email);
+            if (user == null)
+            {
+                var usernameToSearch = payload.Email.Split("@")[0];
+                var userName = userManager.Users.FirstOrDefault(u => u.UserName == usernameToSearch);
+                var randomGenerator = RandomNumberGenerator.Create();
+                if (userName != null)
+                {
+                    usernameToSearch += randomGenerator.GetHashCode().ToString()[..3];
+                }
+                user = new ApplicationUser
+                {
+                    UserName = usernameToSearch,
+                    Name = payload.Name,
+                    Email = payload.Email
+                };
+
+                var result = await userManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return (0, "Failed to create user");
+                }
+                // TODO
+                var userDomain = User.Create(Guid.Parse(user.Id));
+                await userRepository.AddAsync(userDomain.Value);
+
+                await userManager.AddToRoleAsync(user, "User");
+            }
+            var userRoles = await userManager.GetRolesAsync(user);
+            var authClaims = new List<Claim>
+            {
+               new Claim(ClaimTypes.Name, user.UserName!),
+               new Claim(ClaimTypes.Email, user.Email!),
+               new Claim(ClaimTypes.NameIdentifier, user.Id!),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            var token = GenerateToken(authClaims);
+
+            return (1, token);
+        }
+        public async Task<(int, string)> ResetPassword(ResetPasswordModel model)
+        {
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return (0, "User with the provided email does not exist.");
+            var resetCodeValid = await passwordResetCodeRepository.HasValidCodeByEmailAsync(model.Email, model.Code);
+            if (!resetCodeValid)
+                return (0, "Invalid reset code.");
+            var codeHash = userManager.PasswordHasher.HashPassword(user, model.Password);
+            user.PasswordHash = codeHash;
+            var updateResult = await userManager.UpdateAsync(user);
+            await passwordResetCodeRepository.InvalidateExistingCodesAsync(model.Email);
+
+            if (!updateResult.Succeeded)
+            {
+                return (0, "Password reset failed! Please check user details and try again.");
+            }
+
+            await userManager.UpdateSecurityStampAsync(user);
+
+            return (1, "Password reset successfully!");
+
         }
 
         public async Task<(int, string)> Logout()
@@ -95,5 +196,14 @@ namespace UniSync.Identity.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        private bool IsPasswordValid(string password)
+        {
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var result = passwordValidator.ValidateAsync(userManager, null, password);
+            return result.Result.Succeeded;
+        }
+
+        // create a student/professor/staff type of user based on the role
+        
     }
 }

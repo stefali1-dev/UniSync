@@ -1,40 +1,34 @@
 ﻿using UniSync.Application.Contracts;
 using UniSync.Application.Models;
-using Microsoft.Extensions.Logging;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
+using MimeKit;
 
-namespace UniSync.Infrastructure.Services
+namespace Infrastructure.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly IOptions<EmailSettings> options;
-        private readonly ILogger<EmailService> logger;
+        private readonly EmailSettings emailSettings;
 
-        public EmailService(IOptions<EmailSettings> options, ILogger<EmailService> logger)
+        public EmailService(IOptions<EmailSettings> emailSettings)
         {
-            this.options = options;
-            this.logger = logger;
+            this.emailSettings = emailSettings.Value;
         }
-        public Task<bool> SendEmailAsync(Mail email)
+
+        public async Task SendEmailAsync(string to, string subject, string body)
         {
-            var client = new SendGridClient(options.Value.ApiKey);
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(emailSettings.FromAddress));
+            email.To.Add(MailboxAddress.Parse(to));
+            email.Subject = subject;
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
 
-            var subject = email.Subject;
-            var body = email.Body;
-            var to = new EmailAddress(email.To);
-
-            var from = new EmailAddress
-                {
-                  Email =  options.Value.FromAddress,
-                Name = options.Value.FromName
-            };
-
-            var message = MailHelper.CreateSingleEmail(from, to, subject, body, body);
-            var response = client.SendEmailAsync(message);
-            logger.LogInformation(response.Status.ToString());
-            return Task.FromResult(true);
+            using var smtp = new SmtpClient();
+            await smtp.ConnectAsync(emailSettings.SmtpServer, emailSettings.SmtpPort, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(emailSettings.SmtpUsername, emailSettings.SmtpPassword);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
         }
     }
 }

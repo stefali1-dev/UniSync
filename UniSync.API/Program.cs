@@ -6,6 +6,7 @@ using UniSync.Infrastructure;
 using UniSync.Identity;
 using Microsoft.OpenApi.Models;
 using WebAPI.Services;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -18,7 +19,7 @@ builder.Services.AddScoped<IRoleAssignmentService, RoleAssignmentService>();
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 // Add services to the container.
-builder.Services.AddInfrastrutureToDI(
+builder.Services.AddInfrastructureToDI(
     builder.Configuration);
 builder.Services.AddInfrastrutureIdentityToDI(builder.Configuration);
 builder.Services.AddApplicationServices();
