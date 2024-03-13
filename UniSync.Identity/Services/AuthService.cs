@@ -33,9 +33,6 @@ namespace UniSync.Identity.Services
         }
         public async Task<(int, string)> Registeration(RegistrationModel model, string role)
         {
-            var userExists = await userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
-                return (0, "User already exists");
             var userExistsByEmail = await userManager.FindByEmailAsync(model.Email);
             if (userExistsByEmail != null)
                 return (0, "User with this email already exists");
@@ -48,6 +45,7 @@ namespace UniSync.Identity.Services
                 UserName = model.Username,
                 Name = model.Name
             };
+
             var createUserResult = await userManager.CreateAsync(user, model.Password);
 
 

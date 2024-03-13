@@ -1,28 +1,13 @@
 ﻿using UniSync.Domain.Common;
+using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Domain.Entities.Actors
 {
-    public class Professor : User
+    public class Professor
     {
-        public Professor(Guid userId, string firstName, string lastName, string position, DateTime hireDate)
-            : base(userId, firstName, lastName)
-        {
-            Position = position;
-            HireDate = hireDate;
-        }
-
-        public string Position { get; private set; }
-        public DateTime HireDate { get; private set; }
-        public static Result<Professor> Create(Guid userId, string firstName, string lastName, string position, DateTime hireDate)
-        {
-            if (userId == Guid.Empty)
-            {
-                return Result<Professor>.Failure("UserId cannot be empty");
-            }
-
-            return Result<Professor>.Success(new Professor(userId, firstName, lastName, position, hireDate));
-        }
-
+        public Guid UserId { get; set; }
+        public ProfessorType Type { get; set; }
+        public ICollection<Course> Courses { get; set; } = new List<Course>();
 
     }
 }

@@ -88,7 +88,10 @@ namespace UniSync.API.Controllers
         [Route("currentuserinfo")]
         public CurrentUser CurrentUserInfo()
         {
-            if (this.currentUserService.GetCurrentUserId() == null)
+            var user = this.currentUserService.GetCurrentClaimsPrincipal();
+
+            // Check if the user is authenticated
+            if (user == null || !user.Identity.IsAuthenticated)
             {
                 return new CurrentUser
                 {

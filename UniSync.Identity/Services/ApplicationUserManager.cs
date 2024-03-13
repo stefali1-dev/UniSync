@@ -134,10 +134,6 @@ namespace UniSync.Identity.Services
         }
         private void UpdateUserProperties(ApplicationUser user, UserDto userDto)
         {
-            user.Name = userDto.Name;
-            user.UserName = userDto.Username;
-            user.Email = userDto.Email;
-            user.Bio = userDto.Bio;
             user.Facebook = userDto.Social?.Facebook;
             user.Instagram = userDto.Social?.Instagram;
             user.GitHub = userDto.Social?.GitHub;
@@ -147,11 +143,6 @@ namespace UniSync.Identity.Services
         {
             return new UserDto
             {
-                UserId = user.Id,
-                Name = user.Name,
-                Username = user.UserName,
-                Email = user.Email,
-                Bio = user.Bio,
                 Social = new Social
                 {
                     Facebook = user.Facebook,
