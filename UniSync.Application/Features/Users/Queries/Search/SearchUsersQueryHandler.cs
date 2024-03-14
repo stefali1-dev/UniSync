@@ -22,8 +22,8 @@ namespace UniSync.Application.Features.Users.Queries.Search
             }
 
             var users = allUsers.Value.Where(u =>
-                    (!string.IsNullOrWhiteSpace(u.Username) && u.Username.ToLower().Contains(request.SearchValue.ToLower())) ||
-                    (!string.IsNullOrWhiteSpace(u.Name) && u.Name.ToLower().Contains(request.SearchValue.ToLower()))
+                    (!string.IsNullOrWhiteSpace(u.FirstName) && u.FirstName.ToLower().Contains(request.SearchValue.ToLower())) ||
+                    (!string.IsNullOrWhiteSpace(u.LastName) && u.LastName.ToLower().Contains(request.SearchValue.ToLower()))
                 ).ToArray();
 
             return new SearchUsersQueryResponse
@@ -32,8 +32,8 @@ namespace UniSync.Application.Features.Users.Queries.Search
                 Users = users.Select(u => new UserSearchDto
                 {
                     UserId = u.UserId,
-                    Username = u.Username,
-                    Name = u.Name,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
                     Email = u.Email,
                     UserPhoto = !string.IsNullOrWhiteSpace(u.UserId) &&
                                 userPhotoRepository.GetUserPhotoByUserIdAsync(u.UserId).Result.IsSuccess

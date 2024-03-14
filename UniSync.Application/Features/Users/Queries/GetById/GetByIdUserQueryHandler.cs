@@ -30,8 +30,8 @@ namespace UniSync.Application.Features.Users.Queries.GetById
                 User = new UserDto
                 {
                     UserId = userDto.UserId,
-                    Name = userDto.Name,
-                    Username = userDto.Username,
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
                     Email = userDto.Email,
                     Bio = userDto.Bio,
                     Social = userDto.Social,

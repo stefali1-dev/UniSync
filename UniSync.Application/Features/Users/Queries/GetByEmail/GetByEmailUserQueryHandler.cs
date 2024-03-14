@@ -24,8 +24,8 @@ namespace UniSync.Application.Features.Users.Queries.GetByEmail
                 User = new UserDto
                 {
                     UserId = userDto.UserId,
-                    Name = userDto.Name,
-                    Username = userDto.Username,
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
                     Email = userDto.Email,
                     Roles = userDto.Roles
                 }

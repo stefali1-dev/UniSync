@@ -20,8 +20,8 @@ namespace UniSync.Application.Features.Users.Queries.GetAll
                 response.Users = result.Value.Select(u => new UserDto
                 { 
                     UserId = u.UserId,
-                    Name = u.Name,
-                    Username = u.Username,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
                     Email = u.Email,
                     Roles = u.Roles
                 }).ToList();

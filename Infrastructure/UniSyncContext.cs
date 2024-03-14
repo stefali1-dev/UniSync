@@ -4,6 +4,7 @@ using UniSync.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using UniSync.Domain.Entities.Administration;
 using UniSync.Domain.Entities.Communication;
+using UniSync.Domain.Entities.Actors;
 
 namespace UniSync.Infrastructure
 {
@@ -17,13 +18,9 @@ namespace UniSync.Infrastructure
         {
             this.currentUserService = currentUserService;
         }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
-        public DbSet<Resource> Resources { get; set; }
         public DbSet<Channel> Channels { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Server> Servers { get; set; }

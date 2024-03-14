@@ -1,9 +1,7 @@
 using UniSync.Application.Contracts.Interfaces;
-using Microsoft.Identity.Web;
-using System.Security.Claims;
-using UniSync.Application.Models.Identity;
+using UniSync.Identity.Models;
 
-namespace WebAPI.Services
+namespace UniSync.Identity.Services
 {
     public class RoleAssignmentService : IRoleAssignmentService
     {
@@ -13,23 +11,23 @@ namespace WebAPI.Services
             // TODO: Implement real logic
             if(registrationId.EndsWith("1"))
             {
-                return UserRole.Admin;
+                return UserRoles.Admin;
             }
             else if(registrationId.EndsWith("2"))
             {
-                return UserRole.User;
+                return UserRoles.User;
             }
             else if(registrationId.EndsWith("3"))
             {
-                return UserRole.Student;
+                return UserRoles.Student;
             }
             else if(registrationId.EndsWith("4"))
             {
-                return UserRole.Professor;
+                return UserRoles.Professor;
             }
             else if(registrationId.EndsWith("5"))
             {
-                return UserRole.Staff;
+                return UserRoles.Staff;
             }
             else
             {

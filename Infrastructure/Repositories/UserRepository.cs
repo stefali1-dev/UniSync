@@ -1,6 +1,7 @@
 using UniSync.Application.Persistence;
 using UniSync.Infrastructure.Repositories;
 using UniSync.Infrastructure;
+using UniSync.Domain.Entities.Actors;
 
 namespace Infrastructure.Repositories;
 

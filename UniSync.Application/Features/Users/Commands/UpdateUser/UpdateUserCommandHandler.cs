@@ -29,8 +29,8 @@ namespace UniSync.Application.Features.Users.Commands.UpdateUser
                 };
             }
 
-            request.Name ??= user.Value.Name;
-            request.Username ??= user.Value.Username;
+            request.FirstName ??= user.Value.FirstName;
+            request.LastName ??= user.Value.LastName;
             request.Email ??= user.Value.Email;
             request.Bio ??= user.Value.Bio;
             request.Social ??= user.Value.Social;
@@ -58,23 +58,13 @@ namespace UniSync.Application.Features.Users.Commands.UpdateUser
                 };
             }
 
-            var userByUsername = await userRepository.FindByUsernameAsync(request.Username);
-            if (userByUsername.IsSuccess && userByUsername.Value.UserId != user.Value.UserId)
-            {
-                return new UpdateUserCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = new List<string> { "Username already exists" }
-                };
-            }
-
             var userPhoto = await userPhotoRepository.GetUserPhotoByUserIdAsync(request.Id.ToString());
             
             UserDto userDto = new()
             {
                 UserId = user.Value.UserId,
-                Name = request.Name,
-                Username = request.Username,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 Email = request.Email,
                 Bio = request.Bio,
                 Social = request.Social
@@ -95,8 +85,8 @@ namespace UniSync.Application.Features.Users.Commands.UpdateUser
                 Success = true,
                 User = new UpdateUserDto
                 {
-                    Name = result.Value.Name,
-                    Username = result.Value.Username,
+                    FirstName = result.Value.FirstName,
+                    LastName = result.Value.LastName,
                     UserPhoto = userPhoto.IsSuccess ? new UserCloudPhotoDto
                     {
                         UserPhotoId = userPhoto.Value.UserPhotoId,

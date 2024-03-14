@@ -3,9 +3,11 @@ using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Domain.Entities.Actors
 {
-    public class Professor
+    public class Professor : User
     {
-        public Guid UserId { get; set; }
+        public Professor(Guid userId) : base(userId)
+        {
+        }
         public ProfessorType Type { get; set; }
         public ICollection<Course> Courses { get; set; } = new List<Course>();
 

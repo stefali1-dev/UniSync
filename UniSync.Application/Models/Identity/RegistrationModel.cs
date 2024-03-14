@@ -7,7 +7,11 @@ namespace UniSync.Application.Models.Identity
         [Required(ErrorMessage = "Registration Id is required")]
         public string? RegistrationId { get; set; }
 
+        [Required(ErrorMessage = "Username is required")]
+        public string? Username { get; set; }
+
         [Required(ErrorMessage = "First Name is required")]
+        
         public string? FirstName { get; set; }
 
         [Required(ErrorMessage = "Last Name is required")]

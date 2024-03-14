@@ -2,7 +2,7 @@
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace WebAPI.Services
+namespace UniSync.Api.Services
 {
     public class CurrentUserService : ICurrentUserService
     {

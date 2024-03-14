@@ -2,7 +2,7 @@
 {
     public enum CourseType
     {
-        Mandatory,
+        Mandatory = 1,
         Facultative,
         Optional
     }

@@ -10,13 +10,13 @@ namespace UniSync.Application.Features.Users.Commands.UpdateUser
                 .NotEmpty().WithMessage("Id is required")
                 .NotNull().WithMessage("Id is required");
 
-            RuleFor(x => x.Username)
-                .NotEmpty().WithMessage("Username is required")
-                .NotNull().WithMessage("Username is required");
+            RuleFor(x => x.FirstName)
+                .NotEmpty().WithMessage("FirstName is required")
+                .NotNull().WithMessage("FirstName is required");
 
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Name is required")
-                .NotNull().WithMessage("Name is required");
+            RuleFor(x => x.LastName)
+                .NotEmpty().WithMessage("LastName is required")
+                .NotNull().WithMessage("LastName is required");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required")

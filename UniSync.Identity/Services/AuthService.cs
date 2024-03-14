@@ -10,7 +10,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
-
+using UniSync.Domain.Entities.Actors;
+using UniSync.Application.Contracts.Interfaces;
 
 namespace UniSync.Identity.Services
 {
@@ -22,7 +23,9 @@ namespace UniSync.Identity.Services
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly IPasswordResetCode passwordResetCodeRepository;
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IUserRepository userRepository, IPasswordResetCode passwordResetCodeRepository)
+        private readonly IRoleAssignmentService roleAssignmentService;
+
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IUserRepository userRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -30,6 +33,7 @@ namespace UniSync.Identity.Services
             this.signInManager = signInManager;
             this.userRepository = userRepository;
             this.passwordResetCodeRepository = passwordResetCodeRepository;
+            this.roleAssignmentService = roleAssignmentService;
         }
         public async Task<(int, string)> Registeration(RegistrationModel model, string role)
         {
@@ -42,8 +46,9 @@ namespace UniSync.Identity.Services
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username,
-                Name = model.Name
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.Username
             };
 
             var createUserResult = await userManager.CreateAsync(user, model.Password);
@@ -60,23 +65,26 @@ namespace UniSync.Identity.Services
             if (await roleManager.RoleExistsAsync(UserRoles.User))
                 await userManager.AddToRoleAsync(user, role);
 
-            var userDomain = User.Create(Guid.Parse(user.Id));
-            await userRepository.AddAsync(userDomain.Value);
+            // TODO
+            //var userDomain = User.Create(Guid.Parse(user.Id));
+            //await userRepository.AddAsync(userDomain.Value);
+
+            var _user = CreateUserSubclass(model.RegistrationId);
+            await userRepository.AddAsync(_user);
             return (1, "User created successfully!");
         }
 
         public async Task<(int, string)> Login(LoginModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Username!);
+            var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return (0, "Invalid username");
+                return (0, "Invalid email");
             if (!await userManager.CheckPasswordAsync(user, model.Password!))
                 return (0, "Invalid password");
 
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
             {
-               new Claim(ClaimTypes.Name, user.UserName!),
                new Claim(ClaimTypes.Email, user.Email!),
                new Claim(ClaimTypes.NameIdentifier, user.Id!),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -114,7 +122,8 @@ namespace UniSync.Identity.Services
                 user = new ApplicationUser
                 {
                     UserName = usernameToSearch,
-                    Name = payload.Name,
+                    FirstName = payload.GivenName,
+                    LastName = payload.FamilyName,
                     Email = payload.Email
                 };
 
@@ -123,9 +132,13 @@ namespace UniSync.Identity.Services
                 {
                     return (0, "Failed to create user");
                 }
-                // TODO
-                var userDomain = User.Create(Guid.Parse(user.Id));
-                await userRepository.AddAsync(userDomain.Value);
+                // temorarily leave out LoginWithGoogle
+
+                //var userDomain = User.Create(Guid.Parse(user.Id));
+                //await userRepository.AddAsync(userDomain.Value);
+
+                //var _user = CreateUserSubclass(model.RegistrationId);
+                //await userRepository.AddAsync(_user);
 
                 await userManager.AddToRoleAsync(user, "User");
             }
@@ -201,7 +214,19 @@ namespace UniSync.Identity.Services
             return result.Result.Succeeded;
         }
 
-        // create a student/professor/staff type of user based on the role
-        
+        private User CreateUserSubclass(string registrationId)
+        {
+            var userRole = roleAssignmentService.GetUserRoleByRegistrationId(registrationId);
+            return userRole switch
+            {
+                UserRoles.Student => new Student(Guid.NewGuid()),
+                UserRoles.Professor => new Professor(Guid.NewGuid()),
+                UserRoles.Staff => new Staff(Guid.NewGuid()),
+                _ => throw new Exception("Invalid Registration ID")
+            };
+
+        }
+
+
     }
 }

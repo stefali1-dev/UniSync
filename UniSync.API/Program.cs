@@ -2,11 +2,11 @@ using UniSync.API.Utility;
 using UniSync.Application;
 using UniSync.Application.Contracts.Interfaces;
 using UniSync.Application.Models;
-using UniSync.Infrastructure;
 using UniSync.Identity;
 using Microsoft.OpenApi.Models;
-using WebAPI.Services;
+using UniSync.Api.Services;
 using Infrastructure;
+using UniSync.Identity.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "GloboTicket Ticket Management API",
+        Title = "UniSync API",
 
     });
 

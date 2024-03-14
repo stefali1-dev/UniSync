@@ -55,19 +55,6 @@ namespace UniSync.Identity.Services
             userDtos.Roles = roles.ToList();
             return Result<UserDto>.Success(userDtos);
         }
-        public async Task<Result<UserDto>> FindByUsernameAsync(string username)
-        {
-
-            var user = await userManager.FindByNameAsync(username);
-            if (user == null)
-                return Result<UserDto>.Failure($"User with username {username} not found");
-            var userDtos = MapToUserDto(user);
-            var roles = await userManager.GetRolesAsync(user);
-            userDtos.Roles = roles.ToList();
-            return Result<UserDto>.Success(userDtos);
-        }
-
-
 
         public async Task<Result<List<UserDto>>> GetAllAsync()
         {
