@@ -44,7 +44,7 @@ public class UsersController : ApiControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
@@ -67,7 +67,7 @@ public class UsersController : ApiControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [HttpGet("ById/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserById(string id)
@@ -85,7 +85,7 @@ public class UsersController : ApiControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [HttpGet("ByEmail/{email}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserByEmail(string email)
@@ -99,7 +99,7 @@ public class UsersController : ApiControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
     [HttpPut("/role/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateRole(Guid id, UpdateUserRoleCommand command)
@@ -117,7 +117,7 @@ public class UsersController : ApiControllerBase
     }
 
 
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [HttpGet("search/{searchValue}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchUsers(string searchValue)

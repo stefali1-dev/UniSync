@@ -1,5 +1,5 @@
 ﻿using UniSync.Domain.Common;
-using UniSync.Domain.Entities.Actors;
+using UniSync.Domain.Entities;
 
 namespace UniSync.Domain.Entities.Administration
 {

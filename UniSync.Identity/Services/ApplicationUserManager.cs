@@ -45,6 +45,18 @@ namespace UniSync.Identity.Services
             return Result<UserDto>.Success(userDtos);
         }
 
+        public async Task<Result<UserDto>> FindByUsernameAsync(string username)
+        {
+
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+                return Result<UserDto>.Failure($"User with username {username} not found");
+            var userDtos = MapToUserDto(user);
+            var roles = await userManager.GetRolesAsync(user);
+            userDtos.Roles = roles.ToList();
+            return Result<UserDto>.Success(userDtos);
+        }
+
         public async Task<Result<UserDto>> FindByEmailAsync(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -130,6 +142,11 @@ namespace UniSync.Identity.Services
         {
             return new UserDto
             {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Bio = user.Bio,
                 Social = new Social
                 {
                     Facebook = user.Facebook,

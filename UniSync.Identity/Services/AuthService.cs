@@ -10,7 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
-using UniSync.Domain.Entities.Actors;
+using UniSync.Domain.Entities;
 using UniSync.Application.Contracts.Interfaces;
 
 namespace UniSync.Identity.Services

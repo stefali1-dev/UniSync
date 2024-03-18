@@ -7,15 +7,28 @@ using Microsoft.OpenApi.Models;
 using UniSync.Api.Services;
 using Infrastructure;
 using UniSync.Identity.Services;
+using UniSync.Api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder
+                .AllowCredentials()
+                .WithOrigins(
+                    "http://localhost:4200")
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
 });
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IRoleAssignmentService, RoleAssignmentService>();
+builder.Services.AddSignalR();
+
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 // Add services to the container.
@@ -77,11 +90,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseCors("AllowAllOrigins");
+
 app.UseHttpsRedirection();
-app.UseCors("Open");
+
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
+
 
 app.Run();
 

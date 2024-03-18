@@ -1,4 +1,4 @@
-﻿using UniSync.Domain.Entities.Actors;
+﻿using UniSync.Domain.Entities;
 
 namespace UniSync.Application.Persistence
 {
