@@ -7,7 +7,7 @@ namespace UniSync.Domain.Entities
     {
         public Guid ChannelId { get; private set; }
         public string ChannelName { get; private set; }
-        public ICollection<User> Admins { get; set; }
+        public ICollection<User> Users { get; set; }
         public ICollection<Message> Messages { get; set; }
 
 

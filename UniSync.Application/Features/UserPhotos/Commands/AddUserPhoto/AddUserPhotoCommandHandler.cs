@@ -2,6 +2,7 @@
 using UniSync.Application.Persistence;
 using UniSync.Domain.Entities;
 using MediatR;
+using Ergo.Domain.Entities;
 
 namespace UniSync.Application.Features.UserPhotos.Commands.AddUserPhoto
 {

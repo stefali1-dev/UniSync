@@ -1,6 +1,6 @@
 ﻿using UniSync.Domain.Common;
 
-namespace UniSync.Domain.Entities
+namespace Ergo.Domain.Entities
 {
     public class UserPhoto
     {

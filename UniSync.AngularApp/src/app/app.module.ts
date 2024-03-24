@@ -1,36 +1,27 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routes';
-import { CoreModule } from './core/core.module';
-import { HomeModule } from './home/home.module';
-import { ImagesModule } from './images/images.module';
-import { NewsModule } from './news/news.module';
-import { SharedModule } from './shared/shared.module';
-
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ChatComponent } from './chat/chat.component';
+import { JoinRoomComponent } from './join-room/join-room.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
+  declarations: [
+    AppComponent,
+    ChatComponent,
+    JoinRoomComponent,
+    WelcomeComponent
+  ],
   imports: [
     BrowserModule,
-    AppRoutes,
-    SharedModule,
-    CoreModule.forRoot(),
-    HomeModule,
-    ImagesModule,
-    NewsModule,
-    StoreModule.forRoot({}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, //  Retains last 25 states
-    }),
-    EffectsModule.forRoot([]),
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
-
-  declarations: [AppComponent],
-
-  bootstrap: [AppComponent],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

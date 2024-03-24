@@ -25,7 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UniSync.Application\UniSync.Application.csproj" />
     <ProjectReference Include="..\UniSync.Identity\UniSync.Identity.csproj" />
-    <ProjectReference Include="..\Infrastructure\UniSync.Infrastructure.csproj" />
+    <ProjectReference Include="..\UniSync.Infrastructure\UniSync.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

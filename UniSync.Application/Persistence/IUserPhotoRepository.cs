@@ -1,4 +1,5 @@
-﻿using UniSync.Domain.Common;
+﻿using Ergo.Domain.Entities;
+using UniSync.Domain.Common;
 using UniSync.Domain.Entities;
 
 namespace UniSync.Application.Persistence

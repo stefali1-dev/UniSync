@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{0BCBE2BE-B69F-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSync.Domain", "UniSync.Domain\UniSync.Domain.csproj", "{EF8B6A1B-D088-431C-9B1A-E454F12A36B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSync.Infrastructure", "Infrastructure\UniSync.Infrastructure.csproj", "{8400DBF2-0426-46E2-95C9-6174D1BC342F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSync.Infrastructure", "UniSync.Infrastructure\UniSync.Infrastructure.csproj", "{8400DBF2-0426-46E2-95C9-6174D1BC342F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSync.Application", "UniSync.Application\UniSync.Application.csproj", "{D645FDE1-52CF-4B6B-AF31-B47F147C610E}"
 EndProject
