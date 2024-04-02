@@ -40,9 +40,7 @@ public class ChatHub : Hub
             {
                 MessageId = Guid.NewGuid(),
                 Content = message,
-                UserId = Guid.NewGuid(),
                 SenderName = userRoomConnection.User,
-                ChannelId = Guid.NewGuid(),
                 ChannelName = userRoomConnection.Room,
                 Timestamp = DateTime.Now
             };

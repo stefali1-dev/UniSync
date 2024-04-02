@@ -174,7 +174,7 @@ namespace UniSync.Infrastructure.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("MessageId");
@@ -308,9 +308,7 @@ namespace UniSync.Infrastructure.Migrations
 
                     b.HasOne("UniSync.Domain.Entities.User", null)
                         .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("UniSync.Domain.Entities.Channel", b =>

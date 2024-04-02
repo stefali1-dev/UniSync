@@ -483,4 +483,4 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 /UniSync.API/appsettings.json
-/UniSync.AngularApp/.angular/cache/15.0.4
+/UniSync.AngularApp/.angular/cache

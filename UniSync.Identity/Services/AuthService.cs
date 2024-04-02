@@ -12,6 +12,7 @@ using System.Text;
 using System.Security.Cryptography;
 using UniSync.Domain.Entities;
 using UniSync.Application.Contracts.Interfaces;
+using System;
 
 namespace UniSync.Identity.Services
 {
@@ -46,9 +47,9 @@ namespace UniSync.Identity.Services
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.Username
+                FirstName = "FirstName",
+                LastName = "LastName",
+                UserName = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10).Select(s => s[new Random().Next(s.Length)]).ToArray())
             };
 
             var createUserResult = await userManager.CreateAsync(user, model.Password);
