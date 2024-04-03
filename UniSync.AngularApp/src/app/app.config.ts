@@ -18,8 +18,10 @@ import { vexConfigs } from '@vex/config/vex-configs';
 import { provideQuillConfig } from 'ngx-quill';
 import {SharedModule} from "./_modules/shared.module";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
-import {ErrorInterceptor} from "./_interceptors/error.interceptor";
 import { AuthInterceptor } from './_services/auth-interceptor.service';
+import { httpInterceptorProviders } from './_helpers/http.interceptor';
+import { AuthGuard } from './_helpers/auth.guard';
+
 
 
 
@@ -32,8 +34,10 @@ export const appConfig: ApplicationConfig = {
       MatNativeDateModule,
       SharedModule
     ),
+    httpInterceptorProviders,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    AuthGuard,
+    
     provideRouter(
       appRoutes,
       // TODO: Add preloading withPreloading(),

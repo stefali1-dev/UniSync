@@ -14,7 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {AccountService} from "../../../_services/account.service";
+import {AuthService} from "../../../_services/auth.service";
+import {StorageService} from "../../../_services/storage.service";
+import { Inject } from '@angular/core';
+
 
 
 @Component({
@@ -43,35 +46,50 @@ export class LoginComponent {
     password: ['', Validators.required]
   });
 
-  model: any = {};
-
   inputType = 'password';
   visible = false;
+  isLoggedIn = false;
+  isLoginFailed = false;
+  errorMessage = '';
+  roles: string[] = [];
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private snackbar: MatSnackBar,
-    private accountService: AccountService
+    @Inject(AuthService) private authService: AuthService, 
+    private storageService: StorageService
   ) {}
 
-  send() {
-
-    if (this.form.valid) {
-      this.model.email = this.form.get('email')?.value;
-      this.model.password = this.form.get('password')?.value;
+  ngOnInit(): void {
+    if (this.storageService.isLoggedIn()) {
+      this.isLoggedIn = true;
+      this.roles = this.storageService.getUser().roles;
     }
+  }
 
-    console.log(this.model)
-    this.accountService.login(this.model).subscribe(response => {
-        console.log(response);
-        this.accountService.login(this.model)
+  send() {
+    
+    var email = this.form.get('email')?.value ?? '';
+    var password = this.form.get('password')?.value ?? '';
+
+    this.authService.login(email, password).subscribe({
+      next: data => {
+        console.log(data);
+        this.storageService.saveUser(data);
+
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.roles = this.storageService.getUser().roles;
         this.router.navigate(['/']);
+      },
+      error: err => {
+        console.log(err);
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
       }
-      , error => {
-        console.log(error);
-      });
+    });
 
 
     // this.snackbar.open(
@@ -82,6 +100,10 @@ export class LoginComponent {
     //   }
     // );
     
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 
   toggleVisibility() {

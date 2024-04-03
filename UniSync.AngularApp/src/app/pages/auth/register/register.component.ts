@@ -8,13 +8,15 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { fadeInUp400ms } from '@vex/animations/fade-in-up.animation';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {AccountService} from "../../../_services/account.service";
+import {AuthService} from "../../../_services/auth.service";
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'vex-register',
@@ -31,6 +33,7 @@ import {AccountService} from "../../../_services/account.service";
     NgIf,
     MatIconModule,
     MatCheckboxModule,
+    MatSnackBarModule,
     RouterLink
   ]
 })
@@ -42,45 +45,51 @@ export class RegisterComponent {
     passwordConfirm: ['', Validators.required]
   });
 
-  model: any = {};
-
 
   inputType = 'password';
   visible = false;
-  registered = false;
+  isSuccessful = false;
+  isSignUpFailed = false;
+  errorMessage = '';
 
 
   constructor(
     private router: Router,
     private fb: UntypedFormBuilder,
     private cd: ChangeDetectorRef,
-    private accountService: AccountService
+    @Inject(AuthService) private authService: AuthService,
+    private snackbar: MatSnackBar
+
 
   ) {}
 
   send() {
-    if (this.form.valid && this.form.get('password')?.value == this.form.get('passwordConfirm')?.value) {
-      this.model.registrationId = this.form.get('registrationId')?.value;
-      this.model.email = this.form.get('email')?.value;
-      this.model.password = this.form.get('password')?.value;
-    }
+    
+    var registrationId  = this.form.get('registrationId')?.value;
+    var email = this.form.get('email')?.value;
+    var password = this.form.get('password')?.value;
 
-    console.log(this.model)
-
-    this.accountService.register(this.model).subscribe(response => {
-      this.registered = true;
-      // login now
-      this.accountService.login(this.model).subscribe(response => {
-        console.log("Registered and logged in");
-      }, error => {
-        console.log(error);
-      });
-    }
-    , error => {
-      console.log(error);
+    this.authService.register(registrationId, email, password).subscribe({
+      next: data => {
+        console.log(data);
+        this.isSuccessful = true;
+        this.isSignUpFailed = false;
+      },
+      error: err => {
+        this.errorMessage = err.error.message;
+        this.isSignUpFailed = true;
+      }
     });
 
-    this.router.navigate(['/']);
+    this.snackbar.open(
+      "Registration succesful!",
+      'Ok',
+      {
+        duration: 1000
+      }
+    );
+    this.router.navigate(['/login']);
+
   }
 
 

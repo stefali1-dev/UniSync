@@ -5,8 +5,10 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
     // Get the token from local storage (replace 'your_token_key' with the actual key used to store the token)
-    const token = JSON.parse(localStorage.getItem('user') || '{}').token;
+    //const token = JSON.parse(localStorage.getItem('token') || '{}').token;
+    const token = window.sessionStorage.getItem('token');
 
     // Add the token to the Authorization header
     if (token) {
