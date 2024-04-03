@@ -36,16 +36,16 @@ public class ChatHub : Hub
             await Clients.Group(userRoomConnection.Room!)
                 .SendAsync("ReceiveMessage", userRoomConnection.User, message, DateTime.Now);
 
-            var _message = new Message
-            {
-                MessageId = Guid.NewGuid(),
-                Content = message,
-                SenderName = userRoomConnection.User,
-                ChannelName = userRoomConnection.Room,
-                Timestamp = DateTime.Now
-            };
+            //var _message = new Message
+            //{
+            //    MessageId = Guid.NewGuid(),
+            //    Content = message,
+            //    SenderName = userRoomConnection.User,
+            //    ChannelName = userRoomConnection.Room,
+            //    Timestamp = DateTime.Now
+            //};
 
-            await _messageRepository.AddAsync(_message);
+            //await _messageRepository.AddAsync(_message);
         }
     }
 

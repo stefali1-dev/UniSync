@@ -41,4 +41,8 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(AUTH_API + '/Authentication/logout', { }, httpOptions);
   }
+
+  getCurrentUserInfo(): Observable<any>{
+    return this.http.get(AUTH_API + '/Authentication/currentuserinfo');
+  }
 }

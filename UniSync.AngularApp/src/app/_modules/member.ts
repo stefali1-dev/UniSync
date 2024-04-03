@@ -1,5 +1,7 @@
 export interface Member {
-  id: number
-  email: string
-  role: string
+  token: string
+  userId: string | null
+  email: string | null
+  username: string | null
+  role: string | null
 }

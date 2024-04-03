@@ -6,33 +6,38 @@ namespace UniSync.Identity.Services
     public class RoleAssignmentService : IRoleAssignmentService
     {
 
-        public string GetUserRoleByRegistrationId(string registrationId)
+
+
+        public StudentDto GetUserInfoByRegistrationId(string registrationId)
         {
-            // TODO: Implement real logic
-            if(registrationId.EndsWith("1"))
+            string studentsFilePath = "../TestData/students.txt"; // file path
+
+            if (!File.Exists(studentsFilePath))
             {
-                return UserRoles.Admin;
+                return null;
             }
-            else if(registrationId.EndsWith("2"))
+
+            string[] lines = File.ReadAllLines(studentsFilePath);
+
+            foreach (string line in lines)
             {
-                return UserRoles.User;
+                string[] parts = line.Split(',');
+
+                if (parts[0] == registrationId)
+                {
+                    StudentDto student = new StudentDto
+                    {
+                        FirstName = parts[1],
+                        LastName = parts[2],
+                        Semester = parts[3],
+                        Group = parts[4]
+                    };
+
+                    return student;
+                }
             }
-            else if(registrationId.EndsWith("3"))
-            {
-                return UserRoles.Student;
-            }
-            else if(registrationId.EndsWith("4"))
-            {
-                return UserRoles.Professor;
-            }
-            else if(registrationId.EndsWith("5"))
-            {
-                return UserRoles.Staff;
-            }
-            else
-            {
-                return "Invalid Registration ID";
-            }
+
+            return null;
         }
     }
     

@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {AuthService} from "../../../_services/auth.service";
 import {StorageService} from "../../../_services/storage.service";
 import { Inject } from '@angular/core';
+import { Member } from '../../../_modules/member';
 
 
 
@@ -52,6 +53,7 @@ export class LoginComponent {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  token = '';
 
   constructor(
     private router: Router,
@@ -77,7 +79,16 @@ export class LoginComponent {
     this.authService.login(email, password).subscribe({
       next: data => {
         console.log(data);
-        this.storageService.saveUser(data);
+
+        let newMember: Member = {
+          token : data,
+          userId: null,
+          email: null,
+          username: null,
+          role: null
+        };
+
+        this.storageService.saveUser(newMember);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
@@ -90,7 +101,6 @@ export class LoginComponent {
         this.isLoginFailed = true;
       }
     });
-
 
     // this.snackbar.open(
     //   "Lucky you! Looks like you didn't need a password or email address! For a real application we provide validators to prevent this. ;)",

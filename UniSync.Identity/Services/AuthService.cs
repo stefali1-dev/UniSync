@@ -43,13 +43,16 @@ namespace UniSync.Identity.Services
                 return (0, "User with this email already exists");
             if (!IsPasswordValid(model.Password))
                 return (0, "Password is not valid! The password must have at least 7 characters and needs to include a capital letter, a symbol, a digit.");
+            
+            var userInfo = roleAssignmentService.GetUserInfoByRegistrationId(model.RegistrationId);
+
             ApplicationUser user = new ApplicationUser()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                FirstName = "FirstName",
-                LastName = "LastName",
-                UserName = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10).Select(s => s[new Random().Next(s.Length)]).ToArray())
+                FirstName = userInfo.FirstName,
+                LastName = userInfo.LastName,
+                UserName = userInfo.FirstName + userInfo.LastName
             };
 
             var createUserResult = await userManager.CreateAsync(user, model.Password);
@@ -70,7 +73,8 @@ namespace UniSync.Identity.Services
             //var userDomain = User.Create(Guid.Parse(user.Id));
             //await userRepository.AddAsync(userDomain.Value);
 
-            var _user = CreateUserSubclass(model.RegistrationId);
+            //var _user = CreateUserSubclass(model.RegistrationId);
+            var _user = new Student(Guid.NewGuid(), Convert.ToInt32(userInfo.Semester), userInfo.Group);
             await userRepository.AddAsync(_user);
             return (1, "User created successfully!");
         }
@@ -215,18 +219,18 @@ namespace UniSync.Identity.Services
             return result.Result.Succeeded;
         }
 
-        private User CreateUserSubclass(string registrationId)
-        {
-            var userRole = roleAssignmentService.GetUserRoleByRegistrationId(registrationId);
-            return userRole switch
-            {
-                UserRoles.Student => new Student(Guid.NewGuid()),
-                UserRoles.Professor => new Professor(Guid.NewGuid()),
-                UserRoles.Staff => new Staff(Guid.NewGuid()),
-                _ => throw new Exception("Invalid Registration ID")
-            };
+        //private User CreateUserSubclass(string registrationId)
+        //{
+        //    var userRole = roleAssignmentService.GetUserInfoByRegistrationId(registrationId);
+        //    return userRole switch
+        //    {
+        //        UserRoles.Student => new Student(Guid.NewGuid()),
+        //        UserRoles.Professor => new Professor(Guid.NewGuid()),
+        //        UserRoles.Staff => new Staff(Guid.NewGuid()),
+        //        _ => throw new Exception("Invalid Registration ID")
+        //    };
 
-        }
+        //}
 
 
     }

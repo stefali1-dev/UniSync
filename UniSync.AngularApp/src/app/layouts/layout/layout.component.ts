@@ -18,6 +18,10 @@ import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { SearchComponent } from '../components/toolbar/search/search.component';
 import { VexProgressBarComponent } from '@vex/components/vex-progress-bar/vex-progress-bar.component';
 import { VexConfig } from '@vex/config/vex-config.interface';
+import {StorageService} from "../../_services/storage.service";
+import {AuthService} from "../../_services/auth.service";
+
+import { Member } from '../../_modules/member';
 
 @Component({
   selector: 'vex-layout',
@@ -62,8 +66,33 @@ export class LayoutComponent {
 
   constructor(
     private readonly layoutService: VexLayoutService,
-    private readonly configService: VexConfigService
+    private readonly configService: VexConfigService,
+    private storageService: StorageService,
+    private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.authService.getCurrentUserInfo().subscribe({
+      next: data => {
+        console.log("Current user info: ")
+        console.log(data);
+
+        let newMember: Member = {
+          token : this.storageService.getUser().token,
+          userId: data?.claims?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
+          email: data?.claims?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+          username: data?.userName,
+          role: data?.claims?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        };
+
+        this.storageService.saveUser(newMember);
+
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
 
   onSidenavClosed(): void {
     this.layoutService.closeSidenav();
