@@ -8,14 +8,19 @@ namespace UniSync.Identity.Services
 
 
 
-        public StudentDto GetUserInfoByRegistrationId(string registrationId)
+        public UserInfoDto GetUserInfoByRegistrationId(string registrationId)
         {
-            string studentsFilePath = "../TestData/students.txt"; // file path
+            // string studentsFilePath = "../TestData/students.txt"; // file path
+            string studentsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "students.txt");
+            Console.WriteLine(studentsFilePath);
 
             if (!File.Exists(studentsFilePath))
             {
+                Console.WriteLine("Didn't find text file");
                 return null;
             }
+
+            Console.WriteLine("Read from text file");
 
             string[] lines = File.ReadAllLines(studentsFilePath);
 
@@ -25,7 +30,7 @@ namespace UniSync.Identity.Services
 
                 if (parts[0] == registrationId)
                 {
-                    StudentDto student = new StudentDto
+                    UserInfoDto student = new UserInfoDto
                     {
                         FirstName = parts[1],
                         LastName = parts[2],

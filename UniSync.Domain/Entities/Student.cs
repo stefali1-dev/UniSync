@@ -2,17 +2,19 @@
 
 namespace UniSync.Domain.Entities
 {
-    public class Student : User
+    public class Student
     {
-        public Student(Guid userId, int semester, string group) : base(userId)
+        public Student(Guid studentId, int semester, string group)
         {
+            StudentId = studentId;
             Semester = semester;
             Group = group;
-            Courses = new List<Course>();
+            //Courses = new List<Course>();
         }
 
+        public Guid StudentId { get; set; }
         public int Semester { get; set; }
         public string Group { get; set; }
-        public ICollection<Course> Courses { get; set; }
+        //public ICollection<Course> Courses { get; set; }
     }
 }

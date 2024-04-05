@@ -5,10 +5,10 @@ namespace UniSync.Application.Contracts.Interfaces
 {
     public interface IRoleAssignmentService
     {
-        public StudentDto GetUserInfoByRegistrationId(string registrationId);
+        public UserInfoDto GetUserInfoByRegistrationId(string registrationId);
     }
 }
-public class StudentDto
+public class UserInfoDto
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

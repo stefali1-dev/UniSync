@@ -19,20 +19,20 @@ namespace UniSync.Identity.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IUserRepository userRepository;
+        private readonly IStudentRepository studentRepository;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly IPasswordResetCode passwordResetCodeRepository;
         private readonly IRoleAssignmentService roleAssignmentService;
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IUserRepository userRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.configuration = configuration;
             this.signInManager = signInManager;
-            this.userRepository = userRepository;
+            this.studentRepository = studentRepository;
             this.passwordResetCodeRepository = passwordResetCodeRepository;
             this.roleAssignmentService = roleAssignmentService;
         }
@@ -45,14 +45,14 @@ namespace UniSync.Identity.Services
                 return (0, "Password is not valid! The password must have at least 7 characters and needs to include a capital letter, a symbol, a digit.");
             
             var userInfo = roleAssignmentService.GetUserInfoByRegistrationId(model.RegistrationId);
-
+            string randomString = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 8).Select(s => s[new Random().Next(s.Length)]).ToArray());
             ApplicationUser user = new ApplicationUser()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 FirstName = userInfo.FirstName,
                 LastName = userInfo.LastName,
-                UserName = userInfo.FirstName + userInfo.LastName
+                UserName = randomString
             };
 
             var createUserResult = await userManager.CreateAsync(user, model.Password);
@@ -74,8 +74,8 @@ namespace UniSync.Identity.Services
             //await userRepository.AddAsync(userDomain.Value);
 
             //var _user = CreateUserSubclass(model.RegistrationId);
-            var _user = new Student(Guid.NewGuid(), Convert.ToInt32(userInfo.Semester), userInfo.Group);
-            await userRepository.AddAsync(_user);
+            var _user = new Student(Guid.Parse(user.Id), Convert.ToInt32(userInfo.Semester), userInfo.Group);
+            await studentRepository.AddAsync(_user);
             return (1, "User created successfully!");
         }
 

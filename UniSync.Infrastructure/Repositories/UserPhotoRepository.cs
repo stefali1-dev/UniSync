@@ -15,16 +15,18 @@ namespace Infrastructure.Repositories
 
         public async Task<Result<UserPhoto>> GetUserPhotoByUserIdAsync(string userId)
         {
-            var userPhoto = await context.UserPhotos
-                                .Where(up => up.UserId == userId)
-                                .FirstOrDefaultAsync();
+            //var userPhoto = await context.UserPhotos
+            //                    .Where(up => up.UserId == userId)
+            //                    .FirstOrDefaultAsync();
 
-            if (userPhoto == null)
-            {
-                return Result<UserPhoto>.Failure("User photo not found");
-            }
+            //if (userPhoto == null)
+            //{
+            //    return Result<UserPhoto>.Failure("User photo not found");
+            //}
 
-            return Result<UserPhoto>.Success(userPhoto);
+            //return Result<UserPhoto>.Success(userPhoto);
+            return Result<UserPhoto>.Success(null);
+
 
         }
     }

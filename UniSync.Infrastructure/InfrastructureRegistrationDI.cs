@@ -28,7 +28,7 @@ namespace Infrastructure
             services.AddScoped
                 (typeof(IAsyncRepository<>),
                 typeof(BaseRepository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IPasswordResetCode, PasswordResetCodeRepository>();
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
