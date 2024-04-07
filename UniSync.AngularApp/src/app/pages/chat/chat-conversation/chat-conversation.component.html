@@ -35,111 +35,26 @@
   </div>
 
   <vex-scrollbar class="flex-1">
+    
     <div class="flex flex-col space-y-2 p-8 justify-end">
-      <div class="flex gap-2">
-        <img class="w-8 h-8 rounded-full self-end" src="{{ chat?.imageUrl }}" />
-        <div class="flex flex-col space-y-2">
-          <div class="self-start inline-flex items-center gap-2">
-            <div
-              class="p-3 rounded-xl bg-gray-200 dark:bg-gray-800 inline-flex max-w-[350px]">
-              <div class="grid grid-cols-2 gap-1.5">
-                <div class="relative aspect-square">
-                  <img
-                    class="cursor-pointer h-full w-full object-cover rounded-tl-xl"
-                    src="/assets/img/demo/macbook-blended-color-beauty-shot.jpg" />
-                </div>
-                <div class="relative aspect-square">
-                  <img
-                    class="cursor-pointer h-full w-full object-cover rounded-tr-xl"
-                    src="/assets/img/demo/macbook-desk-work-beauty-shot.jpg" />
-                </div>
-                <div class="relative aspect-square">
-                  <img
-                    class="cursor-pointer h-full w-full object-cover rounded-bl-xl"
-                    src="/assets/img/demo/macbook-iphone-airpods-gopro-beauty-shot.jpg" />
-                </div>
-                <div class="relative aspect-square">
-                  <img
-                    class="cursor-pointer h-full w-full object-cover rounded-br-xl"
-                    src="/assets/img/demo/macbook-pencil-iphone-airpods-closeup-beauty-shot.jpg" />
-                </div>
-              </div>
+      <ng-container *ngFor="let message of this.messages">
+        <div *ngIf="message.from === 'partner'" class="flex gap-2 self-start">
+          <img class="w-8 h-8 rounded-full self-end" src="{{ chat?.imageUrl }}" />
+          <div class="flex flex-col space-y-2">
+            <div class="px-4 py-3 rounded-xl rounded-bl-none bg-gray-200 dark:bg-gray-800 inline-flex max-w-[350px]">
+              {{message.message}}
             </div>
-
-            <button class="rox-btn-icon text-gray-500" type="button">
-              <mat-icon svgIcon="mat:forward"></mat-icon>
-            </button>
-          </div>
-
-          <div
-            class="px-4 py-3 rounded-xl bg-gray-200 dark:bg-gray-800 inline-flex self-start max-w-[350px]">
-            I finished the design you requested. It's attached. Let me know if
-            you have any changes. 🤗
-          </div>
-          <div
-            class="px-4 py-3 rounded-xl rounded-bl-none bg-gray-200 dark:bg-gray-800 inline-flex self-start max-w-[350px]">
-            There's been a lot of great progress with the project so far. 🙌
-          </div>
-          <div class="flex items-center">
-            <div class="text-xs font-medium">09:02 am</div>
           </div>
         </div>
-      </div>
-
-      <div
-        class="px-4 py-3 rounded-xl bg-primary-600 text-white inline-flex self-end max-w-[350px]">
-        Wow, how did you do this so fast?! 👀
-      </div>
-      <div
-        class="px-4 py-3 rounded-xl rounded-br-none bg-primary-600 text-white inline-flex self-end max-w-[350px]">
-        Thanks a lot! I'll have a look and update the page. 👍
-      </div>
-      <div class="self-end flex items-center gap-2">
-        <mat-icon class="icon-xs" svgIcon="mat:done_all"></mat-icon>
-        <div class="text-xs font-medium">09:04 am</div>
-      </div>
-
-      <div class="flex gap-2">
-        <img class="w-8 h-8 rounded-full self-end" src="{{ chat?.imageUrl }}" />
-        <div class="flex flex-col space-y-2">
-          <div
-            class="px-4 py-3 rounded-xl bg-gray-200 dark:bg-gray-800 inline-flex items-center self-start max-w-[350px] gap-3 cursor-pointer">
-            <div
-              class="flex-none h-10 w-10 rounded-xl bg-foreground flex items-center justify-center">
-              <mat-icon
-                class="text-primary-600"
-                svgIcon="mat:folder_zip"></mat-icon>
-            </div>
-
-            <div class="flex-1 truncate">
-              <div class="text-sm font-medium truncate">
-                Marketing Files.zip
-              </div>
-              <div class="text-xs text-gray-500 truncate">6.9 MB</div>
-            </div>
-
-            <mat-icon class="flex-none" svgIcon="mat:download"></mat-icon>
-          </div>
-
-          <div
-            class="px-4 py-3 rounded-xl rounded-bl-none bg-gray-200 dark:bg-gray-800 inline-flex self-start max-w-[350px]">
-            Here's the full compilation in a zip file. Let me know if you need
-            anything else. 🤗
-          </div>
-          <div class="flex items-center">
-            <div class="text-xs font-medium">09:08 am</div>
+        <div *ngIf="message.from === 'me'" class="flex gap-2 self-end">
+          <div class="px-4 py-3 rounded-xl rounded-br-none bg-primary-600 text-white inline-flex max-w-[350px]">
+            {{message.message}}
           </div>
         </div>
-      </div>
+      </ng-container>
 
-      <div
-        class="px-4 py-3 rounded-xl bg-primary-600 text-white inline-flex self-end max-w-[350px] text-6xl">
-        👍
-      </div>
-      <div class="self-end flex items-center gap-2">
-        <mat-icon class="icon-xs" svgIcon="mat:done_all"></mat-icon>
-        <div class="text-xs font-medium">09:16 am</div>
-      </div>
+
+
     </div>
   </vex-scrollbar>
 
@@ -174,14 +89,22 @@
         </button>
       </mat-menu>
 
-      <input
-        class="z-0 absolute top-0 right-0 bottom-0 left-0 h-full w-full border-0 focus:border-0 px-20 bg-transparent"
-        placeholder="Type your message ..."
-        type="text" />
-
-      <button class="relative z-10 mr-4" mat-icon-button type="button">
-        <mat-icon svgIcon="mat:send"></mat-icon>
-      </button>
+      <form [formGroup]="form">
+        <input
+          class="z-0 absolute top-0 right-0 bottom-0 left-0 h-full w-full border-0 focus:border-0 px-20 bg-transparent"
+          placeholder="Type your message ..."
+          type="text"
+          formControlName="message"
+        />
+        <button
+          class="relative z-10 mr-4"
+          mat-icon-button
+          type="button"
+          (click)="send()"
+        >
+          <mat-icon svgIcon="mat:send"></mat-icon>
+        </button>
+      </form>
     </div>
   </div>
 </div>

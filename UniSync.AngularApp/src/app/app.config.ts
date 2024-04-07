@@ -21,6 +21,8 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { AuthInterceptor } from './_services/auth-interceptor.service';
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { AuthGuard } from './_helpers/auth.guard';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -32,7 +34,10 @@ export const appConfig: ApplicationConfig = {
       MatDialogModule,
       MatBottomSheetModule,
       MatNativeDateModule,
-      SharedModule
+      SharedModule,
+      ReactiveFormsModule,
+      FormsModule,
+      CommonModule
     ),
     httpInterceptorProviders,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

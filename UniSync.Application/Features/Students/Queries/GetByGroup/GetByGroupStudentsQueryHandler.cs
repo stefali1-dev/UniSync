@@ -19,7 +19,7 @@ namespace UniSync.Application.Features.Students.Queries.GetByGroup
 
             GetByGroupStudentsQueryResponse response = new();
 
-            response.Students = result.Value.Select(u => new StudentDto
+            response.Students = result.Value.Select(u => new ChatDto
             {
                 Id = u.StudentId,
                 Semester = u.Semester,

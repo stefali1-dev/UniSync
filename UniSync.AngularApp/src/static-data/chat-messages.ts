@@ -2,7 +2,7 @@ import { ChatMessage } from '../app/pages/chat/chat.component';
 
 export const chatMessages: ChatMessage[] = [
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message:
       'Enim pariatur cupidatat minim nisi exercitation est ipsum nulla nisi amet.'
@@ -19,7 +19,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Occaecat sint nulla ea veniam ad.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message:
       'Duis esse nisi consequat ullamco est culpa dolor magna nisi culpa ullamco excepteur occaecat exercitation.'
@@ -30,7 +30,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Aliqua dolor enim pariatur amet.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'partner',
     message: 'Occaecat duis elit magna nisi Lorem id nulla.'
   },
@@ -145,7 +145,7 @@ export const chatMessages: ChatMessage[] = [
       'Incididunt excepteur cupidatat laborum pariatur est pariatur culpa deserunt.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Id ullamco do dolor quis quis cillum consequat elit.'
   },
@@ -167,7 +167,7 @@ export const chatMessages: ChatMessage[] = [
       'Enim dolore aute labore voluptate eiusmod mollit pariatur dolor ad ipsum incididunt.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Labore aliquip ullamco laboris eu.'
   },
@@ -178,7 +178,7 @@ export const chatMessages: ChatMessage[] = [
       'Velit sint qui voluptate occaecat officia nostrud labore proident qui.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message:
       'Laboris est consequat proident nulla et ex in cupidatat et excepteur.'
@@ -199,7 +199,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Veniam et sit sit irure consequat.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Cillum fugiat deserunt voluptate esse nisi enim cupidatat.'
   },
@@ -248,7 +248,7 @@ export const chatMessages: ChatMessage[] = [
       'Irure magna laborum pariatur velit mollit culpa duis quis velit aute.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'partner',
     message: 'Veniam culpa voluptate nostrud ut.'
   },
@@ -286,7 +286,7 @@ export const chatMessages: ChatMessage[] = [
       'Cillum anim consectetur culpa ut est in sunt deserunt aliquip sint tempor ut anim.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Aliquip irure fugiat laboris duis ullamco adipisicing est.'
   },
@@ -330,7 +330,7 @@ export const chatMessages: ChatMessage[] = [
       'Sit culpa veniam nulla irure cupidatat ex esse sint aute pariatur mollit.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Ea nulla laborum cupidatat sit pariatur.'
   },
@@ -435,7 +435,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Excepteur esse incididunt mollit anim pariatur.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'partner',
     message:
       'Pariatur quis exercitation minim excepteur sit eu incididunt sunt cillum laboris exercitation officia aliquip anim.'
@@ -457,7 +457,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Est velit enim enim commodo eiusmod dolor officia nulla.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Magna commodo minim pariatur anim aute commodo deserunt sint et.'
   },
@@ -512,7 +512,7 @@ export const chatMessages: ChatMessage[] = [
       'Ea et mollit pariatur incididunt in laborum eiusmod labore quis sit reprehenderit veniam irure.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'partner',
     message:
       'Ipsum aute consectetur exercitation qui excepteur elit consectetur nulla est.'
@@ -607,7 +607,7 @@ export const chatMessages: ChatMessage[] = [
       'Ut excepteur ex pariatur cupidatat consectetur ea sit dolore minim qui ad et.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Eu dolor dolore esse deserunt duis.'
   },
@@ -689,7 +689,7 @@ export const chatMessages: ChatMessage[] = [
       'Reprehenderit sit aliquip ad enim dolor consectetur esse voluptate.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Velit voluptate voluptate sit proident ea deserunt elit sit.'
   },
@@ -748,7 +748,7 @@ export const chatMessages: ChatMessage[] = [
       'Voluptate ea nulla cillum proident non voluptate aute nisi est est ipsum.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'partner',
     message: 'Anim ea aliqua irure adipisicing occaecat labore.'
   },
@@ -786,7 +786,7 @@ export const chatMessages: ChatMessage[] = [
       'Nostrud aliquip officia excepteur ea ullamco amet id tempor commodo exercitation anim ea officia.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message:
       'Deserunt duis pariatur in laboris laboris ad deserunt irure id cupidatat incididunt laborum quis.'
@@ -808,7 +808,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Incididunt do laborum aliqua aute est.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message:
       'Nisi consectetur officia voluptate exercitation laboris irure veniam pariatur laborum Lorem excepteur non nisi.'
@@ -942,7 +942,7 @@ export const chatMessages: ChatMessage[] = [
       'Culpa ut officia esse qui sunt cupidatat eiusmod dolore elit duis reprehenderit dolore.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'In aliquip cupidatat cupidatat qui sit officia magna ex aute.'
   },
@@ -969,7 +969,7 @@ export const chatMessages: ChatMessage[] = [
     message: 'Incididunt qui Lorem dolore sit pariatur amet est.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Quis ullamco labore sit velit sunt veniam.'
   },
@@ -1081,7 +1081,7 @@ export const chatMessages: ChatMessage[] = [
       'Occaecat deserunt cillum minim laborum consequat magna Lorem commodo aute irure quis aliquip.'
   },
   {
-    id: '9',
+    id: '1A1',
     from: 'me',
     message: 'Commodo duis dolore nostrud qui enim ut labore magna ullamco.'
   },

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
+import { Chat } from './chat.component';
+import { randFullName } from '@ngneat/falso';
+import { StudentService } from '../../_services/student.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +19,23 @@ export class ChatService {
   public connectedUsers$ = new BehaviorSubject<string[]>([]);
   public messages: any[] = [];
   public users: string[] = [];
+  public rooms: string[] = [];
 
-  constructor() {
+  chats: Chat[] = [
+    {
+      id: '1A1',
+      imageUrl: '/assets/img/avatars/2.jpg',
+      name: '1A1 Group',
+      lastMessage: '',
+      unreadCount: 0,
+      timestamp: '3 minutes ago'
+    }
+  ];
+
+  drawerOpen = new BehaviorSubject<boolean>(false);
+  drawerOpen$ = this.drawerOpen.asObservable();
+
+  constructor(private studentService: StudentService) {
     this.start();
     this.connection.on("ReceiveMessage", (user: string, message: string, messageTime: string)=>{
       this.messages = [...this.messages, {user, message, messageTime} ];
@@ -26,6 +44,18 @@ export class ChatService {
 
     this.connection.on("ConnectedUser", (users: any)=>{
       this.connectedUsers$.next(users);
+    });
+
+    // TODO: remove hardcode
+    this.rooms.push('1A1')
+
+    this.studentService.getStudentsByGroup('1A1').subscribe({
+      next: data => {
+        console.log(data.students);
+      },
+      error: err => {
+        console.log(err);
+      }
     });
    }
 
@@ -53,6 +83,10 @@ export class ChatService {
   //leave
   public async leaveChat(){
     return this.connection.stop();
+  }
+
+  getChat(chatId: string): Chat | undefined {
+    return this.chats.find((chat) => chat.id === chatId);
   }
 
 }

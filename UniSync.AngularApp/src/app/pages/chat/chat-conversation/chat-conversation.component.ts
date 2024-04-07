@@ -90,6 +90,8 @@ export class ChatConversationComponent implements OnInit {
         this.filterMessages(chatId);
         this.cd.detectChanges();
 
+        console.log(this.messages);
+
         this.scrollToBottom();
       });
   }
@@ -99,10 +101,11 @@ export class ChatConversationComponent implements OnInit {
   }
 
   send() {
+    console.log(`Sending message: ${this.form.controls.message.getRawValue()}`)
     this.messages.push({
       id: this.chat!.id,
       from: 'me',
-      message: this.form.controls.message.getRawValue()
+      message: this.form.controls.message.value
     });
 
     this.form.controls.message.setValue('');

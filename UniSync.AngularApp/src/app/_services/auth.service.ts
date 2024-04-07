@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from "../../environments/environment";
 
-const AUTH_API = environment.apiUrl;
+const API_URL = environment.apiUrl;
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,7 +17,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(
-      AUTH_API + '/Authentication/login',
+      API_URL + '/Authentication/login',
       {
         email,
         password,
@@ -28,7 +28,7 @@ export class AuthService {
 
   register(registrationId: string, email: string, password: string): Observable<any> {
     return this.http.post(
-      AUTH_API + '/Authentication/register',
+      API_URL + '/Authentication/register',
       {
         registrationId,
         email,
@@ -39,10 +39,10 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(AUTH_API + '/Authentication/logout', { }, httpOptions);
+    return this.http.post(API_URL + '/Authentication/logout', { }, httpOptions);
   }
 
   getCurrentUserInfo(): Observable<any>{
-    return this.http.get(AUTH_API + '/Authentication/currentuserinfo');
+    return this.http.get(API_URL + '/Authentication/currentuserinfo');
   }
 }

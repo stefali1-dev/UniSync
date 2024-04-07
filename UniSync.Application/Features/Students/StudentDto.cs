@@ -1,6 +1,6 @@
 ﻿namespace UniSync.Application.Features.Students
 {
-    public class StudentDto
+    public class ChatDto
     {
         public Guid Id { get; set; }
         public int Semester { get; set; }
