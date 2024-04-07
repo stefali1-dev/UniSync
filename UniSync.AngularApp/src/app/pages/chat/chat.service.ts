@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
-import { Chat } from './chat.component';
+import { Chat, ChatMessage} from './chat.component';
 import { randFullName } from '@ngneat/falso';
 import { StudentService } from '../../_services/student.service';
 
@@ -17,7 +17,7 @@ export class ChatService {
 
   public messages$ = new BehaviorSubject<any>([]);
   public connectedUsers$ = new BehaviorSubject<string[]>([]);
-  public messages: any[] = [];
+  public messages!: ChatMessage[];
   public users: string[] = [];
   public rooms: string[] = [];
 
@@ -38,7 +38,8 @@ export class ChatService {
   constructor(private studentService: StudentService) {
     this.start();
     this.connection.on("ReceiveMessage", (user: string, message: string, messageTime: string)=>{
-      this.messages = [...this.messages, {user, message, messageTime} ];
+      // TODO: remove hardcode
+      this.messages = [...this.messages, {'1A1', message, messageTime} ];
       this.messages$.next(this.messages);
     });
 

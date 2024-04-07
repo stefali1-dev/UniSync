@@ -23,6 +23,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { StorageService } from '../../../_services/storage.service';
+
 
 @Component({
   selector: 'vex-chat-conversation',
@@ -62,7 +64,8 @@ export class ChatConversationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private chatService: ChatService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -72,6 +75,10 @@ export class ChatConversationComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((chatId) => {
+
+        if(chatId)
+          this.chatService.joinRoom(this.storageService.getUser().userId, chatId);
+
         this.messages = [];
 
         if (!chatId) {
@@ -101,17 +108,28 @@ export class ChatConversationComponent implements OnInit {
   }
 
   send() {
-    console.log(`Sending message: ${this.form.controls.message.getRawValue()}`)
+    let messageText = this.form.controls.message.value
     this.messages.push({
       id: this.chat!.id,
-      from: 'me',
-      message: this.form.controls.message.value
+      senderId: this.storageService.getUser().userId,
+      message: messageText
     });
+
+    this.chatService.sendMessage(messageText)
+    .then(()=>{
+      console.log(`Sent message: ${messageText}`)
+    }).catch((err)=>{
+      console.log(err);
+    })
 
     this.form.controls.message.setValue('');
 
     this.cd.detectChanges();
     this.scrollToBottom();
+  }
+
+  isIncomingMessage(message: ChatMessage){
+    return this.storageService.getUser().userId !== message.senderId;
   }
 
   scrollToBottom() {

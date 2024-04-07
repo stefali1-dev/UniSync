@@ -42,7 +42,7 @@ export interface Chat {
 
 export interface ChatMessage {
   id: string;
-  from: 'me' | 'partner';
+  senderId: string;
   message: string;
 }
 

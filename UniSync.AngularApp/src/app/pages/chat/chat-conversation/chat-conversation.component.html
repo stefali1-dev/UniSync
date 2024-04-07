@@ -38,7 +38,7 @@
     
     <div class="flex flex-col space-y-2 p-8 justify-end">
       <ng-container *ngFor="let message of this.messages">
-        <div *ngIf="message.from === 'partner'" class="flex gap-2 self-start">
+        <div *ngIf="isIncomingMessage(message)" class="flex gap-2 self-start">
           <img class="w-8 h-8 rounded-full self-end" src="{{ chat?.imageUrl }}" />
           <div class="flex flex-col space-y-2">
             <div class="px-4 py-3 rounded-xl rounded-bl-none bg-gray-200 dark:bg-gray-800 inline-flex max-w-[350px]">
@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="message.from === 'me'" class="flex gap-2 self-end">
+        <div *ngIf="!isIncomingMessage(message)" class="flex gap-2 self-end">
           <div class="px-4 py-3 rounded-xl rounded-br-none bg-primary-600 text-white inline-flex max-w-[350px]">
             {{message.message}}
           </div>
