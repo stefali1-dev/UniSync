@@ -25,7 +25,7 @@ public class ChatHub : Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.Room!);
         _connection[Context.ConnectionId] = userConnection;
         await Clients.Group(userConnection.Room!)
-            .SendAsync("ReceiveMessage", "Lets Program Bot", $"{userConnection.User} has Joined the Group", DateTime.Now);
+            .SendAsync("ReceiveMessage", "Lets Program Bot", $"{userConnection.UserId} has Joined the Group", DateTime.Now);
         await SendConnectedUser(userConnection.Room!);
     }
 
@@ -34,7 +34,7 @@ public class ChatHub : Hub
         if (_connection.TryGetValue(Context.ConnectionId, out UserRoomConnection userRoomConnection))
         {
             await Clients.Group(userRoomConnection.Room!)
-                .SendAsync("ReceiveMessage", userRoomConnection.User, message, DateTime.Now);
+                .SendAsync("ReceiveMessage", userRoomConnection.UserId, message, DateTime.Now);
 
             //var _message = new Message
             //{
@@ -58,7 +58,7 @@ public class ChatHub : Hub
 
         _connection.Remove(Context.ConnectionId);
         Clients.Group(roomConnection.Room!)
-            .SendAsync("ReceiveMessage", "Lets Program bot", $"{roomConnection.User} has Left the Group", DateTime.Now);
+            .SendAsync("ReceiveMessage", "Lets Program bot", $"{roomConnection.UserId} has Left the Group", DateTime.Now);
         SendConnectedUser(roomConnection.Room!);
         return base.OnDisconnectedAsync(exp);
     }
@@ -67,7 +67,7 @@ public class ChatHub : Hub
     {
         var users = _connection.Values
             .Where(u => u.Room == room)
-            .Select(s => s.User);
+            .Select(s => s.UserId);
         return Clients.Group(room).SendAsync("ConnectedUser", users);
     }
 
@@ -75,6 +75,6 @@ public class ChatHub : Hub
 
 public class UserRoomConnection
 {
-    public string? User { get; set; }
+    public string? UserId { get; set; }
     public string? Room { get; set; }
 }

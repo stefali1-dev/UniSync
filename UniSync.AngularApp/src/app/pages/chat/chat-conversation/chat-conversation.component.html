@@ -37,7 +37,7 @@
   <vex-scrollbar class="flex-1">
     
     <div class="flex flex-col space-y-2 p-8 justify-end">
-      <ng-container *ngFor="let message of this.messages">
+      <ng-container *ngFor="let message of this.chatService.messages$ | async">
         <div *ngIf="isIncomingMessage(message)" class="flex gap-2 self-start">
           <img class="w-8 h-8 rounded-full self-end" src="{{ chat?.imageUrl }}" />
           <div class="flex flex-col space-y-2">

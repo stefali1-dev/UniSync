@@ -44,6 +44,7 @@ export interface ChatMessage {
   id: string;
   senderId: string;
   message: string;
+  messageTime: string;
 }
 
 @Component({

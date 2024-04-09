@@ -24,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StorageService } from '../../../_services/storage.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -41,12 +42,13 @@ import { StorageService } from '../../../_services/storage.service';
     VexScrollbarComponent,
     NgFor,
     ReactiveFormsModule,
-    MatDividerModule
+    MatDividerModule,
+    CommonModule
   ]
 })
 export class ChatConversationComponent implements OnInit {
   chat?: Chat;
-  messages!: ChatMessage[];
+  filteredMessages!: ChatMessage[];
 
   form = new FormGroup({
     message: new FormControl<string>('', {
@@ -63,7 +65,7 @@ export class ChatConversationComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private chatService: ChatService,
+    public chatService: ChatService,
     private cd: ChangeDetectorRef,
     private storageService: StorageService
   ) {}
@@ -76,14 +78,25 @@ export class ChatConversationComponent implements OnInit {
       )
       .subscribe((chatId) => {
 
-        if(chatId)
+        if(chatId){
           this.chatService.joinRoom(this.storageService.getUser().userId, chatId);
+          console.log(this.storageService.getUser().userId);
+        }
 
-        this.messages = [];
+        //this.messages = [];
 
         if (!chatId) {
           throw new Error('Chat id not found!');
         }
+
+        this.chatService.messages$.subscribe(res=>{
+          console.log(res)
+        });
+    
+        this.chatService.connectedUsers$.subscribe(res=>{
+          console.log(res);
+    
+        })
 
         this.cd.detectChanges();
         const chat = this.chatService.getChat(chatId);
@@ -94,26 +107,34 @@ export class ChatConversationComponent implements OnInit {
 
         this.chat = chat;
         this.chat.unreadCount = 0;
-        this.filterMessages(chatId);
+        //this.filterMessages(chatId);
         this.cd.detectChanges();
 
-        console.log(this.messages);
+        //console.log(this.messages);
 
         this.scrollToBottom();
       });
   }
 
-  filterMessages(id: ChatMessage['id']) {
-    this.messages = chatMessages.filter((message) => message.id === id);
-  }
+  // filterMessages(id: ChatMessage['id']) {
+  //   this.chatService.messages$.subscribe((messages) => {
+  //   this.filteredMessages = messages.filter((message: ChatMessage) => message.id === id);
+  //   // Do something with the filtered messages
+  //   console.log(this.filteredMessages);
+  // });
+  // }
 
   send() {
     let messageText = this.form.controls.message.value
-    this.messages.push({
-      id: this.chat!.id,
-      senderId: this.storageService.getUser().userId,
-      message: messageText
-    });
+
+    // let newMessage: ChatMessage = {
+    //   id: this.chat!.id,
+    //   senderId: this.storageService.getUser().userId,
+    //   message: messageText,
+    //   messageTime: new Date().toISOString()
+    // }
+
+    //this.messages.push(newMessage);
 
     this.chatService.sendMessage(messageText)
     .then(()=>{

@@ -17,7 +17,7 @@ export class ChatService {
 
   public messages$ = new BehaviorSubject<any>([]);
   public connectedUsers$ = new BehaviorSubject<string[]>([]);
-  public messages!: ChatMessage[];
+  public messages: ChatMessage[] = [];
   public users: string[] = [];
   public rooms: string[] = [];
 
@@ -37,9 +37,19 @@ export class ChatService {
 
   constructor(private studentService: StudentService) {
     this.start();
-    this.connection.on("ReceiveMessage", (user: string, message: string, messageTime: string)=>{
+    this.connection.on("ReceiveMessage", (userId: string, message: string, messageTime: string)=>{
       // TODO: remove hardcode
-      this.messages = [...this.messages, {'1A1', message, messageTime} ];
+
+      console.log(`Received message: ${message}`)
+
+      let receivedMmessage: ChatMessage = {
+        id: '1A1',
+        senderId: userId,
+        message: message,
+        messageTime: messageTime
+      }
+
+      this.messages = [...this.messages, receivedMmessage ];
       this.messages$.next(this.messages);
     });
 
@@ -71,8 +81,8 @@ export class ChatService {
   }
 
   //Join Room
-  public async joinRoom(user: string, room: string){
-    return this.connection.invoke("JoinRoom", {user, room})
+  public async joinRoom(userId: string, room: string){
+    return this.connection.invoke("JoinRoom", {userId, room})
   }
 
 
