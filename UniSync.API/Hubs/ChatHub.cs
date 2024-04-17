@@ -24,8 +24,8 @@ public class ChatHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.Room!);
         _connection[Context.ConnectionId] = userConnection;
-        await Clients.Group(userConnection.Room!)
-            .SendAsync("ReceiveMessage", "Lets Program Bot", $"{userConnection.UserId} has Joined the Group", DateTime.Now);
+        //await Clients.Group(userConnection.Room!)
+        //    .SendAsync("ReceiveMessage", "Lets Program Bot", $"{userConnection.UserId} has Joined the Group", DateTime.Now);
         await SendConnectedUser(userConnection.Room!);
     }
 
@@ -36,16 +36,18 @@ public class ChatHub : Hub
             await Clients.Group(userRoomConnection.Room!)
                 .SendAsync("ReceiveMessage", userRoomConnection.UserId, message, DateTime.Now);
 
-            //var _message = new Message
-            //{
-            //    MessageId = Guid.NewGuid(),
-            //    Content = message,
-            //    SenderName = userRoomConnection.User,
-            //    ChannelName = userRoomConnection.Room,
-            //    Timestamp = DateTime.Now
-            //};
+            await Console.Out.WriteLineAsync("Receiced message: " + message);
 
-            //await _messageRepository.AddAsync(_message);
+            var _message = new Message
+            {
+                MessageId = Guid.NewGuid(),
+                Content = message,
+                UserId = new Guid(userRoomConnection.UserId),
+                ChannelName = userRoomConnection.Room,
+                Timestamp = DateTime.Now
+            };
+
+            await _messageRepository.AddAsync(_message);
         }
     }
 
@@ -57,8 +59,8 @@ public class ChatHub : Hub
         }
 
         _connection.Remove(Context.ConnectionId);
-        Clients.Group(roomConnection.Room!)
-            .SendAsync("ReceiveMessage", "Lets Program bot", $"{roomConnection.UserId} has Left the Group", DateTime.Now);
+        //Clients.Group(roomConnection.Room!)
+        //    .SendAsync("ReceiveMessage", "Lets Program bot", $"{roomConnection.UserId} has Left the Group", DateTime.Now);
         SendConnectedUser(roomConnection.Room!);
         return base.OnDisconnectedAsync(exp);
     }

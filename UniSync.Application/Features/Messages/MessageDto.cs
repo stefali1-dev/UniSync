@@ -9,12 +9,10 @@ namespace UniSync.Application.Features.Messages
 {
     public class MessageDto
     {
-        public string MessageId { get; set; }
+        public Guid MessageId { get; set; }
         public string Content { get; set; }
+        public Guid UserId { get; set; }
         public DateTime Timestamp { get; set; }
-        public string SenderName { get; set; }
         public string ChannelName { get; set; }
-
-
     }
 }

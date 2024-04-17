@@ -25,6 +25,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StorageService } from '../../../_services/storage.service';
 import { CommonModule } from '@angular/common';
+import { MessageService } from '../../../_services/message.service';
 
 
 @Component({
@@ -56,6 +57,8 @@ export class ChatConversationComponent implements OnInit {
     })
   });
 
+  previousMessages: ChatMessage[] = [];
+
   trackById = trackById;
 
   @ViewChild(VexScrollbarComponent)
@@ -67,7 +70,8 @@ export class ChatConversationComponent implements OnInit {
     private route: ActivatedRoute,
     public chatService: ChatService,
     private cd: ChangeDetectorRef,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -77,11 +81,6 @@ export class ChatConversationComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((chatId) => {
-
-        if(chatId){
-          this.chatService.joinRoom(this.storageService.getUser().userId, chatId);
-          console.log(this.storageService.getUser().userId);
-        }
 
         //this.messages = [];
 
@@ -125,6 +124,7 @@ export class ChatConversationComponent implements OnInit {
   // }
 
   send() {
+    this.scrollToBottom();
     let messageText = this.form.controls.message.value
 
     // let newMessage: ChatMessage = {
@@ -155,6 +155,7 @@ export class ChatConversationComponent implements OnInit {
 
   scrollToBottom() {
     if (!this.scrollbar) {
+      console.log("not scrolable")
       return;
     }
 

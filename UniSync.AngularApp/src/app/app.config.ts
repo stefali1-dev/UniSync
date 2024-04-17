@@ -23,6 +23,7 @@ import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { AuthGuard } from './_helpers/auth.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChatService } from './pages/chat/chat.service';
 
 
 
@@ -40,6 +41,7 @@ export const appConfig: ApplicationConfig = {
       CommonModule
     ),
     httpInterceptorProviders,
+    ChatService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard,
     

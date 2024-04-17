@@ -30,6 +30,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { VexLayoutService } from '@vex/services/vex-layout.service';
+import { StudentService } from '../../_services/student.service';
+import { StorageService } from '../../_services/storage.service';
 
 export interface Chat {
   id: string;
@@ -88,7 +90,9 @@ export class ChatComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router,
     private layoutService: VexLayoutService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private studentService: StudentService,
+    private storageService: StorageService,
   ) {}
 
   ngOnInit() {
@@ -111,6 +115,16 @@ export class ChatComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.openDrawer());
+
+      this.studentService.getStudentsByGroup('1A1').subscribe({
+        next: data => {
+          console.log(data.students);
+        },
+        error: err => {
+          console.log(err);
+        }
+      });
+  
   }
 
   drawerChange(drawerOpen: boolean) {

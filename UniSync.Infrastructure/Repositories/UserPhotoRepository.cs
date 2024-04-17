@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
             //}
 
             //return Result<UserPhoto>.Success(userPhoto);
-            return Result<UserPhoto>.Success(null);
+            return Result<UserPhoto>.Failure("User photo not found");
 
 
         }
