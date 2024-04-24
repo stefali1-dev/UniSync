@@ -49,6 +49,10 @@ import { AuthGuard } from './_helpers/auth.guard';
               path: 'contacts',
               loadChildren: () => import('./pages/contacts/contacts.routes')
             },
+            {
+              path: 'profile',
+              loadChildren: () => import('./pages/social/social.routes')
+            },
           ]
         }
       ]

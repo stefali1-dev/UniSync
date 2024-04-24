@@ -58,6 +58,17 @@ export class NavigationLoaderService {
               bgClass: 'bg-cyan-600',
               textClass: 'text-white'
             }
+          },
+          {
+            type: 'link',
+            label: 'Profile',
+            route: '/apps/profile',
+            icon: 'mat:person_outline',
+            badge: {
+              value: '16',
+              bgClass: 'bg-cyan-600',
+              textClass: 'text-white'
+            }
           }
         ]
       },

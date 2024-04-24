@@ -13,6 +13,9 @@ export class UserService {
 
   getSearchedUsers(request: string): Observable<any> {
     return this.http.get(API_URL + `/Users/search/${request}`);
+  }
 
+  getUserById(request: string): Observable<any> {
+    return this.http.get(API_URL + `/Users/ById/${request}`);
   }
 }

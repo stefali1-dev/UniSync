@@ -1,0 +1,91 @@
+<div class="mt-6 flex flex-col md:flex-row md:items-start">
+  <div class="flex-auto">
+    <div class="card">
+      <div class="px-6 py-4 border-b">
+        <h2 class="title m-0">About</h2>
+      </div>
+
+      <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="py-3 flex items-center">
+          <div
+            @scaleIn
+            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <mat-icon class="icon-sm" svgIcon="mat:phone"></mat-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">+1 (930) 502-3182</p>
+          </div>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <div
+            @scaleIn
+            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <mat-icon class="icon-sm" svgIcon="mat:work"></mat-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">Student</p>
+          </div>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <div
+            @scaleIn
+            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <mat-icon class="icon-sm" svgIcon="mat:mail"></mat-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">{{this.socialComponent.profile?.email}}</p>
+          </div>
+        </div>
+
+        <div *ngIf="this.socialComponent.profile?.role == 'student'" class="py-3 flex items-center">
+          <div
+            @scaleIn
+            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+            <mat-icon class="icon-sm" svgIcon="mat:group"></mat-icon>
+          </div>
+
+          <div @fadeInRight>
+            <p class="m-0 body-1">Year 1, Group A1</p>
+          </div>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <div
+            @scaleIn
+            class="w-10 h-10 rounded-full bg-gray-600/10 text-dark ltr:mr-3 rtl:ml-3 cursor-pointer flex items-center justify-center">
+            <mat-icon class="icon-sm" svgIcon="mat:whatshot"></mat-icon>
+          </div>
+
+          <p @fadeInRight class="m-0 body-1 cursor-pointer">
+            Add social profiles
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-6">
+      <div class="px-6 py-4 border-b">
+        <h2 class="title m-0">Latest Photos</h2>
+      </div>
+
+      <div @stagger class="px-6 py-4 grid grid-cols-2 sm:grid-cols-5 gap-6">
+        <img
+          *ngFor="
+            let i of [
+              1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+              20
+            ]
+          "
+          @scaleIn
+          class="rounded w-full"
+          src="assets/img/avatars/{{ i }}.jpg" />
+      </div>
+    </div>
+  </div>
+
+</div>
