@@ -45,6 +45,10 @@ import { AuthGuard } from './_helpers/auth.guard';
               path: 'chat',
               loadChildren: () => import('./pages/chat/chat.routes')
             },
+            {
+              path: 'contacts',
+              loadChildren: () => import('./pages/contacts/contacts.routes')
+            },
           ]
         }
       ]

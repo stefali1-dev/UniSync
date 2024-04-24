@@ -47,6 +47,17 @@ export class NavigationLoaderService {
               bgClass: 'bg-cyan-600',
               textClass: 'text-white'
             }
+          },
+          {
+            type: 'link',
+            label: 'Contacts',
+            route: '/apps/contacts',
+            icon: 'mat:contacts',
+            badge: {
+              value: '16',
+              bgClass: 'bg-cyan-600',
+              textClass: 'text-white'
+            }
           }
         ]
       },

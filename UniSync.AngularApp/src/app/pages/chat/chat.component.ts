@@ -32,6 +32,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { VexLayoutService } from '@vex/services/vex-layout.service';
 import { StudentService } from '../../_services/student.service';
 import { StorageService } from '../../_services/storage.service';
+import { UserService } from '../../_services/user.service';
+
 
 export interface Chat {
   id: string;
@@ -75,6 +77,7 @@ export interface ChatMessage {
   ]
 })
 export class ChatComponent implements OnInit {
+
   chats$: Observable<Chat[]> = of(this.chatService.chats).pipe(
     // Fix to allow stagger animations with static data
     delay(0)
@@ -93,6 +96,7 @@ export class ChatComponent implements OnInit {
     private chatService: ChatService,
     private studentService: StudentService,
     private storageService: StorageService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -139,5 +143,16 @@ export class ChatComponent implements OnInit {
   closeDrawer() {
     this.chatService.drawerOpen.next(false);
     this.cd.markForCheck();
+  }
+
+  onEnterPressed(request: string) {
+    this.userService.getSearchedUsers(request).subscribe({
+      next: data => {
+        console.log(data.users);
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
   }
 }

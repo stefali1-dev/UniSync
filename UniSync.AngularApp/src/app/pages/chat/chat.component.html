@@ -42,15 +42,13 @@
         </div>
 
         <div class="flex px-4">
-          <mat-form-field
-            appearance="outline"
-            class="vex-mat-dense-xs flex-1 bg-foreground"
-            subscriptSizing="dynamic">
-            <mat-icon
-              class="icon-sm"
-              matIconPrefix
-              svgIcon="mat:search"></mat-icon>
-            <input matInput placeholder="Search chats..." type="text" />
+          <mat-form-field appearance="outline" 
+          class="vex-mat-dense-xs flex-1 bg-foreground" 
+          subscriptSizing="dynamic">
+            <mat-icon class="icon-sm" 
+            matIconPrefix 
+            svgIcon="mat:search"></mat-icon>
+            <input #searchInput matInput placeholder="Search chats..." type="text" (keyup.enter)="onEnterPressed(searchInput.value)" />
           </mat-form-field>
         </div>
       </div>
