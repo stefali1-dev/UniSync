@@ -30,6 +30,7 @@ namespace Infrastructure
                 typeof(BaseRepository<>));
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddScoped<IPasswordResetCode, PasswordResetCodeRepository>();
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
             services.AddScoped<IEmailService, EmailService>();

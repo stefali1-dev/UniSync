@@ -19,6 +19,8 @@ namespace UniSync.Infrastructure
             this.currentUserService = currentUserService;
         }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Channel> Channels { get; set; }
+
         public DbSet<Message> Messages { get; set; }
 
         public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }
