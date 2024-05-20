@@ -2,9 +2,10 @@
 {
     public class ChatUser
     {
-        public ChatUser(Guid chatUserId)
+        public ChatUser(Guid chatUserId, Guid appUserId)
         {
             ChatUserId = chatUserId;
+            AppUserId = appUserId;
             Channels = new List<Channel>();
         }
 

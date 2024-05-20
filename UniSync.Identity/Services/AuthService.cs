@@ -81,13 +81,13 @@ namespace UniSync.Identity.Services
             //var _user = CreateUserSubclass(model.RegistrationId);
             
 
-            var chatUser = new ChatUser(Guid.Parse(user.Id));
+            var chatUser = new ChatUser(Guid.Parse(user.Id), Guid.NewGuid());
             await chatUserRepository.AddAsync(chatUser);
 
             var registrationId = model.RegistrationId;
 
             // TODO: implement real logic
-            if(registrationId.Last() == '3')
+            if(registrationId.StartsWith("3"))
             {
                 var student = new Student
                 {
@@ -100,7 +100,7 @@ namespace UniSync.Identity.Services
                 await studentRepository.AddAsync(student);
             }
 
-            if (registrationId.Last() == '2')
+            if (registrationId.StartsWith("2"))
             {
                 var professor = new Professor
                 {

@@ -33,6 +33,11 @@ namespace Infrastructure
             services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddScoped<IPasswordResetCode, PasswordResetCodeRepository>();
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
+            services.AddScoped<IChatUserRepository, ChatUserRepository>();
+            services.AddScoped<IProfessorRepository,ProfessorRepository>();
+
+
+
             services.AddScoped<IEmailService, EmailService>();
 
             return services;

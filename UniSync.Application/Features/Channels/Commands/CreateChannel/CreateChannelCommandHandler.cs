@@ -11,25 +11,26 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
     public class CreateChannelCommandHandler : IRequestHandler<CreateChannelCommand, CreateChannelCommandResponse>
     {
         private readonly IChannelRepository channelRepository;
-        private readonly IChatUserRepository userRepository;
+        private readonly IChatUserRepository chatUserRepository;
 
-        public CreateChannelCommandHandler(IChannelRepository channelRepository)
+        public CreateChannelCommandHandler(IChannelRepository channelRepository, IChatUserRepository chatUserRepository)
         {
             this.channelRepository = channelRepository;
+            this.chatUserRepository = chatUserRepository;
         }
         public async Task<CreateChannelCommandResponse> Handle(CreateChannelCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateChannelCommandValidator(channelRepository);
-            var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+            //var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
-            if (!validatorResult.IsValid)
-            {
-                return new CreateChannelCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
-                };
-            }
+            //if (!validatorResult.IsValid)
+            //{
+            //    return new CreateChannelCommandResponse
+            //    {
+            //        Success = false,
+            //        ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
+            //    };
+            //}
             Channel channel;
             try {
                 var userIds = request.UserIds;
@@ -38,7 +39,7 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
 
                 foreach (var userId in userIds)
                 {
-                    var user = await userRepository.FindByIdAsync(new Guid(userId));
+                    var user = await chatUserRepository.FindByIdAsync(new Guid(userId));
                     if (user != null)
                     {
                         users.Add(user.Value);
@@ -48,10 +49,9 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
 
                 channel  = new(
                     Guid.NewGuid(),
-                    request.ChannelName,
-                    request.UserIds,
-                    new List<Message>()
+                    request.ChannelName
                     );
+                channel.AttachUsers(users);
             }
             catch ( Exception ex )
             {

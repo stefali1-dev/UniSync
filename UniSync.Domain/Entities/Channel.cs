@@ -7,15 +7,23 @@ namespace UniSync.Domain.Entities
     {
         public Guid ChannelId { get; private set; }
         public string ChannelName { get; private set; }
-        public ICollection<ChatUser> Users { get; set; }
-        public ICollection<Message> Messages { get; set; }
+        public List<ChatUser> Users { get; set; }
+        public List<Message> Messages { get; set; }
 
-        public Channel(Guid channelId, string channelName, ICollection<ChatUser> users, ICollection<Message> messages)
+        public Channel(Guid channelId, string channelName)
         {
             ChannelId = channelId;
             ChannelName = channelName;
-            Users = users;
-            Messages = messages;
+            Users = new List<ChatUser>();
+            Messages = new List<Message>();
+        }
+
+        public void AttachUsers(List<ChatUser> users)
+        {
+            if (users.Count > 0)
+            {
+                Users.AddRange(users);
+            }
         }
     }
 }

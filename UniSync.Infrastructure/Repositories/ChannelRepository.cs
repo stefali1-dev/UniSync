@@ -14,7 +14,7 @@ namespace UniSync.Infrastructure.Repositories
         public async Task<Result<IReadOnlyList<Channel>>> GetChannelsByUserIdAsync(Guid userId)
         {
             var channels = await context.Channels
-                .Where(c => c.Users.Any(u => u.UserId == userId))
+                .Where(c => c.Users.Any(u => u.ChatUserId == userId))
                 .AsNoTracking()
                 .ToListAsync();
 

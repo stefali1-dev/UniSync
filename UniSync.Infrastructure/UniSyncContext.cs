@@ -19,6 +19,7 @@ namespace UniSync.Infrastructure
             this.currentUserService = currentUserService;
         }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Professor> Professors { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
 
 
