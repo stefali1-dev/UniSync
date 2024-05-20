@@ -3,13 +3,14 @@ using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Domain.Entities
 {
-    public class Professor : User
+    public class Professor
     {
-        public Professor(Guid userId) : base(userId)
-        {
-        }
+
+        public Guid ProfessorId { get; set; }
+        public Guid ChatUserId { get; set; }
+
         public ProfessorType Type { get; set; }
-        public ICollection<Course> Courses { get; set; } = new List<Course>();
+        public ICollection<Course> Courses { get; set; }
 
     }
 }

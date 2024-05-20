@@ -2,11 +2,9 @@
 
 namespace UniSync.Domain.Entities
 {
-    public class Staff : User
+    public class Staff
     {
-        public Staff(Guid userId) : base(userId)
-        {
-        }
+        public Guid StaffId { get; set; }
         public string Title { get; set; }
     }
 }

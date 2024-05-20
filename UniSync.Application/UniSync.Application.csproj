@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Channels\Commands\" />
     <Folder Include="Features\Messages\Commands\" />
     <Folder Include="Features\Students\Commands\" />
   </ItemGroup>

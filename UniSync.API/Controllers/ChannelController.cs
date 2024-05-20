@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using UniSync.API.Controllers;
+using UniSync.Application.Features.Channels.Commands.CreateChannel;
 using UniSync.Application.Features.Channels.Queries;
 using UniSync.Domain.Entities;
 
@@ -24,4 +25,12 @@ public class ChannelController : ApiControllerBase
         }
         return Ok(result);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<CreateChannelCommandResponse>> Create([FromBody] CreateChannelCommand createChannelCommand)
+    {
+        var response = await Mediator.Send(createChannelCommand);
+        return Ok(response);
+    }
+
 }

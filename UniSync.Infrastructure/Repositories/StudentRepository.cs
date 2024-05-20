@@ -30,4 +30,5 @@ public class StudentRepository : BaseRepository<Student>, IStudentRepository
 
         return Result<IReadOnlyList<Student>>.Success(students);
     }
+
 }

@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using UniSync.Domain.Entities;
 using UniSync.Application.Contracts.Interfaces;
 using System;
+using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Identity.Services
 {
@@ -20,13 +21,15 @@ namespace UniSync.Identity.Services
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IStudentRepository studentRepository;
+        private readonly IChatUserRepository chatUserRepository;
+        private readonly IProfessorRepository professorRepository;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly IPasswordResetCode passwordResetCodeRepository;
         private readonly IRoleAssignmentService roleAssignmentService;
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService, IChatUserRepository chatUserRepository, IProfessorRepository professorRepository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -35,6 +38,8 @@ namespace UniSync.Identity.Services
             this.studentRepository = studentRepository;
             this.passwordResetCodeRepository = passwordResetCodeRepository;
             this.roleAssignmentService = roleAssignmentService;
+            this.chatUserRepository = chatUserRepository;
+            this.professorRepository = professorRepository;
         }
         public async Task<(int, string)> Registeration(RegistrationModel model, string role)
         {
@@ -74,8 +79,40 @@ namespace UniSync.Identity.Services
             //await userRepository.AddAsync(userDomain.Value);
 
             //var _user = CreateUserSubclass(model.RegistrationId);
-            var _user = new Student(Guid.Parse(user.Id), Convert.ToInt32(userInfo.Semester), userInfo.Group);
-            await studentRepository.AddAsync(_user);
+            
+
+            var chatUser = new ChatUser(Guid.Parse(user.Id));
+            await chatUserRepository.AddAsync(chatUser);
+
+            var registrationId = model.RegistrationId;
+
+            // TODO: implement real logic
+            if(registrationId.Last() == '3')
+            {
+                var student = new Student
+                {
+                    StudentId = Guid.NewGuid(),
+                    ChatUserId = chatUser.ChatUserId,
+                    Semester = Convert.ToInt32(userInfo.Semester),
+                    Group = userInfo.Group
+                };
+                
+                await studentRepository.AddAsync(student);
+            }
+
+            if (registrationId.Last() == '2')
+            {
+                var professor = new Professor
+                {
+                    ProfessorId = Guid.NewGuid(),
+                    ChatUserId = chatUser.ChatUserId,
+                    Type = Domain.Common.ProfessorType.Course,
+                    Courses = new List<Course>()
+
+                };
+                await professorRepository.AddAsync(professor);
+            }
+
             return (1, "User created successfully!");
         }
 
@@ -231,6 +268,8 @@ namespace UniSync.Identity.Services
         //    };
 
         //}
+
+
 
 
     }
