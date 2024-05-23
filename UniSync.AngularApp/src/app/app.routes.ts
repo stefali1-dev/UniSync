@@ -53,6 +53,11 @@ import { AuthGuard } from './_helpers/auth.guard';
               path: 'profile',
               loadChildren: () => import('./pages/social/social.routes')
             },
+            {
+              path: 'courses',
+              loadChildren: () => import('./pages/courses/courses.routes')
+
+            }
           ]
         }
       ]

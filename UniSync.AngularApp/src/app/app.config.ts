@@ -24,6 +24,7 @@ import { AuthGuard } from './_helpers/auth.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatService } from './pages/chat/chat.service';
+import { RouterModule } from '@angular/router'; // Import the RouterModule
 
 
 
@@ -38,7 +39,8 @@ export const appConfig: ApplicationConfig = {
       SharedModule,
       ReactiveFormsModule,
       FormsModule,
-      CommonModule
+      CommonModule,
+      RouterModule
     ),
     httpInterceptorProviders,
     ChatService,
