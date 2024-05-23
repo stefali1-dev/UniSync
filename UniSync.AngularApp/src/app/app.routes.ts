@@ -57,6 +57,11 @@ import { AuthGuard } from './_helpers/auth.guard';
               path: 'courses',
               loadChildren: () => import('./pages/courses/courses.routes')
 
+            },
+            {
+              path: 'evaluation',
+              loadChildren: () => import('./pages/evaluation/evaluation.routes')
+
             }
           ]
         }

@@ -1,0 +1,40 @@
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-4">Student Info</h1>
+  
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-2">Personal Information</h2>
+      <div class="mb-4">
+        <span class="font-bold">Name:</span> {{ studentName }}
+      </div>
+      <div class="mb-4">
+        <span class="font-bold">Group:</span> {{ studentGroup }}
+      </div>
+      <div class="mb-4">
+        <span class="font-bold">Enrolled Courses:</span>
+        <ul class="list-disc ml-4">
+          <li *ngFor="let course of enrolledCourses">{{ course }}</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="bg-white p-6 rounded-lg shadow mt-8">
+      <h2 class="text-xl font-bold mb-4">Course Details</h2>
+  
+      <div class="mb-8" *ngFor="let course of courseDetails">
+        <h3 class="text-lg font-bold">{{ course.name }}</h3>
+        <div class="mb-2">
+          <span class="font-bold">Lab Activities:</span>
+          <ul class="list-disc ml-4">
+            <li *ngFor="let activity of course.labActivities">{{ activity }}</li>
+          </ul>
+        </div>
+        <div class="mb-2">
+          <span class="font-bold">Attendance:</span> {{ course.attendance }}%
+        </div>
+        <div class="mb-2">
+          <span class="font-bold">Exam Score:</span> {{ course.examScore }}%
+        </div>
+      </div>
+    </div>
+  </div>
+  
