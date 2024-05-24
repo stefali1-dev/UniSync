@@ -11,13 +11,13 @@ public class MessagesController : ApiControllerBase
     //[Authorize(Roles = "User")]
     [HttpGet("ByChannel/{channel}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetMessagesByChannel(string channel)
+    public async Task<IActionResult> GetMessagesByChannel(Guid channelId)
     {
-        var query = new GetByChannelMessagesQuery { Channel = channel };
+        var query = new GetByChannelMessagesQuery { ChannelId = channelId };
         var result = await Mediator.Send(query);
         if (!result.Success)
         {
-            if (result.Message == $"Messages from channel {channel} not found")
+            if (result.Message == $"Messages from channel {channelId} not found")
             {
                 return NotFound(result);
             }

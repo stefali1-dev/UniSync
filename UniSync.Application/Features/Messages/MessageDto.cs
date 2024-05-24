@@ -11,8 +11,8 @@ namespace UniSync.Application.Features.Messages
     {
         public Guid MessageId { get; set; }
         public string Content { get; set; }
-        public Guid UserId { get; set; }
         public DateTime Timestamp { get; set; }
-        public string ChannelName { get; set; }
+        public Guid ChatUserId { get; set; }
+        public Guid ChannelId { get; set; }
     }
 }

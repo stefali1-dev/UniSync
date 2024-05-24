@@ -6,7 +6,6 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
     public class CreateChannelCommand : IRequest<CreateChannelCommandResponse>
     {
         public string ChannelName { get; set; }
-        // TODO: Finish channel creation
-        public List<string> UserIds { get; set; }
+        public List<string> ChatUserIds { get; set; }
     }
 }

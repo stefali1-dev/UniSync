@@ -12,8 +12,8 @@ namespace UniSync.Domain.Entities.Administration
         public CourseType Type { get; private set; }
         public string Description { get; private set; }
         public int Semester { get; private set; }
-        public List<Professor> Professors { get; private set; }
-        public List<Student> Students { get; private set; }
+        public virtual List<Professor> Professors { get; private set; }
+        public virtual List<Student> Students { get; private set; }
 
     }
 }

@@ -2,9 +2,8 @@
 using UniSync.Domain.Common;
 using UniSync.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using UniSync.Domain.Entities.Administration;
-using UniSync.Domain.Entities;
-using Ergo.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Proxies;
+
 
 namespace UniSync.Infrastructure
 {
@@ -47,6 +46,12 @@ namespace UniSync.Infrastructure
                 }
             }
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Other configuration...
+
+            optionsBuilder.UseLazyLoadingProxies();
         }
     }
 }

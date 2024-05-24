@@ -42,9 +42,9 @@ public class ChatHub : Hub
             {
                 MessageId = Guid.NewGuid(),
                 Content = message,
-                UserId = new Guid(userRoomConnection.UserId),
-                ChannelName = userRoomConnection.Room,
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.Now,
+                ChatUserId = new Guid(userRoomConnection.UserId),
+                ChannelId = new Guid(userRoomConnection.Room)
             };
 
             await _messageRepository.AddAsync(_message);

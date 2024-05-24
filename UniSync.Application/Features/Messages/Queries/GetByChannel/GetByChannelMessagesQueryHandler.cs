@@ -13,7 +13,7 @@ namespace UniSync.Application.Features.Messages.Queries.GetByGroup
         }
         public async Task<GetByChannelMessagesQueryResponse> Handle(GetByChannelMessagesQuery request, CancellationToken cancellationToken)
         {
-            var result = await messageRepository.GetMessagesByChannelAsync(request.Channel);
+            var result = await messageRepository.GetMessagesByChannelAsync(request.ChannelId);
             if (!result.IsSuccess)
                 return new GetByChannelMessagesQueryResponse { Success = false, Message = result.Error };
 
@@ -23,9 +23,9 @@ namespace UniSync.Application.Features.Messages.Queries.GetByGroup
             {
                 MessageId = u.MessageId,
                 Content = u.Content,
-                UserId = u.UserId,
+                ChatUserId = u.ChatUserId,
                 Timestamp = u.Timestamp,
-                ChannelName = u.ChannelName
+                ChannelId = u.ChannelId
             }).ToList();
 
             return response;

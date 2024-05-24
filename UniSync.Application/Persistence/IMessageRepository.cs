@@ -5,7 +5,7 @@ namespace UniSync.Application.Persistence
 {
     public interface IMessageRepository : IAsyncRepository<Message>
     {
-        Task<Result<IReadOnlyList<Message>>> GetMessagesByChannelAsync(string channel);
+        Task<Result<IReadOnlyList<Message>>> GetMessagesByChannelAsync(Guid channelId);
 
     }
 }

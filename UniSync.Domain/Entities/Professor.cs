@@ -10,7 +10,7 @@ namespace UniSync.Domain.Entities
         public Guid ChatUserId { get; set; }
 
         public ProfessorType Type { get; set; }
-        public ICollection<Course> Courses { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
 
     }
 }

@@ -13,16 +13,16 @@ namespace UniSync.Infrastructure.Repositories
         {
         }
 
-        public async Task<Result<IReadOnlyList<Message>>> GetMessagesByChannelAsync(string channel)
+        public async Task<Result<IReadOnlyList<Message>>> GetMessagesByChannelAsync(Guid channelId)
         {
             var messages = await context.Messages
-                .Where(s => s.ChannelName == channel)
+                .Where(s => s.ChannelId == channelId)
                 .AsNoTracking()
                 .ToListAsync();
 
             if (messages.Count == 0)
             {
-                return Result<IReadOnlyList<Message>>.Failure($"Messages from channel {channel} not found");
+                return Result<IReadOnlyList<Message>>.Failure($"Messages from channel {channelId} not found");
             }
 
             return Result<IReadOnlyList<Message>>.Success(messages);

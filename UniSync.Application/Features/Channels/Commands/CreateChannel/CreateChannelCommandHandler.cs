@@ -20,7 +20,7 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
         }
         public async Task<CreateChannelCommandResponse> Handle(CreateChannelCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateChannelCommandValidator(channelRepository);
+            //var validator = new CreateChannelCommandValidator(channelRepository);
             //var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             //if (!validatorResult.IsValid)
@@ -33,7 +33,7 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
             //}
             Channel channel;
             try {
-                var userIds = request.UserIds;
+                var userIds = request.ChatUserIds;
 
                 var users = new List<ChatUser>();
 

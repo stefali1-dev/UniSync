@@ -6,11 +6,23 @@
         {
             ChatUserId = chatUserId;
             AppUserId = appUserId;
-            Channels = new List<Channel>();
         }
 
         public Guid ChatUserId { get; set; }
         public Guid AppUserId { get; set; }
-        public IList<Channel> Channels { get;}
+
+        //navigation properties
+        public virtual ICollection<Channel> Channels { get; set; }
+
+        public void AttachChannel(Channel channel)
+        {
+            if(Channels == null)
+            {
+                Channels = new List<Channel>();
+            }
+            Channels.Add(channel);
+        }
+
+        
     }
 }
