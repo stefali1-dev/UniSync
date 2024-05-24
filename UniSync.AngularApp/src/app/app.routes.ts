@@ -62,6 +62,13 @@ import { AuthGuard } from './_helpers/auth.guard';
               path: 'evaluation',
               loadChildren: () => import('./pages/evaluation/evaluation.routes')
 
+            },
+            {
+              path: 'timetable',
+              loadComponent: () => import('./pages/timetable/timetable.component').then(
+                (m) => m.TimetableComponent
+              )
+
             }
           ]
         }
