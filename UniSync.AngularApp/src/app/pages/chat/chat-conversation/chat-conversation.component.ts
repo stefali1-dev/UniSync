@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Chat, ChatMessage } from '../chat.component';
-import { chatMessages } from '../../../../static-data/chat-messages';
 import { trackById } from '@vex/utils/track-by';
 import { map } from 'rxjs/operators';
 import { fadeInUp400ms } from '@vex/animations/fade-in-up.animation';
@@ -27,6 +26,7 @@ import { StorageService } from '../../../_services/storage.service';
 import { CommonModule } from '@angular/common';
 import { MessageService } from '../../../_services/message.service';
 import {ChatComponent} from '../chat.component'
+import { ChannelService } from '../../../_services/channel.service';
 
 @Component({
   selector: 'vex-chat-conversation',
@@ -72,12 +72,13 @@ export class ChatConversationComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private storageService: StorageService,
     private messageService: MessageService,
-    private chatComponent: ChatComponent
+    private chatComponent: ChatComponent,
+    private channelService: ChannelService
   ) {
-    console.log("sallll")
   }
 
   ngOnInit() {
+
     this.route.paramMap
       .pipe(
         map((paramMap) => paramMap.get('chatId')),
@@ -85,36 +86,47 @@ export class ChatConversationComponent implements OnInit {
       )
       .subscribe((chatId) => {
 
-        //this.messages = [];
-
         if (!chatId) {
           throw new Error('Chat id not found!');
         }
 
-        this.chatService.messages$.subscribe(res=>{
-          console.log(res)
+        this.chatService.chats$.subscribe(chats => {
+          if (chats.length > 0) {
+            this.chatService.messages$.subscribe(res=>{
+              //console.log(res)
+            });
+        
+            this.chatService.connectedUsers$.subscribe(res=>{
+              //console.log(res);
+        
+            })
+    
+    
+    
+            this.cd.detectChanges();
+            const chat = this.chatService.getChat(chatId);
+    
+            if (!chat) {
+              throw new Error(`Chat with id ${chatId} not found!`);
+            }
+    
+            this.chatService.getPreviousMessages(chatId);
+    
+            this.chat = chat;
+            this.chat.unreadCount = 0;
+            //this.filterMessages(chatId);
+            this.cd.detectChanges();
+    
+            //console.log(this.messages);
+    
+            this.scrollToBottom();
+
+          } else {
+            console.log('No chats available yet');
+          }
         });
-    
-        this.chatService.connectedUsers$.subscribe(res=>{
-          console.log(res);
-    
-        })
 
-        this.cd.detectChanges();
-        const chat = this.chatService.getChat(chatId);
-
-        if (!chat) {
-          throw new Error(`Chat with id ${chatId} not found!`);
-        }
-
-        this.chat = chat;
-        this.chat.unreadCount = 0;
-        //this.filterMessages(chatId);
-        this.cd.detectChanges();
-
-        //console.log(this.messages);
-
-        this.scrollToBottom();
+        
       });
   }
 

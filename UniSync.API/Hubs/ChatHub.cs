@@ -34,9 +34,13 @@ public class ChatHub : Hub
         if (_connection.TryGetValue(Context.ConnectionId, out UserRoomConnection userRoomConnection))
         {
             await Clients.Group(userRoomConnection.Room!)
-                .SendAsync("ReceiveMessage", userRoomConnection.UserId, message, DateTime.Now);
+                .SendAsync("ReceiveMessage", userRoomConnection.UserId, userRoomConnection.Room, message, DateTime.Now);
 
             await Console.Out.WriteLineAsync("Receiced message: " + message);
+
+            await Console.Out.WriteLineAsync(userRoomConnection.UserId);
+            await Console.Out.WriteLineAsync(userRoomConnection.Room);
+
 
             var _message = new Message
             {

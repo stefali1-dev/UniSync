@@ -30,14 +30,6 @@ export class ChatService {
   private isConnected: boolean = false;
 
   chats: Chat[] = [
-    {
-      id: '1A1',
-      imageUrl: '/assets/img/avatars/2.jpg',
-      name: '1A1 Group',
-      lastMessage: '',
-      unreadCount: 0,
-      timestamp: '3 minutes ago'
-    }
   ];
 
   private chatsSubject = new BehaviorSubject<Chat[]>(this.chats);
@@ -56,13 +48,13 @@ export class ChatService {
 
   ) {
     this.start();
-    this.connection.on("ReceiveMessage", (userId: string, message: string, messageTime: string)=>{
+    this.connection.on("ReceiveMessage", (userId: string, channelId:string, message: string, messageTime: string)=>{
       // TODO: remove hardcode
 
       console.log(`Received message: ${message}`)
 
       let receivedMmessage: ChatMessage = {
-        id: '1A1',
+        id: channelId,
         senderId: userId,
         message: message,
         messageTime: messageTime
@@ -76,10 +68,11 @@ export class ChatService {
       this.connectedUsers$.next(users);
     });
 
-    // TODO: remove hardcode
-    this.rooms.push('1A1');
+    //this.rooms.push('1A1');
 
+    // TODO: implement getPreviousMessages() in convo component
     //this.getPreviousMessages();
+    this.getChats()
    }
 
   //start connection
@@ -87,7 +80,24 @@ export class ChatService {
     try {
       await this.connection.start();
       console.log("Connection is established!")
-      this.joinRoom(this.storageService.getUser().userId, '1A1');
+      let userId = this.storageService.getUser().userId
+      
+      if(userId === null){
+        console.log("NULL USER ID")
+      }
+
+      this.channelService.getChannelsByUserId(userId).subscribe({
+        next: data => {
+          data.channels.forEach(channel => {
+            this.joinRoom(userId, channel.channelId);
+          })
+        },
+        error: err => {
+          console.log(err)
+        }
+      });
+
+      
 
     } catch (error) {
       console.log(error);
@@ -114,18 +124,19 @@ export class ChatService {
     return this.chats.find((chat) => chat.id === chatId);
   }
 
-  public async getPreviousMessages(){
-    this.messageService.getMessagesByChannel('1A1').subscribe({
+  public async getPreviousMessages(channelId: string){
+    this.messageService.getMessagesByChannel(channelId).subscribe({
       next: data => {
         console.log(data.messages);
 
         for (const message of data.messages) {
           let chatMessage: ChatMessage = {
             id: message.messageId,
-            senderId: message.userId,
+            senderId: message.chatUserId,
             message: message.content,
             messageTime: message.timestamp
           };
+
 
           this.previousMessages.push(chatMessage);
         }
@@ -151,7 +162,7 @@ export class ChatService {
           
           let chat: Chat = {
             id: channel.channelId,
-            imageUrl: 'https://fastly.picsum.photos/id/165/536/354.jpg?hmac=3U0MeDyOPgSqPmDhXtEZRTWV80bfX3cmko0I2uXX244',
+            imageUrl: 'https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
             name: channel.channelName,
             lastMessage: '',
             unreadCount: 0,

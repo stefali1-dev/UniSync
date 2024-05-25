@@ -9,9 +9,9 @@ public class MessagesController : ApiControllerBase
 {
 
     //[Authorize(Roles = "User")]
-    [HttpGet("ByChannel/{channel}")]
+    [HttpGet("ByChannel/{channelId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetMessagesByChannel(Guid channelId)
+    public async Task<IActionResult> GetMessagesByChannelId(Guid channelId)
     {
         var query = new GetByChannelMessagesQuery { ChannelId = channelId };
         var result = await Mediator.Send(query);

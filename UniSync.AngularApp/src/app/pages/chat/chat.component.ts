@@ -132,7 +132,6 @@ export class ChatComponent implements OnInit {
       //   }
       // });
   
-      this.chatService.getChats()
   }
 
   drawerChange(drawerOpen: boolean) {
