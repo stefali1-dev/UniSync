@@ -12,8 +12,8 @@ using UniSync.Infrastructure;
 namespace UniSync.Infrastructure.Migrations
 {
     [DbContext(typeof(UniSyncContext))]
-    [Migration("20240524162449_updateChannel")]
-    partial class updateChannel
+    [Migration("20240525080729_AddLazyLoading")]
+    partial class AddLazyLoading
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,9 @@ namespace UniSync.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

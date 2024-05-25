@@ -72,8 +72,8 @@ namespace UniSync.Application.Features.Channels.Commands.CreateChannel
                 {
                     ChannelId = channel.ChannelId,
                     ChannelName = channel.ChannelName,
-                    Users = channel.Users,
-                    Messages = channel.Messages
+                    ChatUsersIds = channel.Users.Select(user => user.ChatUserId).ToList(),
+                    MessagesIds = channel.Messages.Select(message => message.MessageId).ToList()
                 }
             };
            

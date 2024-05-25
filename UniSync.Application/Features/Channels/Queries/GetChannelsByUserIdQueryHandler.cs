@@ -32,8 +32,8 @@ namespace UniSync.Application.Features.Channels.Queries
             {
                 ChannelId = u.ChannelId,
                 ChannelName = u.ChannelName,
-                Users = u.Users,
-                Messages = u.Messages
+                ChatUsersIds = u.Users.Select(user => user.ChatUserId).ToList() ,
+                MessagesIds = u.Messages.Select(m => m.MessageId).ToList()
 
             }).ToList();
 

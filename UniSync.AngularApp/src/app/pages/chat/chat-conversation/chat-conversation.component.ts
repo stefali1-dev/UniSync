@@ -26,7 +26,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StorageService } from '../../../_services/storage.service';
 import { CommonModule } from '@angular/common';
 import { MessageService } from '../../../_services/message.service';
-
+import {ChatComponent} from '../chat.component'
 
 @Component({
   selector: 'vex-chat-conversation',
@@ -71,8 +71,11 @@ export class ChatConversationComponent implements OnInit {
     public chatService: ChatService,
     private cd: ChangeDetectorRef,
     private storageService: StorageService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private chatComponent: ChatComponent
+  ) {
+    console.log("sallll")
+  }
 
   ngOnInit() {
     this.route.paramMap

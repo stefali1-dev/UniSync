@@ -6,6 +6,9 @@ import { randFullName } from '@ngneat/falso';
 import { StudentService } from '../../_services/student.service';
 import { StorageService } from '../../_services/storage.service';
 import { MessageService } from '../../_services/message.service';
+import { UserService } from '../../_services/user.service';
+import { ChannelService } from '../../_services/channel.service';
+
 
 
 @Injectable({
@@ -37,13 +40,19 @@ export class ChatService {
     }
   ];
 
+  private chatsSubject = new BehaviorSubject<Chat[]>(this.chats);
+  public chats$ = this.chatsSubject.asObservable();
+
+
   drawerOpen = new BehaviorSubject<boolean>(false);
   drawerOpen$ = this.drawerOpen.asObservable();
 
   constructor(
     private studentService: StudentService,
     private storageService: StorageService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService,
+    private channelService: ChannelService
 
   ) {
     this.start();
@@ -70,7 +79,7 @@ export class ChatService {
     // TODO: remove hardcode
     this.rooms.push('1A1');
 
-    this.getPreviousMessages();
+    //this.getPreviousMessages();
    }
 
   //start connection
@@ -129,6 +138,35 @@ export class ChatService {
       }
     });
 
+  }
+
+  getChats(){
+    let userId = this.storageService.getUser().userId;
+
+    this.channelService.getChannelsByUserId(userId).subscribe({
+      next: data => {
+        console.log(data.channels)
+
+        data.channels.forEach(channel => {
+          
+          let chat: Chat = {
+            id: channel.channelId,
+            imageUrl: 'https://fastly.picsum.photos/id/165/536/354.jpg?hmac=3U0MeDyOPgSqPmDhXtEZRTWV80bfX3cmko0I2uXX244',
+            name: channel.channelName,
+            lastMessage: '',
+            unreadCount: 0,
+            timestamp: ''
+          }
+
+          this.chats.push(chat);
+          this.chatsSubject.next(this.chats);
+
+        });
+      },
+      error: err => {
+        console.log(err)
+      }
+    });
   }
 
 }

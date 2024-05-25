@@ -77,7 +77,7 @@
           </div>
 
           <div class="space-y-1">
-            <ng-container *ngFor="let chat of chats$ | async">
+            <ng-container *ngFor="let chat of this.chatService.chats$ | async">
               <a
                 #rla="routerLinkActive"
                 [ngClass]="{

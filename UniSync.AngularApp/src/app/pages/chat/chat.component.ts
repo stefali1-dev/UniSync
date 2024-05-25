@@ -33,6 +33,8 @@ import { VexLayoutService } from '@vex/services/vex-layout.service';
 import { StudentService } from '../../_services/student.service';
 import { StorageService } from '../../_services/storage.service';
 import { UserService } from '../../_services/user.service';
+import { ChannelService } from '../../_services/channel.service';
+
 
 
 export interface Chat {
@@ -93,10 +95,11 @@ export class ChatComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router,
     private layoutService: VexLayoutService,
-    private chatService: ChatService,
+    public chatService: ChatService,
     private studentService: StudentService,
     private storageService: StorageService,
-    private userService: UserService
+    private userService: UserService,
+    private channelService: ChannelService
   ) {}
 
   ngOnInit() {
@@ -120,15 +123,16 @@ export class ChatComponent implements OnInit {
       )
       .subscribe(() => this.openDrawer());
 
-      this.studentService.getStudentsByGroup('1A1').subscribe({
-        next: data => {
-          console.log(data.students);
-        },
-        error: err => {
-          console.log(err);
-        }
-      });
+      // this.studentService.getStudentsByGroup('1A1').subscribe({
+      //   next: data => {
+      //     console.log(data.students);
+      //   },
+      //   error: err => {
+      //     console.log(err);
+      //   }
+      // });
   
+      this.chatService.getChats()
   }
 
   drawerChange(drawerOpen: boolean) {
@@ -155,4 +159,6 @@ export class ChatComponent implements OnInit {
       }
     });
   }
+
+
 }

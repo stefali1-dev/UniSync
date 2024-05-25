@@ -6,37 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniSync.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class addChatUsers : Migration
+    public partial class AddLazyLoading : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Messages_User_UserId",
-                table: "Messages");
-
-            migrationBuilder.DropTable(
-                name: "ChannelUser");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Messages_UserId",
-                table: "Messages");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "ChatUserId",
-                table: "Students",
-                type: "uuid",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "CourseId",
-                table: "Students",
-                type: "uuid",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "Channels",
+                columns: table => new
+                {
+                    ChannelId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ChannelName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Channels", x => x.ChannelId);
+                });
 
             migrationBuilder.CreateTable(
                 name: "ChatUsers",
@@ -65,6 +50,21 @@ namespace UniSync.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Course", x => x.CourseId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PasswordResetCodes",
+                columns: table => new
+                {
+                    PasswordResetCodeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    ExpirationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PasswordResetCodes", x => x.PasswordResetCodeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,6 +105,54 @@ namespace UniSync.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    ReceiverId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChatUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ChannelId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.MessageId);
+                    table.ForeignKey(
+                        name: "FK_Messages_Channels_ChannelId",
+                        column: x => x.ChannelId,
+                        principalTable: "Channels",
+                        principalColumn: "ChannelId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_ChatUsers_ChatUserId",
+                        column: x => x.ChatUserId,
+                        principalTable: "ChatUsers",
+                        principalColumn: "ChatUserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    StudentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ChatUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Semester = table.Column<int>(type: "integer", nullable: false),
+                    Group = table.Column<string>(type: "text", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.StudentId);
+                    table.ForeignKey(
+                        name: "FK_Students_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "CourseId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CourseProfessor",
                 columns: table => new
                 {
@@ -129,11 +177,6 @@ namespace UniSync.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_CourseId",
-                table: "Students",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ChannelChatUser_UsersChatUserId",
                 table: "ChannelChatUser",
                 column: "UsersChatUserId");
@@ -143,21 +186,25 @@ namespace UniSync.Infrastructure.Migrations
                 table: "CourseProfessor",
                 column: "ProfessorsProfessorId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_Course_CourseId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChannelId",
+                table: "Messages",
+                column: "ChannelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChatUserId",
+                table: "Messages",
+                column: "ChatUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_CourseId",
                 table: "Students",
-                column: "CourseId",
-                principalTable: "Course",
-                principalColumn: "CourseId");
+                column: "CourseId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_Course_CourseId",
-                table: "Students");
-
             migrationBuilder.DropTable(
                 name: "ChannelChatUser");
 
@@ -165,78 +212,25 @@ namespace UniSync.Infrastructure.Migrations
                 name: "CourseProfessor");
 
             migrationBuilder.DropTable(
-                name: "ChatUsers");
+                name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "PasswordResetCodes");
+
+            migrationBuilder.DropTable(
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Professors");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Students_CourseId",
-                table: "Students");
+            migrationBuilder.DropTable(
+                name: "Channels");
 
-            migrationBuilder.DropColumn(
-                name: "ChatUserId",
-                table: "Students");
+            migrationBuilder.DropTable(
+                name: "ChatUsers");
 
-            migrationBuilder.DropColumn(
-                name: "CourseId",
-                table: "Students");
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ChannelUser",
-                columns: table => new
-                {
-                    ChannelsChannelId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UsersUserId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChannelUser", x => new { x.ChannelsChannelId, x.UsersUserId });
-                    table.ForeignKey(
-                        name: "FK_ChannelUser_Channels_ChannelsChannelId",
-                        column: x => x.ChannelsChannelId,
-                        principalTable: "Channels",
-                        principalColumn: "ChannelId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ChannelUser_User_UsersUserId",
-                        column: x => x.UsersUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Messages_UserId",
-                table: "Messages",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChannelUser_UsersUserId",
-                table: "ChannelUser",
-                column: "UsersUserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Messages_User_UserId",
-                table: "Messages",
-                column: "UserId",
-                principalTable: "User",
-                principalColumn: "UserId",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Course");
         }
     }
 }
