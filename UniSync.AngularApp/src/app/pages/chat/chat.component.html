@@ -21,7 +21,7 @@
           </button>
 
           <mat-menu #newChatMenu="matMenu" xPosition="after" yPosition="below">
-            <button mat-menu-item>
+            <button mat-button (click)="openDialog()" >
               <mat-icon matMenuItemIcon svgIcon="mat:add_circle"></mat-icon>
               <span>Direct Message</span>
             </button>
@@ -118,3 +118,5 @@
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
+
+

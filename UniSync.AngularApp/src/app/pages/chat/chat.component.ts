@@ -34,7 +34,8 @@ import { StudentService } from '../../_services/student.service';
 import { StorageService } from '../../_services/storage.service';
 import { UserService } from '../../_services/user.service';
 import { ChannelService } from '../../_services/channel.service';
-
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {ContactsDataTableComponent} from '../contacts/contacts-table/contacts-data-table/contacts-data-table.component'
 
 
 export interface Chat {
@@ -99,7 +100,8 @@ export class ChatComponent implements OnInit {
     private studentService: StudentService,
     private storageService: StorageService,
     private userService: UserService,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -159,5 +161,24 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogContentExampleDialog);
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
+
+
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: 'dialog-content-example-dialog.html',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+     MatButtonModule,
+     VexScrollbarComponent
+    ],
+})
+export class DialogContentExampleDialog {}
