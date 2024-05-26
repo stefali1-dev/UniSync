@@ -27,6 +27,8 @@ import { CommonModule } from '@angular/common';
 import { MessageService } from '../../../_services/message.service';
 import {ChatComponent} from '../chat.component'
 import { ChannelService } from '../../../_services/channel.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'vex-chat-conversation',
@@ -73,7 +75,8 @@ export class ChatConversationComponent implements OnInit {
     private storageService: StorageService,
     private messageService: MessageService,
     private chatComponent: ChatComponent,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private router: Router
   ) {
   }
 
@@ -85,6 +88,8 @@ export class ChatConversationComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((chatId) => {
+
+        this.chatService.clearMessageHistory();
 
         if (!chatId) {
           throw new Error('Chat id not found!');
@@ -123,6 +128,9 @@ export class ChatConversationComponent implements OnInit {
 
           } else {
             console.log('No chats available yet');
+
+            this.router.navigate(["apps/chat"]);
+
           }
         });
 

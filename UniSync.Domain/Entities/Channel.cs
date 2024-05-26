@@ -10,6 +10,7 @@ namespace UniSync.Domain.Entities
             ChannelId = channelId;
             ChannelName = channelName;
             Messages = new List<Message>();
+            Users = new List<ChatUser>();
         }
         public Guid ChannelId { get; private set; }
         public string ChannelName { get; private set; }

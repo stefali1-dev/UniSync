@@ -166,29 +166,71 @@ export class ChatService {
             name: channel.channelName,
             lastMessage: '',
             unreadCount: 0,
-            timestamp: ''
+            timestamp: '',
+            nrOfParticipants: channel.chatUsersIds.length
           }
 
-          this.chats.push(chat);
-          this.chatsSubject.next(this.chats);
+          // rename the chat
+          if(chat.nrOfParticipants === 2 && chat.name === 'DM'){
+            channel.chatUsersIds.forEach(chatUsersId => {
+              let currentUserId = this.storageService.getUser().userId;
+
+              if(chatUsersId != currentUserId){
+
+                this.userService.getUserById(chatUsersId).subscribe({
+                  next: data => {
+                    chat.name = data.user.firstName + ' ' + data.user.lastName
+
+                    this.chats.push(chat);
+                    this.chatsSubject.next(this.chats);
+
+                  },
+                  error: err => {
+                    console.log(err)
+                  }
+                });
+
+              }
+            });
+          }
+
+          else {
+            this.chats.push(chat);
+            this.chatsSubject.next(this.chats);
+          }
+
+
 
         });
       },
       error: err => {
-        console.log(err)
+        if (err.status == 404) {
+          // Handle other errors or log them to the console
+          //console.error(err);
+          this.chats = [];
+          this.chatsSubject.next(this.chats);
+        }
       }
     });
   }
 
-  createChat(channelName: string, chatUserIds: string[]){
+  createChat(channelName: string, chatUserIds: string[]): string{
 
     this.channelService.createChannel(channelName, chatUserIds).subscribe({
       next: data => {
         console.log(data)
+        return data.channel.channelId;
       },
       error: err => {
-
+        return '';
       }
+      
     });
+    return '';
+  }
+
+  clearMessageHistory(){
+    this.messages = [];
+    this.messages$.next(this.messages);
   }
 }

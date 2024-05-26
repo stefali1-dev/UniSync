@@ -37,7 +37,7 @@ import { StorageService } from '../../_services/storage.service';
 import { UserService } from '../../_services/user.service';
 import { ChannelService } from '../../_services/channel.service';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {DialogUserList} from './dialog-user-list/dialog-user-list'
+import {Contact, DialogUserList} from './dialog-user-list/dialog-user-list'
 
 export interface Chat {
   id: string;
@@ -46,6 +46,7 @@ export interface Chat {
   lastMessage: string;
   unreadCount: number;
   timestamp: string;
+  nrOfParticipants: number
 }
 
 export interface ChatMessage {
