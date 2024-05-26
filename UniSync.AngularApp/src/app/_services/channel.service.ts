@@ -15,4 +15,15 @@ export class ChannelService {
   getChannelsByUserId(request: string): Observable<any> {
     return this.http.get(API_URL + `/Channel/ByUserId/${request}`);
   }
+
+  createChannel(channelName: string, chatUserIds: string[]): Observable<any>{
+    return this.http.post(
+      API_URL + '/Channel',
+      {
+        channelName,
+        chatUserIds
+      },
+      {responseType: 'text'}
+    );
+  }
 }

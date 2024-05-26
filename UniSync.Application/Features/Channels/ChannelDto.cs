@@ -7,7 +7,7 @@ namespace UniSync.Application.Features.Channels
         public Guid ChannelId { get; set; }
         public string ChannelName { get; set; }
         public List<Guid> ChatUsersIds { get; set; }
-        public List<Guid> MessagesIds { get; set; }
+        public List<Guid>? MessagesIds { get; set; }
 
     }
 }

@@ -18,4 +18,8 @@ export class UserService {
   getUserById(request: string): Observable<any> {
     return this.http.get(API_URL + `/Users/ById/${request}`);
   }
+
+  getAllUsers(): Observable<any> {
+    return this.http.get(API_URL + '/Users');
+  }
 }

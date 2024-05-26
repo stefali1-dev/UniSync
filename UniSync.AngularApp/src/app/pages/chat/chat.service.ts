@@ -180,4 +180,15 @@ export class ChatService {
     });
   }
 
+  createChat(channelName: string, chatUserIds: string[]){
+
+    this.channelService.createChannel(channelName, chatUserIds).subscribe({
+      next: data => {
+        console.log(data)
+      },
+      error: err => {
+
+      }
+    });
+  }
 }
