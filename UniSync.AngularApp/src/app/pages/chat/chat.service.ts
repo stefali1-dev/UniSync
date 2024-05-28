@@ -125,8 +125,12 @@ export class ChatService {
   }
 
   public async getPreviousMessages(channelId: string){
+    this.clearMessageHistory()
+
     this.messageService.getMessagesByChannel(channelId).subscribe({
       next: data => {
+
+        
         console.log(data.messages);
 
         for (const message of data.messages) {
@@ -230,6 +234,7 @@ export class ChatService {
   }
 
   clearMessageHistory(){
+    this.previousMessages = []
     this.messages = [];
     this.messages$.next(this.messages);
   }

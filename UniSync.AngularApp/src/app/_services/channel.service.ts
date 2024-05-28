@@ -22,8 +22,7 @@ export class ChannelService {
       {
         channelName,
         chatUserIds
-      },
-      {responseType: 'text'}
+      }
     );
   }
 }

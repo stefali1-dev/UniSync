@@ -12,6 +12,7 @@ import {
   import {ChatService} from '../chat.service'
   import {StorageService} from '../../../_services/storage.service'
   import { Router } from '@angular/router';
+  import {ChannelService} from '../../../_services/channel.service'
 
 
 
@@ -49,7 +50,8 @@ export interface Contact {
       private userService: UserService,
       private chatService: ChatService,
       private storageService: StorageService,
-      private router: Router
+      private router: Router,
+      private channelService:ChannelService
     ) {}
 
     ngOnInit() {
@@ -122,12 +124,20 @@ export interface Contact {
 
         console.log(userIds)
 
-        let channelId: string = this.chatService.createChat('DM', userIds);
+        //let channelId: string = this.chatService.createChat('DM', userIds);
 
-        if(channelId !== ''){
-          this.router.navigate(["apps/chat/" + channelId]);
-
-        }
+        this.channelService.createChannel('DM', userIds).subscribe({
+          next: data => {
+            console.log(data)
+            
+            this.router.navigate(["apps/chat/" + data.channel.channelId]);
+          },
+          error: err => {
+            return '';
+          }
+          
+        });
+        return '';
       }
   }
   

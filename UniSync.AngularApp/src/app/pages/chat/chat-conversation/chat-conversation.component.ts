@@ -68,6 +68,8 @@ export class ChatConversationComponent implements OnInit {
 
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
+  showChatInfo: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     public chatService: ChatService,
@@ -95,6 +97,9 @@ export class ChatConversationComponent implements OnInit {
           throw new Error('Chat id not found!');
         }
 
+        this.chatService.getPreviousMessages(chatId);
+
+
         this.chatService.chats$.subscribe(chats => {
           if (chats.length > 0) {
             this.chatService.messages$.subscribe(res=>{
@@ -115,7 +120,6 @@ export class ChatConversationComponent implements OnInit {
               throw new Error(`Chat with id ${chatId} not found!`);
             }
     
-            this.chatService.getPreviousMessages(chatId);
     
             this.chat = chat;
             this.chat.unreadCount = 0;
@@ -196,5 +200,9 @@ export class ChatConversationComponent implements OnInit {
   closeDrawer() {
     this.chatService.drawerOpen.next(false);
     this.cd.markForCheck();
+  }
+
+  toggleInfo() {
+    this.showChatInfo = !this.showChatInfo;
   }
 }
