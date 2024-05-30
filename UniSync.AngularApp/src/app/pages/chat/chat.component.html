@@ -21,11 +21,11 @@
           </button>
 
           <mat-menu #newChatMenu="matMenu" xPosition="after" yPosition="below">
-            <button mat-button (click)="openDialog()" >
+            <button mat-button (click)="openDmDialog()" >
               <mat-icon matMenuItemIcon svgIcon="mat:add_circle"></mat-icon>
               <span>Direct Message</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="openGroupDialog()">
               <mat-icon matMenuItemIcon svgIcon="mat:group"></mat-icon>
               <span>Create Group</span>
             </button>

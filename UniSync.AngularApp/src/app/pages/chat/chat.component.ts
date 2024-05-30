@@ -38,6 +38,7 @@ import { UserService } from '../../_services/user.service';
 import { ChannelService } from '../../_services/channel.service';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {Contact, DialogUserList} from './dialog-user-list/dialog-user-list'
+import { DialogGroupList } from './dialog-group-list/dialog-group-list';
 
 export interface Chat {
   id: string;
@@ -163,8 +164,16 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  openDialog() {
+  openDmDialog() {
     const dialogRef = this.dialog.open(DialogUserList);
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openGroupDialog() {
+    const dialogRef = this.dialog.open(DialogGroupList);
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);

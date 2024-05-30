@@ -19,12 +19,12 @@ namespace Infrastructure
             services.AddDbContext<UniSyncContext>(
                 options =>
                 options.UseNpgsql(
-                    configuration.GetConnectionString
-                    ("UniSyncConnection"),
+                    configuration.GetConnectionString("UniSyncConnection"),
                     builder =>
-                    builder.MigrationsAssembly(
-                        typeof(UniSyncContext)
-                        .Assembly.FullName)));
+                    builder.MigrationsAssembly(typeof(UniSyncContext).Assembly.FullName))
+                .EnableSensitiveDataLogging() // Add this line to enable sensitive data logging
+            );
+
             services.AddScoped
                 (typeof(IAsyncRepository<>),
                 typeof(BaseRepository<>));
