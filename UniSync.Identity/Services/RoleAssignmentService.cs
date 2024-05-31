@@ -10,11 +10,10 @@ namespace UniSync.Identity.Services
 
         public UserInfoDto GetUserInfoByRegistrationId(string registrationId)
         {
-            // string studentsFilePath = "../TestData/students.txt"; // file path
-            string studentsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "students.txt");
-            Console.WriteLine(studentsFilePath);
+            string usersInfoFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "users_info.txt");
+            Console.WriteLine(usersInfoFilePath);
 
-            if (!File.Exists(studentsFilePath))
+            if (!File.Exists(usersInfoFilePath))
             {
                 Console.WriteLine("Didn't find text file");
                 return null;
@@ -22,7 +21,7 @@ namespace UniSync.Identity.Services
 
             Console.WriteLine("Read from text file");
 
-            string[] lines = File.ReadAllLines(studentsFilePath);
+            string[] lines = File.ReadAllLines(usersInfoFilePath);
 
             foreach (string line in lines)
             {
@@ -30,15 +29,34 @@ namespace UniSync.Identity.Services
 
                 if (parts[0] == registrationId)
                 {
-                    UserInfoDto student = new UserInfoDto
+                    if (registrationId.StartsWith('2'))
                     {
-                        FirstName = parts[1],
-                        LastName = parts[2],
-                        Semester = parts[3],
-                        Group = parts[4]
+                        // professor
+                        UserInfoDto professor = new UserInfoDto
+                        {
+                            FirstName = parts[1],
+                            LastName = parts[2],
+                            Courses = new List<string>(parts[3..])
                     };
 
-                    return student;
+                        return professor;
+                    }
+
+                    if (registrationId.StartsWith('3'))
+                    {
+                        // student
+                        UserInfoDto student = new UserInfoDto
+                        {
+                            FirstName = parts[1],
+                            LastName = parts[2],
+                            Semester = parts[3],
+                            Group = parts[4]
+                        };
+
+                        return student;
+                    }
+
+
                 }
             }
 

@@ -35,7 +35,7 @@ namespace Infrastructure
             services.AddScoped<IUserPhotoRepository, UserPhotoRepository>();
             services.AddScoped<IChatUserRepository, ChatUserRepository>();
             services.AddScoped<IProfessorRepository,ProfessorRepository>();
-
+            services.AddScoped<ICourseRepository, CourseRepository>();
 
 
             services.AddScoped<IEmailService, EmailService>();

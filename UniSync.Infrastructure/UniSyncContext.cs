@@ -3,6 +3,7 @@ using UniSync.Domain.Common;
 using UniSync.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Proxies;
+using UniSync.Domain.Entities.Administration;
 
 
 namespace UniSync.Infrastructure
@@ -25,6 +26,8 @@ namespace UniSync.Infrastructure
         public DbSet<Channel> Channels { get; set; }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Course> Courses { get; set; }
+
 
         public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UniSync.Infrastructure;
@@ -11,9 +12,11 @@ using UniSync.Infrastructure;
 namespace UniSync.Infrastructure.Migrations
 {
     [DbContext(typeof(UniSyncContext))]
-    partial class UniSyncContextModelSnapshot : ModelSnapshot
+    [Migration("20240531144552_UpdateCourse2")]
+    partial class UpdateCourse2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -10,6 +10,7 @@ using UniSync.Identity.Services;
 using UniSync.Api.Hubs;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using UniSync.Application.Features.Courses;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -32,6 +33,7 @@ builder.Services.AddSignalR();
 builder.Services.AddSingleton<IDictionary<string, UserRoomConnection>>(opt =>
     new Dictionary<string, UserRoomConnection>());
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<ICoursesService, CoursesService >();
 
 
 
