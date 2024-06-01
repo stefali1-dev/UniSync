@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace UniSync.Infrastructure.Migrations
+namespace UniSync.Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class Default : Migration
+    public partial class Migr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -14,6 +14,8 @@ using UniSync.Domain.Entities;
 using UniSync.Application.Contracts.Interfaces;
 using System;
 using UniSync.Domain.Entities.Administration;
+using EllipticCurve;
+using UniSync.Infrastructure;
 
 namespace UniSync.Identity.Services
 {
@@ -24,13 +26,15 @@ namespace UniSync.Identity.Services
         private readonly IChatUserRepository chatUserRepository;
         private readonly IProfessorRepository professorRepository;
         private readonly IAdminRepository adminRepository;
+        private readonly ICourseRepository courseRepository;
+        private readonly UniSyncContext context;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly IPasswordResetCode passwordResetCodeRepository;
         private readonly IRoleAssignmentService roleAssignmentService;
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService, IChatUserRepository chatUserRepository, IProfessorRepository professorRepository, IAdminRepository adminRepository)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService, IChatUserRepository chatUserRepository, IProfessorRepository professorRepository, IAdminRepository adminRepository, ICourseRepository courseRepository, UniSyncContext context)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -42,6 +46,8 @@ namespace UniSync.Identity.Services
             this.chatUserRepository = chatUserRepository;
             this.professorRepository = professorRepository;
             this.adminRepository = adminRepository;
+            this.courseRepository = courseRepository;
+            this.context = context;
         }
         public async Task<(int, string)> Registeration(RegistrationModel model)
         {
@@ -98,8 +104,20 @@ namespace UniSync.Identity.Services
                     Semester = Convert.ToInt32(userInfo.Semester),
                     Group = userInfo.Group
                 };
-                
+
+                foreach (string courseId in userInfo.CoursesIds)
+                {
+                    var course = await courseRepository.FindByCourseNumberAsync(courseId);
+                    if (course != null)
+                    {
+                        student.AttatchCourse(course.Value);
+                        course.Value.AttachStudent(student);
+
+                    }
+                }
+
                 await studentRepository.AddAsync(student);
+                await context.SaveChangesAsync();
             }
 
             if (registrationId.StartsWith('2'))
@@ -112,7 +130,20 @@ namespace UniSync.Identity.Services
                     Courses = new List<Course>()
 
                 };
+
+                foreach (string courseId in userInfo.CoursesIds)
+                {
+
+                    var course = await courseRepository.FindByCourseNumberAsync(courseId);
+                    if (course != null)
+                    {
+                        professor.AttatchCourse(course.Value);
+                        course.Value.AttachProfessor(professor);
+
+                    }
+                }
                 await professorRepository.AddAsync(professor);
+                await context.SaveChangesAsync();
             }
 
             if (registrationId.StartsWith('1'))

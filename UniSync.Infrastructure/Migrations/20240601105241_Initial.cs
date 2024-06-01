@@ -6,11 +6,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniSync.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLazyLoading : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    AdminId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.AdminId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Channels",
                 columns: table => new
@@ -36,20 +48,19 @@ namespace UniSync.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     CourseId = table.Column<Guid>(type: "uuid", nullable: false),
                     CourseName = table.Column<string>(type: "text", nullable: false),
                     CourseNumber = table.Column<string>(type: "text", nullable: false),
                     Credits = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Semester = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.CourseId);
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,6 +89,20 @@ namespace UniSync.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Professors", x => x.ProfessorId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    StudentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ChatUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Semester = table.Column<int>(type: "integer", nullable: false),
+                    Group = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.StudentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,26 +158,6 @@ namespace UniSync.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    StudentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ChatUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Semester = table.Column<int>(type: "integer", nullable: false),
-                    Group = table.Column<string>(type: "text", nullable: false),
-                    CourseId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.StudentId);
-                    table.ForeignKey(
-                        name: "FK_Students_Course_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Course",
-                        principalColumn: "CourseId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CourseProfessor",
                 columns: table => new
                 {
@@ -163,9 +168,9 @@ namespace UniSync.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_CourseProfessor", x => new { x.CoursesCourseId, x.ProfessorsProfessorId });
                     table.ForeignKey(
-                        name: "FK_CourseProfessor_Course_CoursesCourseId",
+                        name: "FK_CourseProfessor_Courses_CoursesCourseId",
                         column: x => x.CoursesCourseId,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "CourseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -173,6 +178,30 @@ namespace UniSync.Infrastructure.Migrations
                         column: x => x.ProfessorsProfessorId,
                         principalTable: "Professors",
                         principalColumn: "ProfessorId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseStudent",
+                columns: table => new
+                {
+                    CoursesCourseId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StudentsStudentId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseStudent", x => new { x.CoursesCourseId, x.StudentsStudentId });
+                    table.ForeignKey(
+                        name: "FK_CourseStudent_Courses_CoursesCourseId",
+                        column: x => x.CoursesCourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseStudent_Students_StudentsStudentId",
+                        column: x => x.StudentsStudentId,
+                        principalTable: "Students",
+                        principalColumn: "StudentId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -187,6 +216,11 @@ namespace UniSync.Infrastructure.Migrations
                 column: "ProfessorsProfessorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseStudent_StudentsStudentId",
+                table: "CourseStudent",
+                column: "StudentsStudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChannelId",
                 table: "Messages",
                 column: "ChannelId");
@@ -195,21 +229,22 @@ namespace UniSync.Infrastructure.Migrations
                 name: "IX_Messages_ChatUserId",
                 table: "Messages",
                 column: "ChatUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_CourseId",
-                table: "Students",
-                column: "CourseId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Admins");
+
+            migrationBuilder.DropTable(
                 name: "ChannelChatUser");
 
             migrationBuilder.DropTable(
                 name: "CourseProfessor");
+
+            migrationBuilder.DropTable(
+                name: "CourseStudent");
 
             migrationBuilder.DropTable(
                 name: "Messages");
@@ -218,19 +253,19 @@ namespace UniSync.Infrastructure.Migrations
                 name: "PasswordResetCodes");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Professors");
 
             migrationBuilder.DropTable(
-                name: "Professors");
+                name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Channels");
 
             migrationBuilder.DropTable(
                 name: "ChatUsers");
-
-            migrationBuilder.DropTable(
-                name: "Course");
         }
     }
 }

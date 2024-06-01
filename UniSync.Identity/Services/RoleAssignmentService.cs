@@ -1,4 +1,5 @@
 using UniSync.Application.Contracts.Interfaces;
+using UniSync.Domain.Entities;
 using UniSync.Identity.Models;
 
 namespace UniSync.Identity.Services
@@ -36,7 +37,8 @@ namespace UniSync.Identity.Services
                             LastName = parts[2],
                             Semester = parts[3],
                             Group = parts[4],
-                            Role = UserRoles.Student
+                            Role = UserRoles.Student,
+                            CoursesIds = RetrieveStudentCourses(registrationId)
                         };
 
                         return student;
@@ -72,7 +74,8 @@ namespace UniSync.Identity.Services
                         {
                             FirstName = parts[1],
                             LastName = parts[2],
-                            Role = UserRoles.Professor
+                            Role = UserRoles.Professor,
+                            CoursesIds = RetrieveProfessorCourses(registrationId)
                         };
 
                         return professor;
@@ -117,6 +120,48 @@ namespace UniSync.Identity.Services
             }
 
             return null;
+        }
+
+        public List<string> RetrieveStudentCourses(string registrationId)
+        {
+            var courseIds = new List<string>();
+            string studentsCoursesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "students_courses.csv");
+
+            // Read all lines from the CSV file
+            var lines = File.ReadAllLines(studentsCoursesFilePath);
+
+            // Skip the header line and process each line
+            foreach (var line in lines.Skip(1))
+            {
+                var values = line.Split(',');
+                if (values[0].Trim() == registrationId)
+                {
+                    courseIds.Add(values[1].Trim());
+                }
+            }
+
+            return courseIds;
+        }
+
+        public List<string> RetrieveProfessorCourses(string registrationId)
+        {
+            var courseIds = new List<string>();
+            string professorsCoursesFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "professors_courses.csv");
+
+            // Read all lines from the CSV file
+            var lines = File.ReadAllLines(professorsCoursesFilePath);
+
+            // Skip the header line and process each line
+            foreach (var line in lines.Skip(1))
+            {
+                var values = line.Split(',');
+                if (values[0].Trim() == registrationId)
+                {
+                    courseIds.Add(values[1].Trim());
+                }
+            }
+
+            return courseIds;
         }
     }
     

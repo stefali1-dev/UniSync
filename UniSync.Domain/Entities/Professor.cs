@@ -10,7 +10,18 @@ namespace UniSync.Domain.Entities
         public Guid ChatUserId { get; set; }
 
         public ProfessorType Type { get; set; }
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual List<Course> Courses { get; set; } = new List<Course>();
+
+        public void AttatchCourse(Course course)
+        {
+            if (Courses == null)
+            {
+                Courses = new List<Course>();
+
+            }
+
+            Courses.Add(course);
+        }
 
     }
 }

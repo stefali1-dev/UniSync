@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UniSync.Application\UniSync.Application.csproj" />
+    <ProjectReference Include="..\UniSync.Infrastructure\UniSync.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -28,5 +28,20 @@ namespace UniSync.Domain.Entities.Administration
         public virtual List<Professor> Professors { get; set; }
         public virtual List<Student> Students { get; set; }
 
+        public void AttachStudent(Student student)
+        {
+            if (student != null)
+            {
+                Students.Add(student);
+            }
+        }
+
+        public void AttachProfessor(Professor professor)
+        {
+            if (professor != null)
+            {
+                Professors.Add(professor);
+            }
+        }
     }
 }

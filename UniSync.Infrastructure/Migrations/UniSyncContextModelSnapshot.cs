@@ -55,6 +55,21 @@ namespace UniSync.Infrastructure.Migrations
                     b.ToTable("CourseProfessor");
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<Guid>("CoursesCourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StudentsStudentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CoursesCourseId", "StudentsStudentId");
+
+                    b.HasIndex("StudentsStudentId");
+
+                    b.ToTable("CourseStudent");
+                });
+
             modelBuilder.Entity("UniSync.Domain.Entities.Admin", b =>
                 {
                     b.Property<Guid>("AdminId")
@@ -209,9 +224,6 @@ namespace UniSync.Infrastructure.Migrations
                     b.Property<Guid>("ChatUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Group")
                         .IsRequired()
                         .HasColumnType("text");
@@ -220,8 +232,6 @@ namespace UniSync.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("StudentId");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("Students");
                 });
@@ -256,6 +266,21 @@ namespace UniSync.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("UniSync.Domain.Entities.Administration.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniSync.Domain.Entities.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("UniSync.Domain.Entities.Message", b =>
                 {
                     b.HasOne("UniSync.Domain.Entities.Channel", "Channel")
@@ -273,18 +298,6 @@ namespace UniSync.Infrastructure.Migrations
                     b.Navigation("Channel");
 
                     b.Navigation("ChatUser");
-                });
-
-            modelBuilder.Entity("UniSync.Domain.Entities.Student", b =>
-                {
-                    b.HasOne("UniSync.Domain.Entities.Administration.Course", null)
-                        .WithMany("Students")
-                        .HasForeignKey("CourseId");
-                });
-
-            modelBuilder.Entity("UniSync.Domain.Entities.Administration.Course", b =>
-                {
-                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("UniSync.Domain.Entities.Channel", b =>
