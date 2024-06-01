@@ -20,6 +20,8 @@ namespace UniSync.Infrastructure
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Professor> Professors { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+
         public DbSet<ChatUser> ChatUsers { get; set; }
 
 

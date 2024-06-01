@@ -10,53 +10,109 @@ namespace UniSync.Identity.Services
 
         public UserInfoDto GetUserInfoByRegistrationId(string registrationId)
         {
-            string usersInfoFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "users_info.txt");
-            Console.WriteLine(usersInfoFilePath);
-
-            if (!File.Exists(usersInfoFilePath))
+            if (registrationId.StartsWith('3'))
             {
-                Console.WriteLine("Didn't find text file");
-                return null;
-            }
-
-            Console.WriteLine("Read from text file");
-
-            string[] lines = File.ReadAllLines(usersInfoFilePath);
-
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(',');
-
-                if (parts[0] == registrationId)
+                // student
+                string studentsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "students.csv");
+                if (!File.Exists(studentsFilePath))
                 {
-                    if (registrationId.StartsWith('2'))
-                    {
-                        // professor
-                        UserInfoDto professor = new UserInfoDto
-                        {
-                            FirstName = parts[1],
-                            LastName = parts[2],
-                            Courses = new List<string>(parts[3..])
-                    };
+                    Console.WriteLine("Didn't find csv file");
+                    return null;
+                }
 
-                        return professor;
-                    }
+                string[] lines = File.ReadAllLines(studentsFilePath);
 
-                    if (registrationId.StartsWith('3'))
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split(',');
+
+                    if (parts[0] == registrationId)
                     {
+
                         // student
                         UserInfoDto student = new UserInfoDto
                         {
                             FirstName = parts[1],
                             LastName = parts[2],
                             Semester = parts[3],
-                            Group = parts[4]
+                            Group = parts[4],
+                            Role = UserRoles.Student
                         };
 
                         return student;
+
+
                     }
+                }
+
+            }
 
 
+            if (registrationId.StartsWith('2'))
+            {
+                // professor
+                string professorsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "professors.csv");
+                if (!File.Exists(professorsFilePath))
+                {
+                    Console.WriteLine("Didn't find csv file");
+                    return null;
+                }
+
+                string[] lines = File.ReadAllLines(professorsFilePath);
+
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split(',');
+
+                    if (parts[0] == registrationId)
+                    {
+
+                        // professor
+                        UserInfoDto professor = new UserInfoDto
+                        {
+                            FirstName = parts[1],
+                            LastName = parts[2],
+                            Role = UserRoles.Professor
+                        };
+
+                        return professor;
+
+
+                    }
+                }
+            }
+
+            if (registrationId.StartsWith('1'))
+            {
+                // admins
+                string adminsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "admins.csv");
+                if (!File.Exists(adminsFilePath))
+                {
+                    Console.WriteLine("Didn't find csv file");
+                    return null;
+                }
+
+                string[] lines = File.ReadAllLines(adminsFilePath);
+
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split(',');
+
+                    if (parts[0] == registrationId)
+                    {
+
+                        // admin
+                        UserInfoDto admin = new UserInfoDto
+                        {
+                            FirstName = parts[1],
+                            LastName = parts[2],
+                            Role = UserRoles.Admin
+                        };
+
+                        return admin;
+
+
+                    }
                 }
             }
 

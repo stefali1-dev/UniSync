@@ -16,5 +16,5 @@ public class UserInfoDto
 
     public string? Semester { get; set; }
     public string? Group { get; set; }
-    public List<string>? Courses { get; set; }
+    public List<string>? CoursesIds { get; set; }
 }

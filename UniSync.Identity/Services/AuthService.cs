@@ -23,13 +23,14 @@ namespace UniSync.Identity.Services
         private readonly IStudentRepository studentRepository;
         private readonly IChatUserRepository chatUserRepository;
         private readonly IProfessorRepository professorRepository;
+        private readonly IAdminRepository adminRepository;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly IPasswordResetCode passwordResetCodeRepository;
         private readonly IRoleAssignmentService roleAssignmentService;
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService, IChatUserRepository chatUserRepository, IProfessorRepository professorRepository)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IStudentRepository studentRepository, IPasswordResetCode passwordResetCodeRepository, IRoleAssignmentService roleAssignmentService, IChatUserRepository chatUserRepository, IProfessorRepository professorRepository, IAdminRepository adminRepository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -40,8 +41,9 @@ namespace UniSync.Identity.Services
             this.roleAssignmentService = roleAssignmentService;
             this.chatUserRepository = chatUserRepository;
             this.professorRepository = professorRepository;
+            this.adminRepository = adminRepository;
         }
-        public async Task<(int, string)> Registeration(RegistrationModel model, string role)
+        public async Task<(int, string)> Registeration(RegistrationModel model)
         {
             var userExistsByEmail = await userManager.FindByEmailAsync(model.Email);
             if (userExistsByEmail != null)
@@ -68,11 +70,11 @@ namespace UniSync.Identity.Services
                 return (0, "User creation failed! Please check user details and try again.");
             }
 
-            if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole(role));
+            if (!await roleManager.RoleExistsAsync(userInfo.Role))
+                await roleManager.CreateAsync(new IdentityRole(userInfo.Role));
 
-            if (await roleManager.RoleExistsAsync(UserRoles.User))
-                await userManager.AddToRoleAsync(user, role);
+            if (await roleManager.RoleExistsAsync(userInfo.Role))
+                await userManager.AddToRoleAsync(user, userInfo.Role);
 
             // TODO
             //var userDomain = User.Create(Guid.Parse(user.Id));
@@ -87,11 +89,11 @@ namespace UniSync.Identity.Services
             var registrationId = model.RegistrationId;
 
             // TODO: implement real logic
-            if(registrationId.StartsWith("3"))
+            if(registrationId.StartsWith('3'))
             {
                 var student = new Student
                 {
-                    StudentId = Guid.NewGuid(),
+                    StudentId = chatUser.AppUserId,
                     ChatUserId = chatUser.ChatUserId,
                     Semester = Convert.ToInt32(userInfo.Semester),
                     Group = userInfo.Group
@@ -100,11 +102,11 @@ namespace UniSync.Identity.Services
                 await studentRepository.AddAsync(student);
             }
 
-            if (registrationId.StartsWith("2"))
+            if (registrationId.StartsWith('2'))
             {
                 var professor = new Professor
                 {
-                    ProfessorId = Guid.NewGuid(),
+                    ProfessorId = chatUser.AppUserId,
                     ChatUserId = chatUser.ChatUserId,
                     Type = Domain.Common.ProfessorType.Course,
                     Courses = new List<Course>()
@@ -112,6 +114,19 @@ namespace UniSync.Identity.Services
                 };
                 await professorRepository.AddAsync(professor);
             }
+
+            if (registrationId.StartsWith('1'))
+            {
+                var admin = new Admin
+                {
+                    AdminId = chatUser.AppUserId,
+                    Title = "Secretary"
+
+                };
+                await adminRepository.AddAsync(admin);
+            }
+
+
 
             return (1, "User created successfully!");
         }
