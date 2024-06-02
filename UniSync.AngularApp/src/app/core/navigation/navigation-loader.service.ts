@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { VexLayoutService } from '@vex/services/vex-layout.service';
 import { NavigationItem } from './navigation-item.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { StorageService } from '../../_services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,43 +15,50 @@ export class NavigationLoaderService {
     return this._items.asObservable();
   }
 
-  constructor(private readonly layoutService: VexLayoutService) {
+  constructor(
+    private readonly layoutService: VexLayoutService,
+    private storageService: StorageService
+  ) {
     this.loadNavigation();
   }
 
   loadNavigation(): void {
     this._items.next([
       {
-        type: 'subheading',
-        label: 'Dashboards',
-        children: [
-          {
-            type: 'link',
-            label: 'Analytics',
-            route: '/',
-            icon: 'mat:insights',
-            routerLinkActiveOptions: { exact: true }
-          }
-        ]
+        type: 'link',
+        label: 'Home',
+        route: '/',
+        routerLinkActiveOptions: { exact: true }
+      },
+      {
+        type: 'link',
+        label: 'Chat',
+        route: '/apps/chat',
+        icon: 'mat:chat'
+      },
+      {
+        type: 'link',
+        label: 'Courses',
+        route: '/apps/courses'
+      },
+      {
+        type: 'link',
+        label: 'Evaluation',
+        route: '/apps/evaluation'
+        // TODO: add dynamic professor/student evaluation trough storage service
+      },
+      {
+        type: 'link',
+        label: 'Timetable',
+        route: '/apps/timetable'
       },
       {
         type: 'subheading',
-        label: 'Apps',
+        label: 'Social',
         children: [
           {
             type: 'link',
-            label: 'Chat',
-            route: '/apps/chat',
-            icon: 'mat:chat',
-            badge: {
-              value: '16',
-              bgClass: 'bg-cyan-600',
-              textClass: 'text-white'
-            }
-          },
-          {
-            type: 'link',
-            label: 'Contacts',
+            label: 'All Users',
             route: '/apps/contacts',
             icon: 'mat:contacts',
             badge: {
@@ -61,7 +69,7 @@ export class NavigationLoaderService {
           },
           {
             type: 'link',
-            label: 'Profile',
+            label: 'My Profile',
             route: '/apps/profile',
             icon: 'mat:person_outline',
             badge: {
@@ -71,7 +79,7 @@ export class NavigationLoaderService {
             }
           }
         ]
-      },
+      }
     ]);
   }
 }

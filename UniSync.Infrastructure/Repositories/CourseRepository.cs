@@ -35,5 +35,16 @@ namespace UniSync.Infrastructure.Repositories
                 return Result<Course>.Failure($"An error occurred while retrieving the course: {ex.Message}");
             }
         }
+
+        public Task<Result<List<Course>>> GetByProfessorId(Guid professorId)
+        { 
+                    throw new NotImplementedException();
+
+        }
+
+        public Task<Result<List<Course>>> GetByStudentId(string studentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

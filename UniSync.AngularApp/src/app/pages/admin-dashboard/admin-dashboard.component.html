@@ -1,0 +1,44 @@
+<div class="container mx-auto p-8">
+    <!-- Students Section -->
+    <section class="mb-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Students</h2>
+      <div class="flex space-x-4 mb-4">
+        <button (click)="addStudent()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add Student</button>
+        <button (click)="removeStudent()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove Student</button>
+      </div>
+
+      <div class="flex space-x-4 mb-4">
+        <button (click)="addStudent()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Enroll Student</button>
+        <button (click)="removeStudent()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Un-Enroll Student</button>
+      </div>
+      <!-- Student list and management features here -->
+    </section>
+  
+    <!-- Professors Section -->
+    <section class="mb-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Professors</h2>
+
+      <div class="flex space-x-4 mb-4">
+        <button (click)="addStudent()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add Professor</button>
+        <button (click)="removeStudent()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove Professor</button>
+      </div>
+
+
+      <div class="flex space-x-4 mb-4">
+        <button (click)="addCourseToProfessor()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add to Course</button>
+        <button (click)="removeCourseFromProfessor()" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove from Course</button>
+      </div>
+      <!-- Professor list and management features here -->
+    </section>
+  
+    <!-- Courses Section -->
+    <section class="p-6 bg-white rounded-lg shadow-md">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Courses</h2>
+      <div class="flex space-x-4 mb-4">
+        <button (click)="createCourse()" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300">Create Course</button>
+        <button (click)="deleteCourse()" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300">Delete Course</button>
+      </div>
+      <!-- Course list and management features here -->
+    </section>
+  </div>
+  

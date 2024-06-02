@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UniSync.Application.Persistence;
 using UniSync.Domain.Entities;
+using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Infrastructure.Repositories
 {

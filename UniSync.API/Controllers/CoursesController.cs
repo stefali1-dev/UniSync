@@ -4,6 +4,8 @@ using UniSync.Application.Contracts.Interfaces;
 using UniSync.Application.Features.Channels.Commands.CreateChannel;
 using UniSync.Application.Features.Channels.Queries;
 using UniSync.Application.Features.Courses;
+using UniSync.Application.Features.Users.Queries.GetByEmail;
+using UniSync.Domain.Common;
 using UniSync.Domain.Entities;
 
 namespace UniSync.Api.Controllers;
@@ -32,6 +34,36 @@ public class CoursesController : ApiControllerBase
         {
             // Log the exception details here
             return BadRequest($"An error occurred while loading courses: {ex.Message}");
+        }
+    }
+
+    [HttpGet("ByProfessorId/{professorId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCoursesByProfessorId(string professorId)
+    {
+        try
+        {
+            var courses = await coursesService.GetCoursesByProfessorId(professorId);
+            return Ok(courses);
+        }
+        catch
+        {
+            return BadRequest("Error retriving courses ");
+        }
+    }
+
+    [HttpGet("ByStudentId/{studentId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCoursesByStudentId(string studentId)
+    {
+        try
+        {
+            var courses = await coursesService.GetCoursesByStudentId(studentId);
+            return Ok(courses);
+        }
+        catch
+        {
+            return BadRequest("Error retriving courses ");
         }
     }
 

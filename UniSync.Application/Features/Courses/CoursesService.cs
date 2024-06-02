@@ -7,10 +7,14 @@ namespace UniSync.Application.Features.Courses
     public class CoursesService : ICoursesService
     {
         private readonly ICourseRepository courseRepository;
+        private readonly IProfessorRepository professorRepository;
+        private readonly IStudentRepository studentRepository;
 
-        public CoursesService(ICourseRepository courseRepository)
+        public CoursesService(ICourseRepository courseRepository, IProfessorRepository professorRepository, IStudentRepository studentRepository)
         {
             this.courseRepository = courseRepository;
+            this.professorRepository = professorRepository;
+            this.studentRepository = studentRepository;
         }
 
         public async Task LoadCoursesFromCsv(string csvPath)
@@ -35,6 +39,33 @@ namespace UniSync.Application.Features.Courses
 
                 var result = await courseRepository.AddAsync(course);
 
+            }
+
+        }
+
+        public async Task<List<Course>> GetCoursesByProfessorId(string professorId)
+        {
+            try
+            {
+                var result = await professorRepository.FindByIdAsync(new Guid(professorId));
+                return result.Value.Courses;
+            }
+            catch (Exception ex)
+            {
+                return new List<Course>();
+            }
+
+        }
+        public async Task<List<Course>> GetCoursesByStudentId(string studentId)
+        {
+            try
+            {
+                var result = await studentRepository.FindByIdAsync(new Guid(studentId));
+                return result.Value.Courses;
+            }
+            catch (Exception ex)
+            {
+                return new List<Course>();
             }
 
         }
