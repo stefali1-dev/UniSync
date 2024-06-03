@@ -170,11 +170,14 @@ namespace UniSync.Identity.Services
             if (!await userManager.CheckPasswordAsync(user, model.Password!))
                 return (0, "Invalid password");
 
+            var chatUser = await chatUserRepository.FindByIdAsync(new Guid(user.Id));
+
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
             {
                new Claim(ClaimTypes.Email, user.Email!),
                new Claim(ClaimTypes.NameIdentifier, user.Id!),
+               new Claim("AppUserId", chatUser.Value.AppUserId.ToString()),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 

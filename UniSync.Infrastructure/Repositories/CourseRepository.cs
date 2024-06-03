@@ -36,15 +36,5 @@ namespace UniSync.Infrastructure.Repositories
             }
         }
 
-        public Task<Result<List<Course>>> GetByProfessorId(Guid professorId)
-        { 
-                    throw new NotImplementedException();
-
-        }
-
-        public Task<Result<List<Course>>> GetByStudentId(string studentId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

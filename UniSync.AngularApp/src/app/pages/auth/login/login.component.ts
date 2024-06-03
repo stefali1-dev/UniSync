@@ -14,12 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {AuthService} from "../../../_services/auth.service";
-import {StorageService} from "../../../_services/storage.service";
+import { AuthService } from '../../../_services/auth.service';
+import { StorageService } from '../../../_services/storage.service';
 import { Inject } from '@angular/core';
 import { Member } from '../../../_modules/member';
-
-
 
 @Component({
   selector: 'vex-login',
@@ -60,7 +58,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private snackbar: MatSnackBar,
-    @Inject(AuthService) private authService: AuthService, 
+    @Inject(AuthService) private authService: AuthService,
     private storageService: StorageService
   ) {}
 
@@ -72,20 +70,20 @@ export class LoginComponent {
   }
 
   send() {
-    
     var email = this.form.get('email')?.value ?? '';
     var password = this.form.get('password')?.value ?? '';
 
     this.authService.login(email, password).subscribe({
-      next: data => {
+      next: (data) => {
         console.log(data);
 
         let newMember: Member = {
-          token : data,
+          token: data,
           userId: null,
           email: null,
           username: null,
-          role: null
+          role: null,
+          appUserId: null
         };
 
         this.storageService.saveUser(newMember);
@@ -95,7 +93,7 @@ export class LoginComponent {
         this.roles = this.storageService.getUser().roles;
         this.router.navigate(['/']);
       },
-      error: err => {
+      error: (err) => {
         console.log(err);
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
@@ -109,7 +107,6 @@ export class LoginComponent {
     //     duration: 10000
     //   }
     // );
-    
   }
 
   reloadPage(): void {

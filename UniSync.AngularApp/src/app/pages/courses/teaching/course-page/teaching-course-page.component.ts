@@ -10,38 +10,32 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'vex-page-layout-simple-large-header-tabbed',
-  templateUrl: './course-page.component.html',
+  templateUrl: './teaching-course-page.component.html',
   standalone: true,
   imports: [
     VexPageLayoutComponent,
     VexPageLayoutHeaderDirective,
     VexBreadcrumbsComponent,
     VexPageLayoutContentDirective,
-    MatTabsModule,
+    MatTabsModule
   ]
 })
 export class CoursePageComponent implements OnInit {
-
-  constructor(
-    private route: ActivatedRoute,
-
-  ) {}
+  constructor(private route: ActivatedRoute) {}
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.route.paramMap
-    .pipe(
-      map((paramMap) => paramMap.get('courseId')),
-      takeUntilDestroyed(this.destroyRef)
-    )
-    .subscribe((courseId) => {
+      .pipe(
+        map((paramMap) => paramMap.get('courseId')),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((courseId) => {
+        //this.messages = [];
 
-      //this.messages = [];
-
-      if (!courseId) {
-        throw new Error('Chat id not found!');
-      }
-
-    });
+        if (!courseId) {
+          throw new Error('Chat id not found!');
+        }
+      });
   }
 }

@@ -1,12 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using UniSync.API.Controllers;
 using UniSync.Application.Contracts.Interfaces;
-using UniSync.Application.Features.Channels.Commands.CreateChannel;
-using UniSync.Application.Features.Channels.Queries;
-using UniSync.Application.Features.Courses;
-using UniSync.Application.Features.Users.Queries.GetByEmail;
-using UniSync.Domain.Common;
-using UniSync.Domain.Entities;
 
 namespace UniSync.Api.Controllers;
 

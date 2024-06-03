@@ -1,5 +1,6 @@
 ﻿using UniSync.Application.Contracts.Interfaces;
 using UniSync.Application.Persistence;
+using UniSync.Domain.Entities;
 using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Application.Features.Courses
@@ -43,29 +44,69 @@ namespace UniSync.Application.Features.Courses
 
         }
 
-        public async Task<List<Course>> GetCoursesByProfessorId(string professorId)
+        public async Task<List<CourseDto>> GetCoursesByProfessorId(string professorId)
         {
             try
             {
                 var result = await professorRepository.FindByIdAsync(new Guid(professorId));
-                return result.Value.Courses;
+
+                var courseDtoList = new List<CourseDto>();
+
+                foreach (Course c in result.Value.Courses)
+                {
+                    CourseDto courseDto = new CourseDto
+                    {
+                        CourseId = c.CourseId.ToString(),
+                        CourseName = c.CourseName,
+                        CourseNumber = c.CourseNumber,
+                        Credits = c.Credits,
+                        Description = c.Description,
+                        Semester = c.Semester,
+                        ProfessorsIds = c.Professors.Select(p => p.ProfessorId.ToString()).ToList(),
+                        StudentsIds = c.Students.Select(p => p.StudentId.ToString()).ToList()
+                    };
+
+                    courseDtoList.Add(courseDto);
+                }
+                return courseDtoList;
+
             }
             catch (Exception ex)
             {
-                return new List<Course>();
+                return new List<CourseDto>();
             }
 
         }
-        public async Task<List<Course>> GetCoursesByStudentId(string studentId)
+        public async Task<List<CourseDto>> GetCoursesByStudentId(string studentId)
         {
             try
             {
                 var result = await studentRepository.FindByIdAsync(new Guid(studentId));
-                return result.Value.Courses;
+
+                var courseDtoList = new List<CourseDto>();
+
+                foreach (Course c in result.Value.Courses)
+                {
+                    CourseDto courseDto = new CourseDto
+                    {
+                        CourseId = c.CourseId.ToString(),
+                        CourseName = c.CourseName,
+                        CourseNumber = c.CourseNumber,
+                        Credits = c.Credits,
+                        Description = c.Description,
+                        Semester = c.Semester,
+                        ProfessorsIds = c.Professors.Select(p => p.ProfessorId.ToString()).ToList(),
+                        StudentsIds = c.Students.Select(p => p.StudentId.ToString()).ToList()
+                    };
+
+                    courseDtoList.Add(courseDto);
+                }
+                return courseDtoList;
+
             }
             catch (Exception ex)
             {
-                return new List<Course>();
+                return new List<CourseDto>();
             }
 
         }

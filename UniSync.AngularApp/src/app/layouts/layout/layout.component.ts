@@ -18,8 +18,8 @@ import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { SearchComponent } from '../components/toolbar/search/search.component';
 import { VexProgressBarComponent } from '@vex/components/vex-progress-bar/vex-progress-bar.component';
 import { VexConfig } from '@vex/config/vex-config.interface';
-import {StorageService} from "../../_services/storage.service";
-import {AuthService} from "../../_services/auth.service";
+import { StorageService } from '../../_services/storage.service';
+import { AuthService } from '../../_services/auth.service';
 
 import { Member } from '../../_modules/member';
 
@@ -73,22 +73,30 @@ export class LayoutComponent {
 
   ngOnInit() {
     this.authService.getCurrentUserInfo().subscribe({
-      next: data => {
-        console.log("Current user info: ")
+      next: (data) => {
+        console.log('Current user info: ');
         console.log(data);
 
         let newMember: Member = {
-          token : this.storageService.getUser().token,
-          userId: data?.claims?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
-          email: data?.claims?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+          token: this.storageService.getUser().token,
+          userId:
+            data?.claims?.[
+              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+            ],
+          email:
+            data?.claims?.[
+              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+            ],
           username: data?.userName,
-          role: data?.claims?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+          role: data?.claims?.[
+            'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+          ],
+          appUserId: data?.claims?.['AppUserId']
         };
 
         this.storageService.saveUser(newMember);
-
       },
-      error: err => {
+      error: (err) => {
         console.log(err);
       }
     });

@@ -2,9 +2,9 @@ import { VexRoutes } from '@vex/interfaces/vex-route.interface';
 
 const routes: VexRoutes = [
   {
-    path: '',
+    path: 'enrolled',
     loadComponent: () =>
-      import('./list/courses-list.component').then(
+      import('./enrolled/course-list/enrolled-courses-list.component').then(
         (m) => m.CourseListComponent
       ),
     data: {
@@ -12,10 +12,10 @@ const routes: VexRoutes = [
     }
   },
   {
-    path: ':courseId',
+    path: 'enrolled/:courseId',
     loadComponent: () =>
-      import('./course-page.component').then(
-        (m) => m.CoursePageComponent
+      import('./enrolled/course-page/enrolled-course-page.component').then(
+        (m) => m.EnrolledCoursePageComponent
       ),
     data: {
       toolbarShadowEnabled: true
