@@ -3,9 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { AuthService } from './_services/auth.service';
 import { StorageService } from './_services/storage.service';
 import { Inject } from '@angular/core';
-import { Router, } from '@angular/router';
-
-
+import { Router } from '@angular/router';
+import { ChatService } from './pages/chat/chat.service';
 
 @Component({
   selector: 'vex-root',
@@ -23,8 +22,9 @@ export class AppComponent {
   constructor(
     private router: Router,
     private storageService: StorageService,
+    private chatService: ChatService,
     @Inject(AuthService) private authService: AuthService
-    ) { }
+  ) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
@@ -41,15 +41,17 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout().subscribe({
-      next: res => {
+      next: (res) => {
         console.log(res);
         this.storageService.clean();
 
         window.location.reload();
       },
-      error: err => {
+      error: (err) => {
         console.log(err);
       }
     });
+
+    this.chatService.clearAllInfo();
   }
 }

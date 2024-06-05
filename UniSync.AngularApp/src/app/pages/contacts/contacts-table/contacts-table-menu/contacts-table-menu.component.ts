@@ -45,7 +45,7 @@ export class ContactsTableMenuComponent implements OnInit {
       type: 'link',
       id: 'all',
       icon: 'mat:view_headline',
-      label: 'All Contacts'
+      label: 'All Users'
     },
     {
       type: 'link',
