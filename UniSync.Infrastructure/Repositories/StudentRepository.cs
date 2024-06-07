@@ -14,6 +14,19 @@ public class StudentRepository : BaseRepository<Student>, IStudentRepository
 
     }
 
+    public async Task<Result<Student>> FindByChatUserId(Guid chatUserId)
+    {
+        var student = await context.Students.SingleOrDefaultAsync(s => s.ChatUserId == chatUserId);
+
+        if (student == null)
+        {
+            return Result<Student>.Failure($"No student found with ChatUserId: {chatUserId}");
+        }
+
+        return Result<Student>.Success(student);
+    }
+
+
     public async Task<Result<IReadOnlyList<Student>>> GetStudentsByGroupAsync(string groupName)
     {
         var students = await context.Students

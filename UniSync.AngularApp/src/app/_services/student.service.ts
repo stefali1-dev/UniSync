@@ -24,4 +24,11 @@ export class StudentService {
       API_URL + `/Users/Students/search?searchValue=${searchValue}`
     );
   }
+
+  getStudentById(appUserId: string): Observable<any> {
+    return this.http.get(API_URL + `/Students/ById/${appUserId}`);
+  }
+  getStudentByChatUserId(chatUserId: string): Observable<any> {
+    return this.http.get(API_URL + `/Students/ByChatUserId/${chatUserId}`);
+  }
 }

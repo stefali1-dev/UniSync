@@ -5,11 +5,13 @@ namespace UniSync.Domain.Entities.Administration
 {
     public class Evaluation
     {
-        public Guid EvaluationId { get; private set; }
-        public Guid StudentId { get; private set; }
-        public Guid CourseId { get; private set; }
-        public int Grade { get; private set; }
-        public string? Comments { get; private set; }
+        public Guid EvaluationId { get; set; }
+        public Guid StudentId { get; set; }
+        public Guid CourseId { get; set; }
+        public Guid ProfessorId { get; set; }
+        public int Grade { get; set; }
+        public DateTime DateTime { get; set; }
+        public string? Comments { get; set; }
 
     }
 }

@@ -6,5 +6,7 @@ namespace UniSync.Application.Persistence
     public interface IStudentRepository : IAsyncRepository<Student>
     {
         Task<Result<IReadOnlyList<Student>>> GetStudentsByGroupAsync(string groupName);
+        Task<Result<Student>> FindByChatUserId(Guid chatUserId);
+
     }
 }

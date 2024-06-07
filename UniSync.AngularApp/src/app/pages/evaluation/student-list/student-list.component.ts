@@ -130,7 +130,7 @@ export class StudentListComponent implements OnInit {
 
   openContact(id?: Contact['id']) {
     console.log('Clicked contact!');
-    this.router.navigate(['apps/evaluation/professor/' + id]);
+    this.router.navigate(['apps/evaluation/' + id]);
   }
 
   toggleStar(id: Contact['id']) {

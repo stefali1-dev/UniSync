@@ -64,6 +64,7 @@ export const appRoutes: VexRoutes = [
           },
           {
             path: 'evaluation',
+            canActivate: [RoleGuard],
             loadChildren: () => import('./pages/evaluation/evaluation.routes')
           },
           {

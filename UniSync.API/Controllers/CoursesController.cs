@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using UniSync.API.Controllers;
 using UniSync.Application.Contracts.Interfaces;
+using UniSync.Application.Features.Courses;
+using UniSync.Application.Features.Students;
+using UniSync.Application.Persistence;
 
 namespace UniSync.Api.Controllers;
 
@@ -8,10 +11,12 @@ namespace UniSync.Api.Controllers;
 public class CoursesController : ApiControllerBase
 {
     private readonly ICoursesService coursesService;
+    private readonly ICourseRepository courseRepository;
 
-    public CoursesController(ICoursesService coursesService)
+    public CoursesController(ICoursesService coursesService, ICourseRepository courseRepository)
     {
         this.coursesService = coursesService;
+        this.courseRepository = courseRepository;
     }
 
     [HttpPost("load-csv")]
@@ -46,19 +51,31 @@ public class CoursesController : ApiControllerBase
         }
     }
 
-    [HttpGet("ByStudentId/{studentId}")]
+
+    [HttpGet("ById/{courseId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCoursesByStudentId(string studentId)
+    public async Task<IActionResult> GetCourseById(string courseId)
     {
-        try
+        var result = await this.courseRepository.FindByIdAsync(new Guid(courseId));
+        var course = result.Value;
+        var courseDto = new CourseDto
         {
-            var courses = await coursesService.GetCoursesByStudentId(studentId);
-            return Ok(courses);
-        }
-        catch
+            CourseId = course.CourseId.ToString(),
+            CourseName = course.CourseName,
+            CourseNumber = course.CourseNumber,
+            Credits = course.Credits,
+            Description = course.Description,
+            Semester = course.Semester,
+            ProfessorsIds = course.Professors.Select(p => p.ProfessorId.ToString()).ToList(),
+            StudentsIds = course.Students.Select(s => s.StudentId.ToString()).ToList()
+        };
+
+
+        if (result == null)
         {
-            return BadRequest("Error retriving courses ");
+            return NotFound($"Student with ID {courseId} not found");
         }
+        return Ok(courseDto);
     }
 
 }

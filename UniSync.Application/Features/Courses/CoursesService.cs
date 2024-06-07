@@ -29,7 +29,7 @@ namespace UniSync.Application.Features.Courses
             {
                 string[] values = lines[i].Split(',');
 
-                // Create a new Course object and fill it with data
+                // TODO: Add course students and professors
                 Course course = new Course(
                     Guid.NewGuid(),
                     values[1], // courseName

@@ -6,7 +6,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AsyncPipe} from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +15,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
-
+import { StorageService } from 'src/app/_services/storage.service';
+import { StudentService } from 'src/app/_services/student.service';
+import { UserService } from 'src/app/_services/user.service';
+import { OnInit } from '@angular/core';
+import { CourseService } from 'src/app/_services/course.service';
+import { ActivatedRoute } from '@angular/router';
+import { Course } from '../../courses/enrolled/course-list/enrolled-courses-list.component';
 
 @Component({
   selector: 'app-student-page',
@@ -38,64 +44,50 @@ import { map, startWith } from 'rxjs/operators';
     MatSlideToggleModule,
     MatCheckboxModule,
     AsyncPipe,
-    NgClass,
+    NgClass
   ]
 })
-export class StudentPageComponent {
+export class StudentPageComponent implements OnInit {
+  studentId: any;
   studentName = 'John Doe';
   studentGroup = 'CS301';
-  enrolledCourses = ['Introduction to Programming', 'Data Structures and Algorithms', 'Database Systems'];
+  enrolledCourses: Course[] = [];
   stateCtrl = new UntypedFormControl();
-
-  states = [
-    {
-      name: 'Arkansas',
-      population: '2.978M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_Arkansas.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg'
-    },
-    {
-      name: 'California',
-      population: '39.14M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_California.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg'
-    },
-    {
-      name: 'Florida',
-      population: '20.27M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_Florida.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg'
-    },
-    {
-      name: 'Texas',
-      population: '27.47M',
-      // https://commons.wikimedia.org/wiki/File:Flag_of_Texas.svg
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg'
-    }
-  ];
-  filteredStates$ = this.stateCtrl.valueChanges.pipe(
-    startWith(''),
-    map((state) => (state ? this.filterStates(state) : this.states.slice()))
-  );
 
   courseDetails = [
     {
       name: 'Introduction to Programming',
       labActivities: ['Hello World', 'Basic Data Types', 'Control Structures'],
       attendance: 90,
-      examScore: 85,
+      examScore: 85
     },
     {
       name: 'Data Structures and Algorithms',
       labActivities: ['Arrays', 'Linked Lists', 'Trees'],
       attendance: 92,
-      examScore: 88,
-    },
+      examScore: 88
+    }
     // Add more course details as needed
   ];
 
   selectedCourse: any;
   showModal = false;
+
+  constructor(
+    private storageService: StorageService,
+    private studentService: StudentService,
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private courseService: CourseService
+  ) {}
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('studentId');
+    if (id !== null) {
+      this.studentId = id;
+      this.getStudentInfo();
+    }
+  }
 
   openGradingModal(course: any) {
     this.selectedCourse = course;
@@ -110,12 +102,54 @@ export class StudentPageComponent {
   saveGrading() {
     // Implement logic to save the grading data
     console.log('Grading saved for:', this.selectedCourse.name);
-    this.closeModal()
+    this.closeModal();
   }
 
-  filterStates(name: string) {
-    return this.states.filter(
-      (state) => state.name.toLowerCase().indexOf(name.toLowerCase()) === 0
-    );
+  getStudentInfo() {
+    this.userService.getUserById(this.studentId).subscribe({
+      next: (data) => {
+        let user = data.user;
+
+        this.studentName = user.firstName + ' ' + user.lastName;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    this.studentService.getStudentByChatUserId(this.studentId).subscribe({
+      next: (student) => {
+        this.studentGroup = student.group;
+        let retreivedCourses: Course[] = [];
+
+        student.coursesIds.forEach((courseId) => {
+          this.courseService.getCoursesByCourseId(courseId).subscribe({
+            next: (c) => {
+              console.log(c);
+
+              let course: Course = {
+                courseId: c.courseId,
+                courseName: c.courseName,
+                courseNumber: c.courseNumber,
+                credits: c.credits,
+                description: c.description,
+                semester: c.semester
+              };
+
+              retreivedCourses.push(course);
+            },
+            error: (err) => {
+              console.log(err);
+            }
+          });
+        });
+
+        this.enrolledCourses = retreivedCourses;
+      },
+
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 }

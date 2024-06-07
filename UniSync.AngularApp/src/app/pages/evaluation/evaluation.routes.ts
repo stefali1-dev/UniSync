@@ -12,14 +12,14 @@ const routes: VexRoutes = [
     }
   },
   {
-    path: 'professor/:studentId',
+    path: ':studentId',
     loadComponent: () =>
       import('./student-page/student-page.component').then(
         (m) => m.StudentPageComponent
       )
   },
   {
-    path: 'student/:studentId',
+    path: 'self/:studentId',
     loadComponent: () =>
       import('./student-self-page/student-self-page.component').then(
         (m) => m.StudentSelfPageComponent

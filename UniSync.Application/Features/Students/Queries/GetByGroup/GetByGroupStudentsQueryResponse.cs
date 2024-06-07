@@ -9,6 +9,6 @@ namespace UniSync.Application.Features.Students.Queries.GetByGroup
         {
 
         }
-        public List<ChatDto>? Students { get; set; }
+        public List<StudentDto>? Students { get; set; }
     }
 }

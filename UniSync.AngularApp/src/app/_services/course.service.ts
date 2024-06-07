@@ -18,4 +18,8 @@ export class CourseService {
   getCoursesByProfessorId(professorId: string): Observable<any> {
     return this.http.get(API_URL + `/Courses/ByProfessorId/${professorId}`);
   }
+
+  getCoursesByCourseId(courseId: string): Observable<any> {
+    return this.http.get(API_URL + `/Courses/ById/${courseId}`);
+  }
 }
