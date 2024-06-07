@@ -1,5 +1,4 @@
-﻿using UniSync.Application.Features.Users.Queries;
-using UniSync.Application.Persistence;
+﻿using UniSync.Application.Persistence;
 using MediatR;
 
 namespace UniSync.Application.Features.Users.Commands.UpdateUser

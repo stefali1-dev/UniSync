@@ -8,14 +8,16 @@ const API_URL = environment.apiUrl;
 @Injectable({
   providedIn: 'root'
 })
-export class CourseService {
+export class ProfessorService {
   constructor(private http: HttpClient) {}
 
-  getCoursesByStudentId(studentId: string): Observable<any> {
-    return this.http.get(API_URL + `/Courses/ByStudentId/${studentId}`);
+  getAllProfessors(): Observable<any> {
+    return this.http.get(API_URL + 'Users/Professors');
   }
 
-  getCoursesByProfessorId(professorId: string): Observable<any> {
-    return this.http.get(API_URL + `/Courses/ByProfessorId/${professorId}`);
+  searchProfessors(searchValue: string): Observable<any> {
+    return this.http.get(
+      API_URL + `Users/Professors/search?searchValue=${searchValue}`
+    );
   }
 }

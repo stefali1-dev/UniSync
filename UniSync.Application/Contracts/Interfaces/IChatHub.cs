@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using UniSync.Application.Features.Users.Queries;
+using UniSync.Application.Features.Users;
 
 namespace UniSync.Application.Contracts.Interfaces
 {

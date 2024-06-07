@@ -1,4 +1,4 @@
-﻿using UniSync.Application.Features.Users.Queries;
+﻿using UniSync.Application.Features.Users;
 using UniSync.Domain.Common;
 using UniSync.Domain.Common;
 
@@ -12,6 +12,7 @@ namespace UniSync.Application.Persistence
         Task<Result<UserDto>> DeleteAsync(Guid userId);
         Task<Result<UserDto>> UpdateAsync(UserDto user);
         Task<Result<UserDto>> UpdateRoleAsync(UserDto user, string role);
+        Task<Result<List<string>>> GetUserRolesAsync(Guid userId);
 
     }
 }

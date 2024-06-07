@@ -8,6 +8,7 @@ import {
   Router
 } from '@angular/router';
 import { AuthGuard } from './_helpers/auth.guard';
+import { RoleGuard } from './_helpers/role.guard';
 
 export const appRoutes: VexRoutes = [
   {
@@ -58,6 +59,7 @@ export const appRoutes: VexRoutes = [
           },
           {
             path: 'courses',
+            canActivate: [RoleGuard],
             loadChildren: () => import('./pages/courses/courses.routes')
           },
           {

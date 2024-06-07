@@ -1,4 +1,4 @@
-﻿namespace UniSync.Application.Features.Users.Queries
+﻿namespace UniSync.Application.Features.Users
 {
     public class UserDto
     {

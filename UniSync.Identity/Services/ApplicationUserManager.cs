@@ -1,5 +1,4 @@
 ﻿using UniSync.Application.Features.Users;
-using UniSync.Application.Features.Users.Queries;
 using UniSync.Application.Persistence;
 using UniSync.Domain.Common;
 using UniSync.Identity.Models;
@@ -130,6 +129,18 @@ namespace UniSync.Identity.Services
 
             var addToRoleResult = await userManager.AddToRoleAsync(userToUpdate, role);
             return addToRoleResult.Succeeded ? Result<UserDto>.Success(MapToUserDto(userToUpdate)) : Result<UserDto>.Failure($"User with id {userDto.UserId} not updated");
+        }
+
+        public async Task<Result<List<string>>> GetUserRolesAsync(Guid userId)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return Result<List<string>>.Failure($"User with id {userId} not found");
+            }
+
+            var roles = await userManager.GetRolesAsync(user);
+            return Result<List<string>>.Success(roles.ToList());
         }
         private void UpdateUserProperties(ApplicationUser user, UserDto userDto)
         {

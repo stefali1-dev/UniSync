@@ -20,6 +20,26 @@ const routes: VexRoutes = [
     data: {
       toolbarShadowEnabled: true
     }
+  },
+  {
+    path: 'teaching',
+    loadComponent: () =>
+      import('./teaching/course-list/teaching-courses-list.component').then(
+        (m) => m.TeachingCourseListComponent
+      ),
+    data: {
+      toolbarShadowEnabled: true
+    }
+  },
+  {
+    path: 'teaching/:courseId',
+    loadComponent: () =>
+      import('./teaching/course-page/teaching-course-page.component').then(
+        (m) => m.TeachingCoursePageComponent
+      ),
+    data: {
+      toolbarShadowEnabled: true
+    }
   }
 ];
 

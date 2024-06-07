@@ -6,7 +6,6 @@ export interface Contact {
   role: string;
   phone?: string;
   bio?: string;
-  birthday?: string;
   selected: boolean;
-  starred: boolean;
+  starred?: boolean;
 }

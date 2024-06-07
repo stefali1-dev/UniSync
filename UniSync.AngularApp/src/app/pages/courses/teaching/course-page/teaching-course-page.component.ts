@@ -20,7 +20,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatTabsModule
   ]
 })
-export class CoursePageComponent implements OnInit {
+export class TeachingCoursePageComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 

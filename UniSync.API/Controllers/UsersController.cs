@@ -9,11 +9,19 @@ using UniSync.Application.Features.Users.Queries.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniSync.API.Controllers;
+using UniSync.Application.Contracts.Interfaces;
 
 namespace UniSync.Api.Controllers;
 
 public class UsersController : ApiControllerBase
 {
+    private readonly IUserService userService;
+
+    public UsersController(IUserService userService)
+    {
+        this.userService = userService;
+    }
+
     //[Authorize(Roles = "User")]
     //[HttpPost]
     //[ProducesResponseType(StatusCodes.Status201Created)]
@@ -97,6 +105,62 @@ public class UsersController : ApiControllerBase
             return BadRequest(result);
         }
         return Ok(result);
+    }
+
+    [HttpGet("Professors")]
+    public async Task<IActionResult> GetAllProfessors()
+    {
+        try
+        {
+            var professors = await userService.GetAllProfessors();
+            return Ok(professors);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("Students")]
+    public async Task<IActionResult> GetAllStudents()
+    {
+        try
+        {
+            var students = await userService.GetAllStudents();
+            return Ok(students);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("Professors/search")]
+    public async Task<IActionResult> SearchProfessors([FromQuery] string searchValue)
+    {
+        try
+        {
+            var professors = await userService.SearchProfessors(searchValue);
+            return Ok(professors);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("Students/search")]
+    public async Task<IActionResult> SearchStudents([FromQuery] string searchValue)
+    {
+        try
+        {
+            var students = await userService.SearchStudents(searchValue);
+            return Ok(students);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
     //[Authorize(Roles ="Admin")]

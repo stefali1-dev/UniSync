@@ -15,20 +15,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../../_services/user.service';
 import { Router } from '@angular/router';
+import { StudentService } from '../../../_services/student.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 export interface Contact {
-    id: number;
-    imageSrc: string;
-    name: string;
-    email: string;
-    role: string;
-    phone?: string;
-    bio?: string;
-    birthday?: string;
-    selected: boolean;
-    starred: boolean;
-  }
-  
+  id: number;
+  imageSrc: string;
+  name: string;
+  email: string;
+  role: string;
+  phone?: string;
+  bio?: string;
+  birthday?: string;
+  selected: boolean;
+}
+
 @Component({
   selector: 'student-list-table',
   templateUrl: './student-list.component.html',
@@ -66,7 +67,10 @@ export class StudentListComponent implements OnInit {
     | 'friends'
     | 'colleagues'
     | 'business' = 'all';
-  tableData = contactsData;
+  // tableData = contactsData;
+
+  tableData: Contact[] = [];
+
   tableColumns: TableColumn<Contact>[] = [
     {
       label: '',
@@ -116,23 +120,25 @@ export class StudentListComponent implements OnInit {
     private dialog: MatDialog,
     private userService: UserService,
     private router: Router,
-
+    private studentService: StudentService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getAllStudents();
+  }
 
   openContact(id?: Contact['id']) {
-    console.log("Clicked contact!")
-    this.router.navigate(["apps/evaluation/professor/" + id]);
-
+    console.log('Clicked contact!');
+    this.router.navigate(['apps/evaluation/professor/' + id]);
   }
 
   toggleStar(id: Contact['id']) {
     const contact = this.tableData.find((c) => c.id === id);
 
-    if (contact) {
-      contact.starred = !contact.starred;
-    }
+    // if (contact) {
+    //   contact.starred = !contact.starred;
+    // }
   }
 
   setData(data: Contact[]) {
@@ -144,31 +150,56 @@ export class StudentListComponent implements OnInit {
     this.menuOpen = true;
   }
   onEnterPressed(request: string) {
-    this.userService.getSearchedUsers(request).subscribe({
-      next: data => {
-        console.log(data.users);
+    this.studentService.searchStudents(request).subscribe({
+      next: (students) => {
+        console.log(students);
 
         let searchedContacts: Contact[] = [];
 
-        for (const searchedUser of data.users) {
-          let searchedContact: Contact = 
-          {
+        for (const searchedUser of students) {
+          let searchedContact: Contact = {
             id: 1,
             imageSrc: 'assets/img/avatars/1.jpg',
             name: searchedUser.firstName + ' ' + searchedUser.lastName,
             role: 'student',
             email: searchedUser.email,
-            selected: false,
-            starred: false
+            selected: false
           };
 
           searchedContacts.push(searchedContact);
         }
 
         this.tableData = searchedContacts;
-
       },
-      error: err => {
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  getAllStudents() {
+    this.studentService.getAllStudents().subscribe({
+      next: (students) => {
+        let retreivedStudents: Contact[] = [];
+
+        students.forEach((s) => {
+          let student: Contact = {
+            id: s.userId,
+            imageSrc:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s',
+            name: `${s.firstName} ${s.lastName}`,
+            email: s.email,
+            role: 'Student',
+            selected: false
+          };
+
+          retreivedStudents.push(student);
+        });
+
+        this.tableData = retreivedStudents;
+        //this.changeDetectorRef.detectChanges();
+      },
+      error: (err) => {
         console.log(err);
       }
     });
