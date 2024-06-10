@@ -23,6 +23,15 @@ import { CourseService } from 'src/app/_services/course.service';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../courses/enrolled/course-list/enrolled-courses-list.component';
 
+export interface EvaluationView {
+  evaluationId: string;
+  courseName: string;
+  professorName: string;
+  grade: number;
+  dateTime: Date;
+  comment?: string;
+}
+
 @Component({
   selector: 'app-student-page',
   standalone: true,
@@ -53,6 +62,8 @@ export class StudentPageComponent implements OnInit {
   studentGroup = 'CS301';
   enrolledCourses: Course[] = [];
   stateCtrl = new UntypedFormControl();
+
+  coursesGradesDict: { [key: string]: EvaluationView } = {};
 
   courseDetails = [
     {
@@ -121,7 +132,7 @@ export class StudentPageComponent implements OnInit {
       next: (student) => {
         this.studentGroup = student.group;
         let retreivedCourses: Course[] = [];
-
+        //todio
         student.coursesIds.forEach((courseId) => {
           this.courseService.getCoursesByCourseId(courseId).subscribe({
             next: (c) => {

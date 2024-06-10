@@ -1,7 +1,4 @@
-﻿using UniSync.Domain.Common; // Assuming you have a similar structure for Result<T> here
-using System;
-
-namespace UniSync.Domain.Entities.Administration
+﻿namespace UniSync.Domain.Entities.Administration
 {
     public class Evaluation
     {
@@ -11,7 +8,7 @@ namespace UniSync.Domain.Entities.Administration
         public Guid ProfessorId { get; set; }
         public int Grade { get; set; }
         public DateTime DateTime { get; set; }
-        public string? Comments { get; set; }
+        public string? Comment { get; set; }
 
     }
 }

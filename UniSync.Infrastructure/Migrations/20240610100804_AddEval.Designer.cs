@@ -12,8 +12,8 @@ using UniSync.Infrastructure;
 namespace UniSync.Infrastructure.Migrations
 {
     [DbContext(typeof(UniSyncContext))]
-    [Migration("20240601105241_Initial")]
-    partial class Initial
+    [Migration("20240610100804_AddEval")]
+    partial class AddEval
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,6 +114,35 @@ namespace UniSync.Infrastructure.Migrations
                     b.HasKey("CourseId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("UniSync.Domain.Entities.Administration.Evaluation", b =>
+                {
+                    b.Property<Guid>("EvaluationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProfessorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("EvaluationId");
+
+                    b.ToTable("Evaluations");
                 });
 
             modelBuilder.Entity("UniSync.Domain.Entities.Channel", b =>

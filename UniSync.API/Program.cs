@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using UniSync.Application.Features.Courses;
 using UniSync.Application.Features.Users;
 using UniSync.Application.Features.Students;
+using UniSync.Application.Features.Evaluation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -35,9 +36,10 @@ builder.Services.AddSignalR();
 builder.Services.AddSingleton<IDictionary<string, UserRoomConnection>>(opt =>
     new Dictionary<string, UserRoomConnection>());
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddScoped<ICoursesService, CoursesService >();
+builder.Services.AddScoped<ICoursesService, CoursesService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IEvaluationService, EvaluationService>();
 
 
 

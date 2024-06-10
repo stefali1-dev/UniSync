@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniSync.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class AddEval : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,6 +61,23 @@ namespace UniSync.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.CourseId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Evaluations",
+                columns: table => new
+                {
+                    EvaluationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StudentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProfessorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Grade = table.Column<int>(type: "integer", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Comment = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Evaluations", x => x.EvaluationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,6 +262,9 @@ namespace UniSync.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "CourseStudent");
+
+            migrationBuilder.DropTable(
+                name: "Evaluations");
 
             migrationBuilder.DropTable(
                 name: "Messages");

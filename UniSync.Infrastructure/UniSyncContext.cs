@@ -29,6 +29,7 @@ namespace UniSync.Infrastructure
 
         public DbSet<Message> Messages { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Evaluation> Evaluations { get; set; }
 
 
         public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }

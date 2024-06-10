@@ -37,6 +37,7 @@ namespace Infrastructure
             services.AddScoped<IProfessorRepository,ProfessorRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IEvaluationRepository, EvaluationRepository>();
 
             services.AddScoped<IEmailService, EmailService>();
 
