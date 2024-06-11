@@ -15,4 +15,8 @@ export class EvaluationService {
   addEvaluation(evaluationDto: Evaluation): Observable<any> {
     return this.http.post(`${API_URL}/Evaluations`, evaluationDto);
   }
+
+  getEvaluationsByStudentId(studentId: string): Observable<any> {
+    return this.http.get(`${API_URL}/Evaluations/Student/${studentId}`);
+  }
 }

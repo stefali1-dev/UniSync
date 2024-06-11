@@ -8,5 +8,7 @@ namespace UniSync.Application.Persistence
 {
     public interface IEvaluationRepository : IAsyncRepository<Evaluation>
     {
+        Task<Result<List<Evaluation>>> GetByStudentIdAsync(Guid studentId);
+
     }
 }

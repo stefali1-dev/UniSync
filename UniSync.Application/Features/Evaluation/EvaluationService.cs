@@ -34,5 +34,32 @@ namespace UniSync.Application.Features.Evaluation
 
             await evaluationRepository.AddAsync(evaluation);
         }
+
+        public async Task<List<EvaluationDto>> GetByStudentIdAsync(string studentId)
+        {
+            try
+            {
+                var studentIdGuid = Guid.Parse(studentId);
+                var result = await evaluationRepository.GetByStudentIdAsync(studentIdGuid);
+
+                // Map the Evaluation entities to EvaluationDto objects
+                var evaluationDtos = result.Value.Select(e => new EvaluationDto
+                {
+                    StudentId = e.StudentId.ToString(),
+                    CourseId = e.CourseId.ToString(),
+                    ProfessorId = e.ProfessorId.ToString(),
+                    Grade = e.Grade,
+                    DateTime = e.DateTime,
+                    Comment = e.Comment
+                }).ToList();
+
+                return evaluationDtos;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception($"Error getting evaluations by student ID: {ex.Message}");
+            }
+        }
     }
 }

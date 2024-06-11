@@ -13,5 +13,21 @@ namespace UniSync.Infrastructure.Repositories
         {
         }
 
+        public async Task<Result<List<Evaluation>>> GetByStudentIdAsync(Guid studentId)
+        {
+            try
+            {
+                var evaluations = await context.Evaluations
+                    .Where(e => e.StudentId == studentId)
+                    .ToListAsync();
+
+                return Result<List<Evaluation>>.Success(evaluations);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return Result<List<Evaluation>>.Failure(ex.Message);
+            }
+        }
     }
 }

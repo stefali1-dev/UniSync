@@ -23,9 +23,25 @@ namespace UniSync.Api.Controllers
         {
             try
             {
+                //await Console.Out.WriteLineAsync(evaluationDto.StudentId);
                 await evaluationService.AddEvaluation(evaluationDto);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.StackTrace);
+                return StatusCode(500, "Internal server error..");
+            }
+        }
+
+        [HttpGet("Student/{studentId}")]
+        public async Task<IActionResult> GetEvaluationsByStudentId(string studentId)
+        {
+            try
+            {
+                var evaluations = await evaluationService.GetByStudentIdAsync(studentId);
+                return Ok(evaluations);
             }
             catch (Exception ex)
             {

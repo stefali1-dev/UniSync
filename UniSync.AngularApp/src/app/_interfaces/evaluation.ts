@@ -1,5 +1,4 @@
 export interface Evaluation {
-  evaluationId: string;
   studentId: string;
   courseId: string;
   professorId: string;
