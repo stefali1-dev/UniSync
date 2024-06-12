@@ -14,4 +14,7 @@ export class TimetableService {
   addTimetableEntry(timetableEntryDto: any): Observable<any> {
     return this.http.post(`${API_URL}/TimetableEntry`, timetableEntryDto);
   }
+  getTimetableEntriesByProfessorId(professorId: string): Observable<any> {
+    return this.http.get(`${API_URL}/TimetableEntry/${professorId}`);
+  }
 }

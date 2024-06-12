@@ -19,6 +19,21 @@ namespace UniSync.Api.Controllers
             this.timetableEntryService = timetableEntryService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddTimetableEntry([FromBody] TimetableEntryDto timetableEntryDto)
+        {
+            try
+            {
+                await timetableEntryService.AddTimetableEntry(timetableEntryDto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
+
         [HttpGet("{professorId}")]
         public async Task<IActionResult> GetTimetableEntriesByProfessorId(string professorId)
         {

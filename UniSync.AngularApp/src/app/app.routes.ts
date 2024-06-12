@@ -70,9 +70,9 @@ export const appRoutes: VexRoutes = [
           {
             path: 'timetable',
             loadComponent: () =>
-              import('./pages/timetable/timetable.component').then(
-                (m) => m.TimetableComponent
-              )
+              import(
+                './pages/timetable/timetable-professor/timetable-professor.component'
+              ).then((m) => m.TimetableComponent)
           },
           {
             path: 'admin-dashboard',

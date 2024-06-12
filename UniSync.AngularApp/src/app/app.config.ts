@@ -16,8 +16,8 @@ import { provideVex } from '@vex/vex.provider';
 import { provideNavigation } from './core/navigation/navigation.provider';
 import { vexConfigs } from '@vex/config/vex-configs';
 import { provideQuillConfig } from 'ngx-quill';
-import {SharedModule} from "./_modules/shared.module";
-import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
+import { SharedModule } from './_modules/shared.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_services/auth-interceptor.service';
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { AuthGuard } from './_helpers/auth.guard';
@@ -25,9 +25,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatService } from './pages/chat/chat.service';
 import { RouterModule } from '@angular/router'; // Import the RouterModule
-
-
-
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -46,7 +43,7 @@ export const appConfig: ApplicationConfig = {
     ChatService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard,
-    
+
     provideRouter(
       appRoutes,
       // TODO: Add preloading withPreloading(),
