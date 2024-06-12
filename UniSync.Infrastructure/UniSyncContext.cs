@@ -31,6 +31,7 @@ namespace UniSync.Infrastructure
         public DbSet<Course> Courses { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
 
+        public DbSet<TimetableEntry> TimetableEntries { get; set; }
 
         public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }
 
