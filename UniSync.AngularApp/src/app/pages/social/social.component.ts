@@ -30,50 +30,39 @@ export class SocialComponent implements OnInit {
       label: 'ABOUT',
       route: './',
       routerLinkActiveOptions: { exact: true }
-    },
-    {
-      label: 'TIMELINE',
-      route: './timeline'
-    },
-    {
-      label: 'FRIENDS',
-      route: '',
-      disabled: true
-    },
-    {
-      label: 'PHOTOS',
-      route: '',
-      disabled: true
     }
   ];
 
-  public profile: Profile | null = null;
-
+  public profile: Profile = {
+    id: 0,
+    imageSrc: '',
+    name: '',
+    email: '',
+    role: ''
+  };
 
   constructor(
     private userService: UserService,
     private storageService: StorageService
-  )
-  {
-
+  ) {
     let userId = this.storageService.getUser().userId;
 
     this.userService.getUserById(userId).subscribe({
-      next: data => {
+      next: (data) => {
         console.log(data.user);
 
-        let user = data.user
+        let user = data.user;
 
         this.profile = {
           id: user.userId,
           imageSrc: user.userPhoto,
           name: user.firstName + ' ' + user.lastName,
           email: user.email,
-          role: 'student',
+          role: user.roles[0],
           bio: user.bio
-        }
+        };
       },
-      error: err => {
+      error: (err) => {
         console.log(err);
       }
     });

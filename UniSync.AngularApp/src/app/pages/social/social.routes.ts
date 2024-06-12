@@ -15,13 +15,6 @@ const routes: VexRoutes = [
           import('./social-profile/social-profile.component').then(
             (m) => m.SocialProfileComponent
           )
-      },
-      {
-        path: 'timeline',
-        loadComponent: () =>
-          import('./social-timeline/social-timeline.component').then(
-            (m) => m.SocialTimelineComponent
-          )
       }
     ]
   }
