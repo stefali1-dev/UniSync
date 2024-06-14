@@ -31,8 +31,7 @@ export interface Contact {
 }
 
 @Component({
-  selector: 'student-list-table',
-  templateUrl: './student-list.component.html',
+  templateUrl: './users-list.component.html',
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
   styles: [
     `
@@ -52,7 +51,7 @@ export interface Contact {
     AsyncPipe
   ]
 })
-export class StudentListComponent implements OnInit {
+export class UsersListComponent implements OnInit {
   searchCtrl = new UntypedFormControl();
 
   searchStr$ = this.searchCtrl.valueChanges.pipe(debounceTime(10));
@@ -120,12 +119,11 @@ export class StudentListComponent implements OnInit {
     private dialog: MatDialog,
     private userService: UserService,
     private router: Router,
-    private studentService: StudentService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.getAllStudents();
+    this.getAllUsers();
   }
 
   openContact(id?: Contact['id']) {
@@ -150,18 +148,18 @@ export class StudentListComponent implements OnInit {
     this.menuOpen = true;
   }
   onEnterPressed(request: string) {
-    this.studentService.searchStudents(request).subscribe({
-      next: (students) => {
-        console.log(students);
+    this.userService.getSearchedUsers(request).subscribe({
+      next: (data) => {
+        console.log(data.users);
 
         let searchedContacts: Contact[] = [];
 
-        for (const searchedUser of students) {
+        for (const searchedUser of data.users) {
           let searchedContact: Contact = {
             id: 1,
-            imageSrc: 'assets/img/avatars/1.jpg',
+            imageSrc: searchedUser.userPhoto,
             name: searchedUser.firstName + ' ' + searchedUser.lastName,
-            role: 'student',
+            role: searchedUser.roles[0],
             email: searchedUser.email,
             selected: false
           };
@@ -177,26 +175,25 @@ export class StudentListComponent implements OnInit {
     });
   }
 
-  getAllStudents() {
-    this.studentService.getAllStudents().subscribe({
-      next: (students) => {
-        let retreivedStudents: Contact[] = [];
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe({
+      next: (data) => {
+        let retreivedUsers: Contact[] = [];
 
-        students.forEach((s) => {
+        data.users.forEach((u) => {
           let student: Contact = {
-            id: s.userId,
-            imageSrc:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s',
-            name: `${s.firstName} ${s.lastName}`,
-            email: s.email,
-            role: 'Student',
+            id: u.userId,
+            imageSrc: u.userPhoto,
+            name: `${u.firstName} ${u.lastName}`,
+            email: u.email,
+            role: u.roles[0],
             selected: false
           };
 
-          retreivedStudents.push(student);
+          retreivedUsers.push(student);
         });
 
-        this.tableData = retreivedStudents;
+        this.tableData = retreivedUsers;
         //this.changeDetectorRef.detectChanges();
       },
       error: (err) => {

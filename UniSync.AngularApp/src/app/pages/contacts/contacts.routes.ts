@@ -4,8 +4,8 @@ const routes: VexRoutes = [
   {
     path: '',
     loadComponent: () =>
-      import('./contacts-table/contacts-table.component').then(
-        (m) => m.ContactsTableComponent
+      import('./users-list/users-list.component').then(
+        (m) => m.UsersListComponent
       ),
     data: {
       scrollDisabled: true,

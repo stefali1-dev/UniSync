@@ -16,7 +16,7 @@
             class="w-12 h-12 rounded-full text-primary-600 ltr:mr-4 rtl:ml-4 bg-primary-600/10 hidden sm:flex items-center justify-center">
             <mat-icon svgIcon="mat:contacts"></mat-icon>
           </span>
-          <span @fadeInRight class="block">Students</span>
+          <span @fadeInRight class="block">Users</span>
         </h2>
   
         <div
@@ -28,7 +28,7 @@
             [formControl]="searchCtrl"
             #searchInput
             class="border-0 h-12 outline-none ltr:pl-4 rtl:pr-4 placeholder:text-secondary bg-foreground flex-auto"
-            placeholder="Search Students..."
+            placeholder="Search Users..."
             type="text"
             (keyup.enter)="onEnterPressed(searchInput.value)" />
         </div>
