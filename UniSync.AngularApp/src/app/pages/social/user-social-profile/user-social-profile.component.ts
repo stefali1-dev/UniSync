@@ -7,21 +7,27 @@ import { stagger40ms } from '@vex/animations/stagger.animation';
 import { MatButtonModule } from '@angular/material/button';
 import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import {SocialComponent} from '../social.component'
+import { SocialComponent } from '../social.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'vex-social-profile',
-  templateUrl: './social-profile.component.html',
-  styleUrls: ['./social-profile.component.scss'],
+  templateUrl: './user-social-profile.component.html',
   animations: [fadeInUp400ms, fadeInRight400ms, scaleIn400ms, stagger40ms],
   standalone: true,
   imports: [MatIconModule, NgFor, NgIf, MatButtonModule]
 })
-export class SocialProfileComponent implements OnInit {
+export class UserSocialProfileComponent implements OnInit {
+  userId!: string | null;
 
-  constructor(public socialComponent: SocialComponent) {}
+  constructor(
+    public socialComponent: SocialComponent,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userId = this.route.snapshot.paramMap.get('userId');
+  }
 
   trackByName(index: number, friend: FriendSuggestion) {
     return friend.name;

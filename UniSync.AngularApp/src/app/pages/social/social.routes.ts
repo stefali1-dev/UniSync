@@ -12,8 +12,15 @@ const routes: VexRoutes = [
       {
         path: '',
         loadComponent: () =>
-          import('./social-profile/social-profile.component').then(
+          import('./own-social-profile/own-social-profile.component').then(
             (m) => m.SocialProfileComponent
+          )
+      },
+      {
+        path: ':userId',
+        loadComponent: () =>
+          import('./user-social-profile/user-social-profile.component').then(
+            (m) => m.UserSocialProfileComponent
           )
       }
     ]

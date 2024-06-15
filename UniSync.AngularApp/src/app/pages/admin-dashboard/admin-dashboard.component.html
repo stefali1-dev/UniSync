@@ -1,44 +1,226 @@
 <div class="container mx-auto p-8">
-    <!-- Students Section -->
-    <section class="mb-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">Students</h2>
-      <div class="flex space-x-4 mb-4">
-        <button (click)="addStudent()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add Student</button>
-        <button (click)="removeStudent()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove Student</button>
-      </div>
+  <!-- Students Section -->
+  <section class="mb-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Students</h2>
+    <div class="flex space-x-4 mb-4">
+      <button (click)="openModal('addStudent')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add Student</button>
+      <button (click)="openModal('removeStudent')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove Student</button>
+    </div>
+    <div class="flex space-x-4 mb-4">
+      <button (click)="openModal('enrollStudent')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">Enroll Student</button>
+      <button (click)="openModal('unenrollStudent')" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition duration-300">Unenroll Student</button>
+    </div>
+    <!-- Student list and management features here -->
+  </section>
 
-      <div class="flex space-x-4 mb-4">
-        <button (click)="addCourseToProfessor()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">Enroll Student</button>
-        <button (click)="removeCourseFromProfessor()" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition duration-300">Unenroll Student</button>
-      </div>
-      <!-- Student list and management features here -->
-    </section>
-  
-    <!-- Professors Section -->
-    <section class="mb-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">Professors</h2>
+  <!-- Professors Section -->
+  <section class="mb-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Professors</h2>
+    <div class="flex space-x-4 mb-4">
+      <button (click)="openModal('addProfessor')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add Professor</button>
+      <button (click)="openModal('removeProfessor')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove Professor</button>
+    </div>
+    <div class="flex space-x-4 mb-4">
+      <button (click)="openModal('addToCourse')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add to Course</button>
+      <button (click)="openModal('removeFromCourse')" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove from Course</button>
+    </div>
+    <!-- Professor list and management features here -->
+  </section>
 
-      <div class="flex space-x-4 mb-4">
-        <button (click)="addStudent()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add Professor</button>
-        <button (click)="removeStudent()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove Professor</button>
-      </div>
+  <!-- Courses Section -->
+  <section class="p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Courses</h2>
+    <div class="flex space-x-4 mb-4">
+      <button (click)="openModal('createCourse')" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300">Create Course</button>
+      <button (click)="openModal('deleteCourse')" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300">Delete Course</button>
+    </div>
+    <!-- Course list and management features here -->
+  </section>
+</div>
 
-
-      <div class="flex space-x-4 mb-4">
-        <button (click)="addCourseToProfessor()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">Add to Course</button>
-        <button (click)="removeCourseFromProfessor()" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition duration-300">Remove from Course</button>
+<!-- Modals -->
+<!-- Add Student Modal -->
+<div *ngIf="selectedModal === 'addStudent'" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+            <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+              Add Student
+            </h3>
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">Enter the student details to add a new student.</p>
+              <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()">
+                <div class="mb-4">
+                  <label for="registrationId" class="block text-gray-700 font-bold mb-2">Registration ID</label>
+                  <input type="text" id="registrationId" formControlName="registrationId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="firstname" class="block text-gray-700 font-bold mb-2">First Name</label>
+                  <input type="text" id="firstname" formControlName="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="lastname" class="block text-gray-700 font-bold mb-2">Last Name</label>
+                  <input type="text" id="lastname" formControlName="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="year" class="block text-gray-700 font-bold mb-2">Year</label>
+                  <input type="text" id="year" formControlName="year" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="group" class="block text-gray-700 font-bold mb-2">Group</label>
+                  <input type="text" id="group" formControlName="group" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mt-4">
+                  <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Add Student
+                  </button>
+                  <button type="button" (click)="closeModal()" class="ml-3 inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- Professor list and management features here -->
-    </section>
-  
-    <!-- Courses Section -->
-    <section class="p-6 bg-white rounded-lg shadow-md">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">Courses</h2>
-      <div class="flex space-x-4 mb-4">
-        <button (click)="createCourse()" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300">Create Course</button>
-        <button (click)="deleteCourse()" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300">Delete Course</button>
-      </div>
-      <!-- Course list and management features here -->
-    </section>
+    </div>
   </div>
-  
+</div>
+
+<!-- Remove Student Modal -->
+<!-- ... -->
+
+<!-- Enroll Student Modal -->
+<!-- ... -->
+
+<!-- Unenroll Student Modal -->
+<!-- ... -->
+
+<!-- Add Professor Modal -->
+<div *ngIf="selectedModal === 'addProfessor'" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+            <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+              Add Professor
+            </h3>
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">Enter the professor details to add a new professor.</p>
+              <form [formGroup]="addProfessorForm" (ngSubmit)="addProfessor()">
+                <div class="mb-4">
+                  <label for="registrationId" class="block text-gray-700 font-bold mb-2">Registration ID</label>
+                  <input type="text" id="registrationId" formControlName="registrationId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="firstname" class="block text-gray-700 font-bold mb-2">First Name</label>
+                  <input type="text" id="firstname" formControlName="firstname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="lastname" class="block text-gray-700 font-bold mb-2">Last Name</label>
+                  <input type="text" id="lastname" formControlName="lastname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="title" class="block text-gray-700 font-bold mb-2">Title</label>
+                  <input type="text" id="title" formControlName="title" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mt-4">
+                  <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Add Professor
+                  </button>
+                  <button type="button" (click)="closeModal()" class="ml-3 inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ... -->
+
+<!-- Remove Professor Modal -->
+<!-- ... -->
+
+<!-- Add to Course Modal -->
+<!-- ... -->
+
+<!-- Remove from Course Modal -->
+<!-- ... -->
+
+<!-- Create Course Modal -->
+<div *ngIf="selectedModal === 'createCourse'" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+            <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+              Create Course
+            </h3>
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">Enter the course details to create a new course.</p>
+              <form [formGroup]="createCourseForm" (ngSubmit)="createCourse()">
+                <div class="mb-4">
+                  <label for="courseId" class="block text-gray-700 font-bold mb-2">Course ID</label>
+                  <input type="text" id="courseId" formControlName="courseId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
+                  <input type="text" id="name" formControlName="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="credits" class="block text-gray-700 font-bold mb-2">Credits</label>
+                  <input type="number" id="credits" formControlName="credits" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                  <label for="semester" class="block text-gray-700 font-bold mb-2">Semester</label>
+                  <input type="text" id="semester" formControlName="semester" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mt-4">
+                  <button type="submit" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Create Course
+                  </button>
+                  <button type="button" (click)="closeModal()" class="ml-3 inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ... -->
+
+<!-- Delete Course Modal -->
+<!-- ... -->
