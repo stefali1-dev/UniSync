@@ -8,6 +8,7 @@ import { StorageService } from '../../_services/storage.service';
 import { MessageService } from '../../_services/message.service';
 import { UserService } from '../../_services/user.service';
 import { ChannelService } from '../../_services/channel.service';
+import { ChannelCreationDto } from 'src/app/_interfaces/channelCreationDto';
 
 @Injectable({
   providedIn: 'root'
@@ -205,7 +206,12 @@ export class ChatService {
   }
 
   createChat(channelName: string, chatUserIds: string[]): string {
-    this.channelService.createChannel(channelName, chatUserIds).subscribe({
+    let channelCreationDto: ChannelCreationDto = {
+      channelName: channelName,
+      chatUsersIds: chatUserIds
+    };
+
+    this.channelService.addChannel(channelCreationDto).subscribe({
       next: (data) => {
         console.log(data);
         return data.channel.channelId;

@@ -15,6 +15,7 @@ using UniSync.Application.Features.Users;
 using UniSync.Application.Features.Students;
 using UniSync.Application.Features.Evaluation;
 using UniSync.Application.Features.TimetableEntry;
+using UniSync.Application.Features.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEvaluationService, EvaluationService>();
 builder.Services.AddScoped<ITimetableEntryService, TimetableEntryService>();
+builder.Services.AddScoped<IChannelService, ChannelService>();
 
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));

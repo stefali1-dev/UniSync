@@ -5,33 +5,21 @@ namespace UniSync.Domain.Entities
 {
     public class Channel
     {
-        public Channel(Guid channelId, string channelName)
-        {
-            ChannelId = channelId;
-            ChannelName = channelName;
-            Messages = new List<Message>();
-            Users = new List<ChatUser>();
-        }
-        public Guid ChannelId { get; private set; }
-        public string ChannelName { get; private set; }
+        public Guid ChannelId { get; set; }
+        public string ChannelName { get; set; }
 
         //navigation properties
-        public virtual ICollection<ChatUser> Users { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual List<ChatUser> Users { get; set; }
+        public virtual List<Message> Messages { get; set; }
 
 
-        public void AttachUsers(ICollection<ChatUser> users)
+        public void AttachUser(ChatUser user)
         {
-            if(Users == null)
+            if (Users == null)
             {
                 Users = new List<ChatUser>();
             }
-            
-            foreach(ChatUser user in users)
-            {
-                Users.Add(user);
-
-            }
+            Users.Add(user);
 
         }
 

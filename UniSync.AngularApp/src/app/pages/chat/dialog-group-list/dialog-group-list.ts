@@ -13,6 +13,7 @@ import { StorageService } from '../../../_services/storage.service';
 import { Router } from '@angular/router';
 import { ChannelService } from '../../../_services/channel.service';
 import { ViewChild, ElementRef } from '@angular/core';
+import { ChannelCreationDto } from 'src/app/_interfaces/channelCreationDto';
 
 export interface Contact {
   id: number;
@@ -134,18 +135,21 @@ export class DialogGroupList implements OnInit {
 
   createGroup() {
     let userIds = this.selectedContacts.map((contact) => contact.id.toString());
+    userIds.push(this.storageService.getUser().userId);
 
-    this.channelService
-      .createChannel(this.groupNameInput.nativeElement.value, userIds)
-      .subscribe({
-        next: (data) => {
-          console.log(data);
+    let channelCreationDto: ChannelCreationDto = {
+      channelName: this.groupNameInput.nativeElement.value,
+      chatUsersIds: userIds
+    };
 
-          this.router.navigate(['apps/chat']);
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      });
+    this.channelService.addChannel(channelCreationDto).subscribe({
+      next: (response) => {
+        console.log(response.message); // Assuming response is { message: "Success message" }
+        this.router.navigate(['apps/chat']);
+      },
+      error: (err) => {
+        console.error(err.error); // Assuming error response is { error: "Error message" }
+      }
+    });
   }
 }

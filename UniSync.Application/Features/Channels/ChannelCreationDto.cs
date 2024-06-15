@@ -2,12 +2,10 @@
 
 namespace UniSync.Application.Features.Channels
 {
-    public class ChannelDto
+    public class ChannelCreationDto
     {
-        public Guid ChannelId { get; set; }
         public string ChannelName { get; set; }
         public List<string> ChatUsersIds { get; set; }
-        public List<string> MessagesIds { get; set; }
 
     }
 }
