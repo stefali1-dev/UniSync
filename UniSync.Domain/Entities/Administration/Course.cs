@@ -22,7 +22,6 @@ namespace UniSync.Domain.Entities.Administration
         public string CourseName { get; set; }
         public string CourseNumber { get; set; }
         public int Credits { get; set; }
-        //public CourseType? Type { get; set; }
         public string Description { get; set; }
         public int Semester { get; set; }
         public virtual List<Professor> Professors { get; set; }

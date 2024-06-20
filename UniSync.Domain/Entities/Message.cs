@@ -2,16 +2,6 @@
 {
     public class Message
     {
-        //public Message(Guid messageId, string content, Guid chatUserId, DateTime timestamp, Channel channel, ChatUser chatUser)
-        //{
-        //    MessageId = messageId;
-        //    Content = content;
-        //    ChatUserId = chatUserId;
-        //    Timestamp = timestamp;
-        //    Channel = channel;
-        //    ChatUser = chatUser;
-        //}
-
         public Guid MessageId { get; set; }
         public string Content { get; set; }
         public Guid? ReceiverId { get; set; }
