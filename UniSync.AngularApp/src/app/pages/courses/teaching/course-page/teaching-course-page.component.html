@@ -1,36 +1,44 @@
 <vex-page-layout>
   <vex-page-layout-header class="flex flex-col items-start justify-center">
     <div class="container">
-      <h2 class="title m-0">Simple - Large Header & Tabbed</h2>
-      <vex-breadcrumbs
-        [crumbs]="[
-          'Page Layouts',
-          'Simple',
-          'Large Header & Tabbed'
-        ]"></vex-breadcrumbs>
+      <h1 class="text-3xl">Data Structures</h1>
+      <p class="text-gray-500">Course information</p>
     </div>
   </vex-page-layout-header>
 
-  <vex-page-layout-content class="p-0 container">
+  <vex-page-layout-content class="p-0 container mt-4">
     <mat-tab-group>
-      <mat-tab label="Main Tab">
+      <!-- Description -->
+      <mat-tab label="Description">
         <div class="p-6">
           <p>
-            Tab1
+            The <strong>Data Structures</strong> course explores fundamental concepts related to data organization and manipulation. It covers various data structures commonly used in solving computational problems. Topics include arrays, linked lists, stacks, queues, and trees. Students will learn how to implement these structures in different programming languages and understand their practical applications.
           </p>
         </div>
       </mat-tab>
-      <mat-tab label="Side Tab">
+
+      <!-- Evaluation -->
+      <mat-tab label="Evaluation">
         <div class="p-6">
           <p>
-            Tab2
+            The course evaluation consists of two components:
           </p>
+          <ul>
+            <li>
+              <strong>Ongoing Laboratory Evaluation:</strong> Throughout the semester, there will be three laboratory exams assessing practical skills and understanding of course material.
+            </li>
+            <li>
+              <strong>Final Exam:</strong> At the end of the semester, a comprehensive final exam will take place. To pass, students need a minimum score of 4.5 in the final exam and a median score of at least 4.5 across the three laboratory exams.
+            </li>
+          </ul>
         </div>
       </mat-tab>
-      <mat-tab label="Extra Tab">
+
+      <!-- Laboratory -->
+      <mat-tab label="Laboratory">
         <div class="p-6">
           <p>
-            Tab3
+            In the laboratory sessions, students will delve deeper into the algorithms presented during the course. Practical exercises, problem-solving, and collaborative learning will enhance understanding of data structures.
           </p>
         </div>
       </mat-tab>

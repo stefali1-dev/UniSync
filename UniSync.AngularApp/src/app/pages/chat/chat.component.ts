@@ -36,8 +36,8 @@ import { StudentService } from '../../_services/student.service';
 import { StorageService } from '../../_services/storage.service';
 import { UserService } from '../../_services/user.service';
 import { ChannelService } from '../../_services/channel.service';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {Contact, DialogUserList} from './dialog-user-list/dialog-user-list'
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Contact, DialogUserList } from './dialog-user-list/dialog-user-list';
 import { DialogGroupList } from './dialog-group-list/dialog-group-list';
 
 export interface Chat {
@@ -47,7 +47,7 @@ export interface Chat {
   lastMessage: string;
   unreadCount: number;
   timestamp: string;
-  nrOfParticipants: number
+  nrOfParticipants: number;
 }
 
 export interface ChatMessage {
@@ -55,6 +55,7 @@ export interface ChatMessage {
   senderId: string;
   message: string;
   messageTime: string;
+  senderPhotoUrl: string;
 }
 
 @Component({
@@ -83,7 +84,6 @@ export interface ChatMessage {
   ]
 })
 export class ChatComponent implements OnInit {
-
   chats$: Observable<Chat[]> = of(this.chatService.chats).pipe(
     // Fix to allow stagger animations with static data
     delay(0)
@@ -128,15 +128,14 @@ export class ChatComponent implements OnInit {
       )
       .subscribe(() => this.openDrawer());
 
-      // this.studentService.getStudentsByGroup('1A1').subscribe({
-      //   next: data => {
-      //     console.log(data.students);
-      //   },
-      //   error: err => {
-      //     console.log(err);
-      //   }
-      // });
-  
+    // this.studentService.getStudentsByGroup('1A1').subscribe({
+    //   next: data => {
+    //     console.log(data.students);
+    //   },
+    //   error: err => {
+    //     console.log(err);
+    //   }
+    // });
   }
 
   drawerChange(drawerOpen: boolean) {
@@ -155,10 +154,10 @@ export class ChatComponent implements OnInit {
 
   onEnterPressed(request: string) {
     this.userService.getSearchedUsers(request).subscribe({
-      next: data => {
+      next: (data) => {
         console.log(data.users);
       },
-      error: err => {
+      error: (err) => {
         console.log(err);
       }
     });
@@ -167,7 +166,7 @@ export class ChatComponent implements OnInit {
   openDmDialog() {
     const dialogRef = this.dialog.open(DialogUserList);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       //console.log(`Dialog result: ${result}`);
     });
   }
@@ -175,9 +174,8 @@ export class ChatComponent implements OnInit {
   openGroupDialog() {
     const dialogRef = this.dialog.open(DialogGroupList);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       //console.log(`Dialog result: ${result}`);
     });
   }
-
 }

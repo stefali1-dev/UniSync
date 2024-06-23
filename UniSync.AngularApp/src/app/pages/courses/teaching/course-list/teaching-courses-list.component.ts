@@ -17,6 +17,49 @@ import { RouterLink } from '@angular/router';
 export class TeachingCourseListComponent implements OnInit {
   public courses!: Course[];
 
+  // public courses: Course[] = [
+  //   {
+  //     courseId: 'CS101',
+  //     courseName: 'Data Structures',
+  //     courseNumber: '101',
+  //     credits: '6',
+  //     description: 'Learn about data structures and algorithms.',
+  //     semester: '1'
+  //   },
+  //   {
+  //     courseId: 'CS201',
+  //     courseName: 'Object Oriented Programming',
+  //     courseNumber: '201',
+  //     credits: '6',
+  //     description: 'Explore OOP principles and design patterns.',
+  //     semester: '2'
+  //   },
+  //   {
+  //     courseId: 'CS401',
+  //     courseName: 'Databases',
+  //     courseNumber: '401',
+  //     credits: '6',
+  //     description: 'Learn about relational databases and SQL.',
+  //     semester: '3'
+  //   },
+  //   {
+  //     courseId: 'CS6021',
+  //     courseName: 'Advanced Programming',
+  //     courseNumber: '621',
+  //     credits: '5',
+  //     description: 'Advanced topics in the Java programming language.',
+  //     semester: '4'
+  //   },
+  //   {
+  //     courseId: 'CS501',
+  //     courseName: 'Machine Learning',
+  //     courseNumber: '501',
+  //     credits: '6',
+  //     description: 'Explore ML algorithms and model training.',
+  //     semester: '5'
+  //   }
+  // ];
+
   constructor(
     private courseService: CourseService,
     private storageService: StorageService,

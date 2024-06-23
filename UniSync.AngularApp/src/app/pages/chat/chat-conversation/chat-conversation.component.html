@@ -22,10 +22,10 @@
         <div class="flex-1 truncate">
           <div class="font-semibold text-sm truncate">{{ chat?.name }}</div>
           <div class="flex items-center gap-1 truncate">
-            <div class="h-1.5 w-1.5 rounded-full bg-green-600"></div>
-            <div class="text-xs text-gray-600 dark:text-gray-400 truncate">
+            <div class="h-1.5 w-1.5 rounded-full"></div>
+            <!-- <div class="text-xs text-gray-600 dark:text-gray-400 truncate">
               Online
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -46,12 +46,15 @@
       <div class="flex flex-col space-y-2 p-8 justify-end">
         <ng-container *ngFor="let message of this.chatService.messages$ | async">
           <div *ngIf="isIncomingMessage(message)" class="flex gap-2 self-start">
-            <img class="w-8 h-8 rounded-full self-end" src="{{ chat?.imageUrl }}" />
-            <div class="flex flex-col space-y-2">
-              <div class="px-4 py-3 rounded-xl rounded-bl-none bg-gray-200 dark:bg-gray-800 inline-flex max-w-[350px]">
-                {{message.message}}
+            <div class="mt-4 flex">
+              <img class="w-8 h-8 rounded-full self-end" src="{{message.senderPhotoUrl}}" />
+              <div class="flex flex-col space-y-2">
+                <div class="px-4 py-3 rounded-xl rounded-bl-none bg-gray-200 dark:bg-gray-800 inline-flex max-w-[350px]">
+                  {{message.message}}
+                </div>
               </div>
             </div>
+
           </div>
           <div *ngIf="!isIncomingMessage(message)" class="flex gap-2 self-end">
             <div class="px-4 py-3 rounded-xl rounded-br-none bg-primary-600 text-white inline-flex max-w-[350px]">

@@ -25,10 +25,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StorageService } from '../../../_services/storage.service';
 import { CommonModule } from '@angular/common';
 import { MessageService } from '../../../_services/message.service';
-import {ChatComponent} from '../chat.component'
+import { ChatComponent } from '../chat.component';
 import { ChannelService } from '../../../_services/channel.service';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'vex-chat-conversation',
@@ -79,66 +78,54 @@ export class ChatConversationComponent implements OnInit {
     private chatComponent: ChatComponent,
     private channelService: ChannelService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-
     this.route.paramMap
       .pipe(
         map((paramMap) => paramMap.get('chatId')),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((chatId) => {
-
-        this.chatService.clearMessageHistory();
+        //this.chatService.clearMessageHistory();
 
         if (!chatId) {
           throw new Error('Chat id not found!');
         }
 
-        this.chatService.getPreviousMessages(chatId);
+        //this.chatService.getPreviousMessages(chatId);
 
-
-        this.chatService.chats$.subscribe(chats => {
+        this.chatService.chats$.subscribe((chats) => {
           if (chats.length > 0) {
-            this.chatService.messages$.subscribe(res=>{
+            this.chatService.messages$.subscribe((res) => {
               //console.log(res)
             });
-        
-            this.chatService.connectedUsers$.subscribe(res=>{
+
+            this.chatService.connectedUsers$.subscribe((res) => {
               //console.log(res);
-        
-            })
-    
-    
-    
+            });
+
             this.cd.detectChanges();
             const chat = this.chatService.getChat(chatId);
-    
+
             if (!chat) {
               throw new Error(`Chat with id ${chatId} not found!`);
             }
-    
-    
+
             this.chat = chat;
             this.chat.unreadCount = 0;
             //this.filterMessages(chatId);
             this.cd.detectChanges();
-    
-            //console.log(this.messages);
-    
-            this.scrollToBottom();
 
+            //console.log(this.messages);
+
+            this.scrollToBottom();
           } else {
             console.log('No chats available yet');
 
-            this.router.navigate(["apps/chat"]);
-
+            this.router.navigate(['apps/chat']);
           }
         });
-
-        
       });
   }
 
@@ -152,7 +139,7 @@ export class ChatConversationComponent implements OnInit {
 
   send() {
     this.scrollToBottom();
-    let messageText = this.form.controls.message.value
+    let messageText = this.form.controls.message.value;
 
     // let newMessage: ChatMessage = {
     //   id: this.chat!.id,
@@ -163,12 +150,14 @@ export class ChatConversationComponent implements OnInit {
 
     //this.messages.push(newMessage);
 
-    this.chatService.sendMessage(messageText)
-    .then(()=>{
-      console.log(`Sent message: ${messageText}`)
-    }).catch((err)=>{
-      console.log(err);
-    })
+    this.chatService
+      .sendMessage(messageText)
+      .then(() => {
+        console.log(`Sent message: ${messageText}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     this.form.controls.message.setValue('');
 
@@ -176,13 +165,13 @@ export class ChatConversationComponent implements OnInit {
     this.scrollToBottom();
   }
 
-  isIncomingMessage(message: ChatMessage){
+  isIncomingMessage(message: ChatMessage) {
     return this.storageService.getUser().userId !== message.senderId;
   }
 
   scrollToBottom() {
     if (!this.scrollbar) {
-      console.log("not scrolable")
+      console.log('not scrolable');
       return;
     }
 
