@@ -87,13 +87,13 @@ export class ChatConversationComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((chatId) => {
-        //this.chatService.clearMessageHistory();
+        this.chatService.clearMessageHistory();
 
         if (!chatId) {
           throw new Error('Chat id not found!');
         }
 
-        //this.chatService.getPreviousMessages(chatId);
+        this.chatService.getPreviousMessages(chatId);
 
         this.chatService.chats$.subscribe((chats) => {
           if (chats.length > 0) {

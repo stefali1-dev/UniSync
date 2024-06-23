@@ -1,4 +1,3 @@
-
 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
   <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
@@ -23,18 +22,19 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let day of daysWithEntries">
-                <tr class="bg-gray-100 border-b">
-                  <td class="py-2 px-6 font-semibold">{{ day }}</td>
-                  <td colspan="5"></td>
-                </tr>
-                <tr *ngFor="let entry of getEntriesForDay(day)" class="bg-white border-b hover:bg-gray-50">
-                  <td class="py-4 px-6">{{ entry.TimeInterval }}</td>
-                  <td class="py-4 px-6">{{ entry.CourseName }}</td>
-                  <td class="py-4 px-6">{{ entry.CourseType }}</td>
-                  <td class="py-4 px-6">{{ entry.ProfessorName }}</td>
-                  <td class="py-4 px-6">{{ entry.Classroom }}</td>
-                </tr>
+              <ng-container *ngFor="let day of dayOfWeek; let i = index">
+                <ng-container *ngIf="getEntriesForDay(day).length > 0">
+                  <tr class="bg-gray-100 border-b">
+                    <td class="py-2 px-6 font-semibold" colspan="5">{{ day }}</td>
+                  </tr>
+                  <tr *ngFor="let entry of getEntriesForDay(day)" class="bg-white border-b hover:bg-gray-50">
+                    <td class="py-4 px-6">{{ entry.TimeInterval }}</td>
+                    <td class="py-4 px-6">{{ entry.CourseName }}</td>
+                    <td class="py-4 px-6">{{ entry.CourseType }}</td>
+                    <td class="py-4 px-6">{{ entry.ProfessorName }}</td>
+                    <td class="py-4 px-6">{{ entry.Classroom }}</td>
+                  </tr>
+                </ng-container>
               </ng-container>
             </tbody>
           </table>

@@ -126,6 +126,89 @@ export class StudentListComponent implements OnInit {
 
   ngOnInit() {
     this.getAllStudents();
+
+    // this.tableData = [
+    //   {
+    //     id: 1,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=1',
+    //     name: 'Alice Johnson',
+    //     email: 'alice.johnson@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 2,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=2',
+    //     name: 'Bob Miller',
+    //     email: 'bob.miller@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 3,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=3',
+    //     name: 'Charlie Brown',
+    //     email: 'charlie.brown@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 4,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=4',
+    //     name: 'David Smith',
+    //     email: 'david.smith@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 5,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=5',
+    //     name: 'Ella Davis',
+    //     email: 'ella.davis@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 6,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=6',
+    //     name: 'Frank Wilson',
+    //     email: 'frank.wilson@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 7,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=7',
+    //     name: 'Grace Lee',
+    //     email: 'grace.lee@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 8,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=8',
+    //     name: 'Henry Adams',
+    //     email: 'henry.adams@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 9,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=9',
+    //     name: 'Isabella Turner',
+    //     email: 'isabella.turner@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   },
+    //   {
+    //     id: 10,
+    //     imageSrc: 'https://i.pravatar.cc/150?img=10',
+    //     name: 'Jack Harris',
+    //     email: 'jack.harris@gmail.com',
+    //     role: 'Student',
+    //     selected: false
+    //   }
+    // ];
   }
 
   openContact(id?: Contact['id']) {

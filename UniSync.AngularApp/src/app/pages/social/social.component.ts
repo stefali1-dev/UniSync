@@ -55,7 +55,8 @@ export class SocialComponent implements OnInit {
 
         this.profile = {
           id: user.userId,
-          imageSrc: user.userPhoto,
+          // imageSrc: user.userPhoto,
+          imageSrc: 'https://i.pravatar.cc/150?img=68',
           name: user.firstName + ' ' + user.lastName,
           email: user.email,
           role: user.roles[0],
