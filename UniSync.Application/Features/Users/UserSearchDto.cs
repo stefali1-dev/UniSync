@@ -6,6 +6,6 @@ namespace UniSync.Application.Features.Users
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
-        public UserCloudPhotoDto? UserPhoto { get; set; }
+        public string? UserPhoto { get; set; }
     }
 }

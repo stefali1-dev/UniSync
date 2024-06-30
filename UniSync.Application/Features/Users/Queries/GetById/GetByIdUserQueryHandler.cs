@@ -35,11 +35,7 @@ namespace UniSync.Application.Features.Users.Queries.GetById
                     Email = userDto.Email,
                     Bio = userDto.Bio,
                     Social = userDto.Social,
-                    UserPhoto = userPhoto.IsSuccess ? new UserCloudPhotoDto
-                    {
-                        UserPhotoId = userPhoto.Value.UserPhotoId,
-                        PhotoUrl = userPhoto.Value.PhotoUrl
-                    } : null,
+                    UserPhoto = userDto.UserPhoto,
                     Roles = userDto.Roles,
                 }
             };

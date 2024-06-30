@@ -34,7 +34,7 @@ namespace UniSync.Api.Controllers
             }
         }
 
-        [HttpGet("{professorId}")]
+        [HttpGet("ByProfessorId/{professorId}")]
         public async Task<IActionResult> GetTimetableEntriesByProfessorId(string professorId)
         {
             try
@@ -48,5 +48,21 @@ namespace UniSync.Api.Controllers
                 return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
+
+        [HttpGet("ByStudentGroupName/{studentGroupName}")]
+        public async Task<IActionResult> GetTimetableEntriesByStudentGroupName(string studentGroupName)
+        {
+            try
+            {
+                var timetableEntries = await timetableEntryService.GetTimetableEntriesByStudentGroupName(studentGroupName);
+                return Ok(timetableEntries);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
     }
 }
+

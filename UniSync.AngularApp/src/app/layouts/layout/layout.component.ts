@@ -89,7 +89,8 @@ export class LayoutComponent {
           role: data?.claims?.[
             'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
           ],
-          appUserId: data?.claims?.['AppUserId']
+          appUserId: data?.claims?.['AppUserId'],
+          userPhoto: data?.claims?.['UserPhoto']
         };
 
         this.storageService.saveUser(newMember);

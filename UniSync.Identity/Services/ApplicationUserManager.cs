@@ -31,15 +31,15 @@ namespace UniSync.Identity.Services
             var roles = await userManager.GetRolesAsync(user);
             userDtos.Roles = roles.ToList();
 
-            var userPhoto = await userPhotoRepository.GetUserPhotoByUserIdAsync(user.Id);
-            if (userPhoto.IsSuccess)
-            {
-                userDtos.UserPhoto = new UserCloudPhotoDto
-                {
-                    UserPhotoId = userPhoto.Value.UserPhotoId,
-                    PhotoUrl = userPhoto.Value.PhotoUrl
-                };
-            }
+            //var userPhoto = await userPhotoRepository.GetUserPhotoByUserIdAsync(user.Id);
+            //if (userPhoto.IsSuccess)
+            //{
+            //    userDtos.UserPhoto = new UserCloudPhotoDto
+            //    {
+            //        UserPhotoId = userPhoto.Value.UserPhotoId,
+            //        PhotoUrl = userPhoto.Value.PhotoUrl
+            //    };
+            //}
 
             return Result<UserDto>.Success(userDtos);
         }
@@ -158,6 +158,7 @@ namespace UniSync.Identity.Services
                 LastName = user.LastName,
                 Email = user.Email,
                 Bio = user.Bio,
+                UserPhoto = user.UserPhoto,
                 Social = new Social
                 {
                     Facebook = user.Facebook,

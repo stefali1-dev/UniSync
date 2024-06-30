@@ -12,5 +12,6 @@ namespace UniSync.Application.Contracts.Interfaces
     {
         public Task AddTimetableEntry(TimetableEntryDto timetableEntryDto);
         public Task<List<TimetableEntry>> GetTimetableEntriesByProfessorId(string professorId);
+        public Task<List<TimetableEntry>> GetTimetableEntriesByStudentGroupName(string studentGroupName);
     }
 }

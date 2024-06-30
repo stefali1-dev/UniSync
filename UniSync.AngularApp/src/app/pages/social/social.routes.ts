@@ -1,29 +1,29 @@
-import { SocialComponent } from './social.component';
 import { VexRoutes } from '@vex/interfaces/vex-route.interface';
 
 const routes: VexRoutes = [
   {
     path: '',
-    component: SocialComponent,
+    loadComponent: () =>
+      import('./own-social-profile/own-social-profile.component').then(
+        (m) => m.SocialProfileComponent
+      ),
     data: {
       toolbarShadowEnabled: true
-    },
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./own-social-profile/own-social-profile.component').then(
-            (m) => m.SocialProfileComponent
-          )
-      },
-      {
-        path: ':userId',
-        loadComponent: () =>
-          import('./user-social-profile/user-social-profile.component').then(
-            (m) => m.UserSocialProfileComponent
-          )
-      }
-    ]
+    }
+  },
+  {
+    path: 'edit',
+    loadComponent: () =>
+      import('./edit-profile/edit-profile.component').then(
+        (m) => m.EditProfileComponent
+      )
+  },
+  {
+    path: ':userId',
+    loadComponent: () =>
+      import('./user-social-profile/user-social-profile.component').then(
+        (m) => m.UserSocialProfileComponent
+      )
   }
 ];
 

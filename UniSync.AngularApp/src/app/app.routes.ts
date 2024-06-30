@@ -73,16 +73,20 @@ export const appRoutes: VexRoutes = [
               import(
                 './pages/timetable/timetable-professor/timetable-professor.component'
               ).then((m) => m.TimetableComponent)
-          },
-          {
-            path: 'admin-dashboard',
-            loadComponent: () =>
-              import('./pages/admin-dashboard/admin-dashboard.component').then(
-                (m) => m.AdminDashboardComponent
-              )
           }
         ]
+      },
+      {
+        path: 'home',
+        canActivate: [RoleGuard],
+        loadChildren: () => import('./pages/home/home.routes')
       }
+      // {
+      //   path: 'admin-dashboard',
+      //   canActivate: [RoleGuard],
+      //   loadChildren: () =>
+      //     import('./pages/admin-dashboard/dashboard.routes')
+      // }
     ]
   }
 ];

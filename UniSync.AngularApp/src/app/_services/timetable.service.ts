@@ -15,6 +15,14 @@ export class TimetableService {
     return this.http.post(`${API_URL}/TimetableEntry`, timetableEntryDto);
   }
   getTimetableEntriesByProfessorId(professorId: string): Observable<any> {
-    return this.http.get(`${API_URL}/TimetableEntry/${professorId}`);
+    return this.http.get(
+      `${API_URL}/TimetableEntry/ByProfessorId/${professorId}`
+    );
+  }
+
+  getTimetableEntriesByStudentGroupName(groupName: string): Observable<any> {
+    return this.http.get(
+      `${API_URL}/TimetableEntry/ByStudentGroupName/${groupName}`
+    );
   }
 }

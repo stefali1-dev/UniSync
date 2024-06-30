@@ -14,8 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {AuthService} from '../../../../../_services/auth.service'
-import {StorageService} from '../../../../../_services/storage.service'
+import { AuthService } from '../../../../../_services/auth.service';
+import { StorageService } from '../../../../../_services/storage.service';
 
 export interface OnlineStatus {
   id: 'online' | 'away' | 'dnd' | 'offline';
@@ -54,27 +54,11 @@ export class ToolbarUserDropdownComponent implements OnInit {
     },
     {
       id: '2',
-      icon: 'mat:move_to_inbox',
-      label: 'My Inbox',
-      description: 'Messages & Latest News',
+      icon: 'mat:edit',
+      label: 'Edit Profile',
+      description: '',
       colorClass: 'text-primary-600',
-      route: '/apps/chat'
-    },
-    {
-      id: '3',
-      icon: 'mat:list_alt',
-      label: 'My Projects',
-      description: 'Tasks & Active Projects',
-      colorClass: 'text-amber-600',
-      route: '/apps/scrumboard'
-    },
-    {
-      id: '4',
-      icon: 'mat:table_chart',
-      label: 'Billing Information',
-      description: 'Pricing & Current Plan',
-      colorClass: 'text-purple-600',
-      route: '/pages/pricing'
+      route: 'apps/profile/edit'
     }
   ];
 
@@ -124,8 +108,8 @@ export class ToolbarUserDropdownComponent implements OnInit {
   }
 
   close() {
-    this.authService.logout()
-    this.storageService.removeUser()
+    this.authService.logout();
+    this.storageService.removeUser();
     this.popoverRef.close();
   }
 }

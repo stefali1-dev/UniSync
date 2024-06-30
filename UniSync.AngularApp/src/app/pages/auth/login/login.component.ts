@@ -83,7 +83,8 @@ export class LoginComponent {
           email: null,
           username: null,
           role: null,
-          appUserId: null
+          appUserId: null,
+          userPhoto: null
         };
 
         this.storageService.saveUser(newMember);
@@ -91,7 +92,7 @@ export class LoginComponent {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.storageService.getUser().roles;
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.log(err);

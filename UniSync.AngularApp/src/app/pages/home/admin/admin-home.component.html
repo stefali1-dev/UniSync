@@ -1,0 +1,51 @@
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-indigo-600 mb-8">Bun venit, {{ adminName }}</h1>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Statistici generale -->
+      <div class="bg-white rounded-lg shadow-md p-6 col-span-2">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Statistici generale</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="bg-indigo-100 p-4 rounded-lg">
+            <p class="text-indigo-800 font-semibold">Total utilizatori</p>
+            <p class="text-3xl font-bold text-indigo-600">{{ statistics.totalUsers }}</p>
+          </div>
+          <div class="bg-green-100 p-4 rounded-lg">
+            <p class="text-green-800 font-semibold">Studenți</p>
+            <p class="text-3xl font-bold text-green-600">{{ statistics.totalStudents }}</p>
+          </div>
+          <div class="bg-blue-100 p-4 rounded-lg">
+            <p class="text-blue-800 font-semibold">Profesori</p>
+            <p class="text-3xl font-bold text-blue-600">{{ statistics.totalTeachers }}</p>
+          </div>
+          <div class="bg-yellow-100 p-4 rounded-lg">
+            <p class="text-yellow-800 font-semibold">Cursuri active</p>
+            <p class="text-3xl font-bold text-yellow-600">{{ statistics.activeCourses }}</p>
+          </div>
+          <div class="bg-purple-100 p-4 rounded-lg">
+            <p class="text-purple-800 font-semibold">Departamente</p>
+            <p class="text-3xl font-bold text-purple-600">{{ statistics.totalDepartments }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Acces rapid la Admin Panel -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Acces rapid</h2>
+        <div class="space-y-4">
+          <a [routerLink]="['/home/admin/students']" class="block bg-indigo-500 text-white text-center py-2 px-4 rounded hover:bg-indigo-600 transition-colors">
+            Gestionare Studenti
+          </a>
+          <a [routerLink]="['/home/admin/professors']" class="block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-blue-600 transition-colors">
+            Gestionare Profesori
+          </a>
+          <a [routerLink]="['/home/admin/courses']" class="block bg-green-500 text-white text-center py-2 px-4 rounded hover:bg-green-600 transition-colors">
+            Gestionare Cursuri
+          </a>
+          <a [routerLink]="['/home/admin/timetable']" class="block bg-yellow-500 text-white text-center py-2 px-4 rounded hover:bg-yellow-600 transition-colors">
+            Gestionare Orar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>

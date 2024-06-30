@@ -15,36 +15,26 @@ export class RoleGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const userRole = this.storageService.getUser().role; // Update with your method
+    const userRole = this.storageService.getUser().role;
     const userId = this.storageService.getUser().userId;
 
-    // if (userRole === 'Student' && state.url !== '/apps/courses/enrolled') {
-    //   this.router.navigate(['apps/courses/enrolled']);
-    //   return false;
-    // }
-
-    // if (userRole === 'Professor' && state.url !== '/apps/courses/teaching') {
-    //   this.router.navigate(['apps/courses/teaching']);
-    //   return false;
-    // }
-
-    // if (userRole === 'Student' && state.url.startsWith('/apps/evaluation')) {
-    //   this.router.navigate([`/apps/evaluation/self/${userId}`]);
-    //   return false;
-    // }
     if (userRole === 'Student') {
-      if (state.url == '/apps/courses') {
+      if (state.url === '/home') {
+        this.router.navigate(['/home/student']);
+      } else if (state.url === '/apps/courses') {
         this.router.navigate(['apps/courses/enrolled']);
-      }
-
-      if (state.url == '/apps/evaluation') {
+      } else if (state.url === '/apps/evaluation') {
         this.router.navigate([`/apps/evaluation/self/${userId}`]);
       }
-    }
-
-    if (userRole === 'Professor') {
-      if (state.url == '/apps/courses') {
+    } else if (userRole === 'Professor') {
+      if (state.url === '/home') {
+        this.router.navigate(['/home/professor']);
+      } else if (state.url === '/apps/courses') {
         this.router.navigate(['apps/courses/teaching']);
+      }
+    } else if (userRole === 'Admin') {
+      if (state.url === '/home') {
+        this.router.navigate(['/home/admin']);
       }
     }
 

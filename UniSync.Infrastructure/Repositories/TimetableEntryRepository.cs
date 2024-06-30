@@ -19,5 +19,12 @@ namespace UniSync.Infrastructure.Repositories
                 .Where(te => te.ProfessorId == professorId)
                 .ToListAsync();
         }
+
+        public async Task<List<TimetableEntry>> GetByGroupNameAsync(string groupName)
+        {
+            return await context.TimetableEntries
+                .Where(te => te.StudentGroup == groupName)
+                .ToListAsync();
+        }
     }
 }

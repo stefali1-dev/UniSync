@@ -65,7 +65,8 @@ namespace UniSync.Identity.Services
                 SecurityStamp = Guid.NewGuid().ToString(),
                 FirstName = userInfo.FirstName,
                 LastName = userInfo.LastName,
-                UserName = randomString
+                UserName = randomString,
+                UserPhoto = "https://gcdnb.pbrd.co/images/oNUNZlwscN3N.webp?o=1"
             };
 
             var createUserResult = await userManager.CreateAsync(user, model.Password);
@@ -179,6 +180,7 @@ namespace UniSync.Identity.Services
                new Claim(ClaimTypes.NameIdentifier, user.Id!),
                new Claim("AppUserId", chatUser.Value.AppUserId.ToString()),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+               new Claim("UserPhoto", user.UserPhoto)
             };
 
             foreach (var userRole in userRoles)

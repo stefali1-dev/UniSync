@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Create Group</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="overflow-auto h-96">
+    <ul class="divide-y divide-gray-200">
+
+      <mat-form-field appearance="outline" 
+      class="vex-mat-dense-xs flex-1 bg-foreground" 
+      subscriptSizing="dynamic">
+        <mat-icon class="icon-sm" 
+        matIconPrefix 
+        svgIcon="mat:search"></mat-icon>
+        <input #groupNameInput matInput placeholder="Group name" type="text" />
+      </mat-form-field>
+
+      <h4>Selected Users</h4>
+
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let selectedContact of selectedContacts$ | async" class="flex items-center p-4 hover:bg-gray-100 cursor-pointer" (click)="unselectContact(selectedContact)">
+          <img class="h-12 w-12 rounded-full object-cover mr-4" [src]="selectedContact.imageSrc" alt="User Photo">
+          <div class="flex-grow">
+            <div class="text-sm font-medium text-gray-900">{{ selectedContact.name }}</div>
+            <div class="text-sm text-gray-500">{{ selectedContact.email }}</div>
+            <div class="text-sm text-indigo-600">Role: {{ selectedContact.role }}</div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="flex px-4 mt-10 mb-4 p-4">
+        <mat-form-field appearance="outline" 
+        class="vex-mat-dense-xs flex-1 bg-foreground" 
+        subscriptSizing="dynamic">
+          <mat-icon class="icon-sm" 
+          matIconPrefix 
+          svgIcon="mat:search"></mat-icon>
+          <input #searchInput matInput placeholder="Search users..." type="text" (keyup.enter)="onEnterPressed(searchInput.value)" />
+        </mat-form-field>
+
+      </div>
+      <div class="overflow-auto h-96">
+        <ul class="divide-y divide-gray-200">
+          <li *ngFor="let contact of contacts$ | async" class="flex items-center p-4 hover:bg-gray-100 cursor-pointer" (click)="selectContact(contact)">
+            <img class="h-12 w-12 rounded-full object-cover mr-4" [src]="contact.imageSrc" alt="User Photo">
+            <div class="flex-grow">
+              <div class="text-sm font-medium text-gray-900">{{ contact.name }}</div>
+              <div class="text-sm text-gray-500">{{ contact.email }}</div>
+              <div class="text-sm text-indigo-600">Role: {{ contact.role }}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      
+      
+
+    </ul>
+  </div>
+  
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button color="primary" mat-flat-button type="button" (click)="createGroup()">Create Group</button>
+
+</mat-dialog-actions>

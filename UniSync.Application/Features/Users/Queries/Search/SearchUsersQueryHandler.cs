@@ -35,14 +35,7 @@ namespace UniSync.Application.Features.Users.Queries.Search
                     FirstName = u.FirstName,
                     LastName = u.LastName,
                     Email = u.Email,
-                    UserPhoto = !string.IsNullOrWhiteSpace(u.UserId) &&
-                                userPhotoRepository.GetUserPhotoByUserIdAsync(u.UserId).Result.IsSuccess
-                        ? new UserCloudPhotoDto
-                        {
-                            UserPhotoId = userPhotoRepository.GetUserPhotoByUserIdAsync(u.UserId).Result.Value.UserPhotoId,
-                            PhotoUrl = userPhotoRepository.GetUserPhotoByUserIdAsync(u.UserId).Result.Value.PhotoUrl
-                        }
-                        : null
+                    UserPhoto = u.UserPhoto,
                 }).Take(25).ToArray()
             };
         }

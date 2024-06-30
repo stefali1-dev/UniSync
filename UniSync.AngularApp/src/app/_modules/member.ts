@@ -5,4 +5,5 @@ export interface Member {
   username: string | null;
   role: string | null;
   appUserId: string | null;
+  userPhoto: string | null;
 }

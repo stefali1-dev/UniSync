@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UniSync.Application.Contracts.Interfaces;
 using UniSync.Application.Persistence;
+using UniSync.Domain.Entities;
 using UniSync.Domain.Entities.Administration;
 
 namespace UniSync.Application.Features.TimetableEntry
@@ -40,6 +41,12 @@ namespace UniSync.Application.Features.TimetableEntry
         public async Task<List<UniSync.Domain.Entities.Administration.TimetableEntry>> GetTimetableEntriesByProfessorId(string professorId)
         {
             return await timetableEntryRepository.GetByProfessorIdAsync(Guid.Parse(professorId));
+        }
+
+        public async Task<List<UniSync.Domain.Entities.Administration.TimetableEntry>> GetTimetableEntriesByStudentGroupName(string groupName)
+        {
+            return await timetableEntryRepository.GetByGroupNameAsync(groupName);
+
         }
     }
 }

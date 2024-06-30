@@ -27,7 +27,7 @@ export class NavigationLoaderService {
       {
         type: 'link',
         label: 'Home',
-        route: '/',
+        route: '/home',
         routerLinkActiveOptions: { exact: true }
       },
       {

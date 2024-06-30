@@ -1,0 +1,45 @@
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h2 class="text-lg leading-6 font-medium text-gray-900">
+        Orar Informatica, anul 3B, grupa 4
+      </h2>
+      <div class="mt-1 max-w-2xl text-sm text-gray-500">
+        <div>Publicat la data <b>21.05.2024 13:00</b>, valabil în perioada <b>26.02.2024 - 09.07.2024</b></div>
+      </div>
+    </div>
+    <div class="border-t border-gray-200">
+      <dl class="divide-y divide-gray-200">
+        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3 px-6">Interval</th>
+                <th scope="col" class="py-3 px-6">Disciplina</th>
+                <th scope="col" class="py-3 px-6">Tip</th>
+                <th scope="col" class="py-3 px-6">Profesor</th>
+                <th scope="col" class="py-3 px-6">Sala</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let day of dayOfWeek; let i = index">
+                <ng-container *ngIf="getEntriesForDay(day).length > 0">
+                  <tr class="bg-gray-100 border-b">
+                    <td class="py-2 px-6 font-semibold" colspan="5">{{ day }}</td>
+                  </tr>
+                  <tr *ngFor="let entry of getEntriesForDay(day)" class="bg-white border-b hover:bg-gray-50">
+                    <td class="py-4 px-6">{{ entry.TimeInterval }}</td>
+                    <td class="py-4 px-6">{{ entry.CourseName }}</td>
+                    <td class="py-4 px-6">{{ entry.CourseType }}</td>
+                    <td class="py-4 px-6">{{ entry.ProfessorName }}</td>
+                    <td class="py-4 px-6">{{ entry.Classroom }}</td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>

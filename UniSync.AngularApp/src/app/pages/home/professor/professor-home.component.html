@@ -1,0 +1,53 @@
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-indigo-600 mb-8">Bun venit, {{ teacherName }}</h1>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Widget orar zilnic -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Orarul zilei</h2>
+        <ul class="space-y-2">
+          <li *ngFor="let event of dailySchedule" class="flex justify-between">
+            <span class="text-gray-700">{{ event.CourseName }} ({{ event.CourseType }})</span>
+            <span class="text-gray-500">{{ event.TimeInterval }}</span>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Lista cursurilor predate -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Cursurile mele</h2>
+        <ul class="space-y-2">
+          <li *ngFor="let course of taughtCourses">
+            <a [routerLink]="['/course', course.courseId]" class="text-indigo-600 hover:text-indigo-800 transition-colors">
+              {{ course.courseName }} ({{ course.courseNumber }})
+            </a>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Gestionarea evaluărilor studenților
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Evaluări în așteptare</h2>
+        <ul class="space-y-2">
+          <li *ngFor="let evaluation of pendingEvaluations" class="flex justify-between items-center">
+            <span class="text-gray-700">{{ "Student Name" }} - {{ evaluation.courseName }}</span>
+            <button class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-600 transition-colors">
+              Evaluează
+            </button>
+          </li>
+        </ul>
+      </div> -->
+  
+      <!-- Chat-uri recente -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Chat-uri recente</h2>
+        <ul class="space-y-2">
+          <li *ngFor="let chat of recentChats" class="flex items-center">
+            <img [src]="chat.avatar" alt="Avatar" class="w-8 h-8 rounded-full mr-2">
+            <span class="text-gray-700">{{ chat.name }}</span>
+            <span class="ml-auto text-sm text-gray-500">{{ formatTime(chat.lastMessage) }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>

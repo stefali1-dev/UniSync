@@ -51,6 +51,21 @@ public class CoursesController : ApiControllerBase
         }
     }
 
+    [HttpGet("ByStudentId/{studentId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCoursesByStudentId(string studentId)
+    {
+        try
+        {
+            var courses = await coursesService.GetCoursesByStudentId(studentId);
+            return Ok(courses);
+        }
+        catch
+        {
+            return BadRequest("Error retriving courses ");
+        }
+    }
+
 
     [HttpGet("ById/{courseId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,9 +88,35 @@ public class CoursesController : ApiControllerBase
 
         if (result == null)
         {
-            return NotFound($"Student with ID {courseId} not found");
+            return NotFound($"Course with ID {courseId} not found");
         }
         return Ok(courseDto);
     }
 
+    [HttpGet("GetAll")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllCourses()
+    {
+        try
+        {
+            var result = await courseRepository.GetAllAsync();
+            var courses = result.Value.Select(course => new CourseDto
+            {
+                CourseId = course.CourseId.ToString(),
+                CourseName = course.CourseName,
+                CourseNumber = course.CourseNumber,
+                Credits = course.Credits,
+                Description = course.Description,
+                Semester = course.Semester,
+                ProfessorsIds = course.Professors.Select(p => p.ProfessorId.ToString()).ToList(),
+                StudentsIds = course.Students.Select(s => s.StudentId.ToString()).ToList()
+            }).ToList();
+
+            return Ok(courses);
+        }
+        catch
+        {
+            return BadRequest("Error retrieving courses");
+        }
+    }
 }
