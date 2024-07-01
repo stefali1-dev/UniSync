@@ -94,15 +94,15 @@ export class ChatConversationComponent implements OnInit {
           throw new Error('Chat id not found!');
         }
 
-        if (chatId === '1') {
+        if (chatId === 'df0eb722-2722-4312-8300-58c36cea1b24') {
           this.chat = recentChats[0];
           this.chatService.messages = convo1;
           this.chatService.messages$.next(convo1);
-        } else if (chatId === '2') {
+        } else if (chatId === 'd43f0d77-3164-49fb-9e64-82d1ec3ffb68') {
           this.chat = recentChats[1];
           this.chatService.messages = convo2;
           this.chatService.messages$.next(convo2);
-        } else if (chatId === '3') {
+        } else if (chatId === 'fe373755-4c6f-467a-a110-b5be0332ca9a') {
           this.chat = recentChats[2];
           this.chatService.messages = convo3;
           this.chatService.messages$.next(convo3);

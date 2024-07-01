@@ -148,7 +148,11 @@ export class ChatComponent implements OnInit {
     ]).pipe(
       map(([chats, showOfficial]) => {
         if (showOfficial) {
-          return chats.filter((chat) => chat.id === '1' || chat.id === '3');
+          return chats.filter(
+            (chat) =>
+              chat.id === 'df0eb722-2722-4312-8300-58c36cea1b24' ||
+              chat.id === 'fe373755-4c6f-467a-a110-b5be0332ca9a'
+          );
         }
         return chats;
       })

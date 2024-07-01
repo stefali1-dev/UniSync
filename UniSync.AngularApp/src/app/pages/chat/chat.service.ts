@@ -35,6 +35,7 @@ export class ChatService {
   public rooms: string[] = [];
   private isConnected: boolean = false;
 
+  public userName: string = '';
   chats: Chat[] = [];
 
   public chatsSubject = new BehaviorSubject<Chat[]>(this.chats);
@@ -123,6 +124,8 @@ export class ChatService {
       if (userId === null) {
         console.log('NULL USER ID');
       }
+
+      this.joinRoom(userId, '1');
 
       this.channelService.getChannelsByUserId(userId).subscribe({
         next: (data) => {

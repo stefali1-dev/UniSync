@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { scaleIn400ms } from '@vex/animations/scale-in.animation';
 import { fadeInRight400ms } from '@vex/animations/fade-in-right.animation';
 import { TableColumn } from '@vex/interfaces/table-column.interface';
-import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  UntypedFormControl,
+  Validators
+} from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { stagger40ms } from '@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
@@ -50,6 +56,9 @@ export class StudentListComponent implements OnInit {
   activeUser: Contact | null = null;
   isDropdownOpen = false;
 
+  selectedModal: string = '';
+  addStudentForm: FormGroup;
+
   users: Contact[] = [];
   searchCtrl = new UntypedFormControl();
 
@@ -62,8 +71,17 @@ export class StudentListComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private studentService: StudentService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+    private changeDetectorRef: ChangeDetectorRef,
+    private formBuilder: FormBuilder
+  ) {
+    this.addStudentForm = this.formBuilder.group({
+      registrationId: ['', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      year: ['', Validators.required],
+      group: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {
     this.getAllStudents();
@@ -90,6 +108,24 @@ export class StudentListComponent implements OnInit {
   openMenu() {
     this.menuOpen = true;
   }
+
+  openModal(modalName: string) {
+    this.selectedModal = modalName;
+  }
+
+  closeModal() {
+    this.selectedModal = '';
+  }
+
+  addStudent() {
+    if (this.addStudentForm.valid) {
+      // Perform the logic to add a student using the form data
+      console.log(this.addStudentForm.value);
+      this.addStudentForm.reset();
+      this.closeModal();
+    }
+  }
+
   onEnterPressed(request: string) {
     this.studentService.searchStudents(request).subscribe({
       next: (students) => {
@@ -100,9 +136,9 @@ export class StudentListComponent implements OnInit {
         for (const searchedUser of students) {
           let searchedContact: Contact = {
             id: 1,
-            imageSrc: 'assets/img/avatars/1.jpg',
+            imageSrc: searchedUser.userPhoto,
             name: searchedUser.firstName + ' ' + searchedUser.lastName,
-            role: 'student',
+            role: 'Student',
             email: searchedUser.email
           };
 
@@ -125,8 +161,7 @@ export class StudentListComponent implements OnInit {
         students.forEach((s) => {
           let student: Contact = {
             id: s.userId,
-            imageSrc:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s',
+            imageSrc: s.userPhoto,
             name: `${s.firstName} ${s.lastName}`,
             email: s.email,
             role: 'Student'

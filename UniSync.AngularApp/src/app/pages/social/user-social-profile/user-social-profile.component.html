@@ -3,42 +3,28 @@
     <div class="h-64 relative overflow-hidden">
       <img
         class="w-full h-full object-cover"
-        src="assets/img/demo/landscape.jpg" />
+        src="https://static.vecteezy.com/system/resources/previews/002/099/721/original/mountain-beautiful-landscape-background-design-illustration-free-vector.jpg" />
       <div
         class="absolute bg-black opacity-25 top-0 right-0 bottom-0 left-0 w-full h-full z-0"></div>
 
-        <div class="relative">
-
-          <img
-          class="avatar h-24 w-24 absolute top-6 ltr:left-4 rtl:right-4 sm:hidden"
-          [src]="this.profile.imageSrc" />
-
-          <label for="profileImageInput" class="absolute bottom-0 right-0 bg-white rounded-full p-1 cursor-pointer shadow-md hover:bg-gray-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </label>
-          <input id="profileImageInput" type="file" class="hidden" (change)="onProfileImageChange($event)" accept="image/*">
-        </div>
-
-
-        
-      
+      <img
+        class="avatar h-24 w-24 absolute top-6 ltr:left-4 rtl:right-4 sm:hidden"
+        src="assets/img/avatars/1.jpg" />
     </div>
 
     <div class="z-10 relative -mt-16 px-6 flex items-center">
       <img
         @scaleIn
         class="avatar h-24 w-24 flex-none align-start hidden sm:block border-2 border-white"
-        [src]="this.profile.imageSrc" />
+        src="https://i.pravatar.cc/150?img=25" />
 
       <div class="max-w-full flex-auto sm:ltr:ml-6 sm:rtl:mr-6">
         <div class="h-16 flex items-end">
-          <h1 @fadeInRight class="headline text-white pb-2 m-0">{{this.profile.name}}</h1>
+          <h1 @fadeInRight class="headline text-white pb-2 m-0">Jessica Brown</h1>
         </div>
 
         <nav [tabPanel]="tabPanel" class="border-0" mat-tab-nav-bar>
-          <div
+          <a
             #rla="routerLinkActive"
             *ngFor="let link of links"
             [active]="rla.isActive"
@@ -51,85 +37,55 @@
             queryParamsHandling="preserve"
             routerLinkActive>
             {{ link.label }}
-        </div>
+          </a>
         </nav>
         <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
       </div>
     </div>
   </div>
 
-</div>
-
-
-<div class="mt-6 flex flex-col md:flex-row md:items-start">
-  <div class="flex-auto">
-    <div class="card">
-      <div class="px-6 py-4 border-b">
-        <h2 class="title m-0">About</h2>
-      </div>
-
-      <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="py-3 flex items-center">
-          <div
-            @scaleIn
-            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:phone"></mat-icon>
-          </div>
-
-          <div @fadeInRight>
-            <p class="m-0 body-1">+1 (930) 502-3182</p>
-          </div>
+  
+  <div class="mt-6 flex flex-col md:flex-row md:items-start">
+    <div class="flex-auto">
+      <div class="card">
+        <div class="px-6 py-4 border-b">
+          <h2 class="title m-0">About</h2>
         </div>
+  
+        <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-        <div class="py-3 flex items-center">
-          <div
-            @scaleIn
-            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:work"></mat-icon>
+          <div class="py-3 flex items-center">
+            <div
+              @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+              <mat-icon class="icon-sm" svgIcon="mat:mail"></mat-icon>
+            </div>
+  
+            <div @fadeInRight>
+              <p class="m-0 body-1">student4&#64;example.com</p>
+            </div>
+          </div>
+  
+          <div class="py-3 flex items-center">
+            <div
+              @scaleIn
+              class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
+              <mat-icon class="icon-sm" svgIcon="mat:access_time"></mat-icon>
+            </div>
+  
+            <div @fadeInRight>
+              <p class="m-0 body-1">Role</p>
+              <p class="m-0 caption text-hint">
+                Student
+              </p>
+            </div>
           </div>
 
-          <div @fadeInRight>
-            <p class="m-0 body-1">{{this.profile.role}}</p>
-          </div>
-        </div>
-
-        <div class="py-3 flex items-center">
-          <div
-            @scaleIn
-            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:mail"></mat-icon>
-          </div>
-
-          <div @fadeInRight>
-            <p class="m-0 body-1">{{this.profile.email}}</p>
-          </div>
-        </div>
-
-        <div *ngIf="this.profile?.role == 'student'" class="py-3 flex items-center">
-          <div
-            @scaleIn
-            class="w-10 h-10 rounded-full bg-primary-600/10 text-primary-600 ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:group"></mat-icon>
-          </div>
-
-          <div @fadeInRight>
-            <p class="m-0 body-1">Year 1, Group A1</p>
-          </div>
-        </div>
-
-        <div class="py-3 flex items-center">
-          <div
-            @scaleIn
-            class="w-10 h-10 rounded-full bg-gray-600/10 text-dark ltr:mr-3 rtl:ml-3 cursor-pointer flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:whatshot"></mat-icon>
-          </div>
-
-          <p @fadeInRight class="m-0 body-1 cursor-pointer">
-            Add social profiles
-          </p>
         </div>
       </div>
+
     </div>
+  
   </div>
-
+  
 </div>

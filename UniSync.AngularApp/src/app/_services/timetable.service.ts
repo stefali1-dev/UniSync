@@ -25,4 +25,8 @@ export class TimetableService {
       `${API_URL}/TimetableEntry/ByStudentGroupName/${groupName}`
     );
   }
+
+  getAllTimetableEntries(): Observable<any> {
+    return this.http.get(`${API_URL}/TimetableEntry/All`);
+  }
 }

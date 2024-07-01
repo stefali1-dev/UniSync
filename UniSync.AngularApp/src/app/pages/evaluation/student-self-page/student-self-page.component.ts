@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
@@ -33,6 +33,7 @@ import { add } from 'date-fns';
 
 export interface EvaluationView {
   courseId: string;
+  type: string;
   courseName: string;
   grade: number;
   dateTime: Date;
@@ -70,7 +71,8 @@ export interface CourseView {
     MatSlideToggleModule,
     MatCheckboxModule,
     AsyncPipe,
-    NgClass
+    NgClass,
+    DatePipe
   ]
 })
 export class StudentSelfPageComponent implements OnInit {
@@ -193,6 +195,7 @@ export class StudentSelfPageComponent implements OnInit {
                         courseId: e.courseId,
                         courseName: e.courseName,
                         grade: e.grade,
+                        type: 'Lab',
                         dateTime: e.dateTime,
                         comment: e.comment
                       };

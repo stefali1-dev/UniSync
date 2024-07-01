@@ -18,7 +18,7 @@
       <h2 class="text-xl font-semibold text-gray-800 mb-4">My Courses</h2>
       <ul class="space-y-2">
         <li *ngFor="let course of enrolledCourses">
-          <a [routerLink]="['/apps/courses/enrolled/', course.courseId]" class="text-indigo-600 hover:text-indigo-800 transition-colors">
+          <a [routerLink]="['/apps/courses/enrolled']" class="text-indigo-600 hover:text-indigo-800 transition-colors">
             {{ course.courseName }}
           </a>
         </li>
@@ -30,7 +30,7 @@
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Evaluations</h2>
       <ul class="space-y-2">
         <li *ngFor="let evaluation of studentEvaluations" class="flex justify-between">
-          <a [routerLink]="['/apps/evaluation/self/', evaluation.courseId]" class="text-gray-700">{{ evaluation.courseName }}</a>
+          <a [routerLink]="['/apps/evaluation/self/cdc74746-5858-48f8-8c28-1ebc29406550']" class="text-gray-700">{{ evaluation.courseName }}</a>
           <span class="font-semibold" [ngClass]="{
             'text-green-600': evaluation.grade >= 8,
             'text-yellow-600': evaluation.grade >= 5 && evaluation.grade < 8,

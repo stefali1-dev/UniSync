@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { scaleIn400ms } from '@vex/animations/scale-in.animation';
 import { fadeInRight400ms } from '@vex/animations/fade-in-right.animation';
 import { TableColumn } from '@vex/interfaces/table-column.interface';
-import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  UntypedFormControl,
+  Validators
+} from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { stagger40ms } from '@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +22,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { StudentService } from 'src/app/_services/student.service';
 import { UserService } from 'src/app/_services/user.service';
 import { CourseService } from 'src/app/_services/course.service';
+import { DialogUserList } from 'src/app/pages/chat/dialog-user-list/dialog-user-list';
 
 export interface Course {
   id: number;
@@ -53,6 +60,9 @@ export class CourseListComponent implements OnInit {
   courses: Course[] = [];
   searchCtrl = new UntypedFormControl();
 
+  selectedModal: string = '';
+  addStudentForm: FormGroup;
+
   searchStr$ = this.searchCtrl.valueChanges.pipe(debounceTime(10));
 
   menuOpen = false;
@@ -63,8 +73,16 @@ export class CourseListComponent implements OnInit {
     private router: Router,
     private studentService: StudentService,
     private changeDetectorRef: ChangeDetectorRef,
-    private courseService: CourseService
-  ) {}
+    private courseService: CourseService,
+    private formBuilder: FormBuilder
+  ) {
+    this.addStudentForm = this.formBuilder.group({
+      CourseId: ['', Validators.required],
+      Name: ['', Validators.required],
+      Credits: ['', Validators.required],
+      Semester: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {
     this.getAllStudents();
@@ -151,11 +169,36 @@ export class CourseListComponent implements OnInit {
     }
   }
 
+  addStudent() {
+    if (this.addStudentForm.valid) {
+      // Perform the logic to add a student using the form data
+      console.log(this.addStudentForm.value);
+      this.addStudentForm.reset();
+      this.closeModal();
+    }
+  }
+
+  openModal(modalName: string) {
+    this.selectedModal = modalName;
+  }
+
+  closeModal() {
+    this.selectedModal = '';
+  }
+
   removeUser(user: Course): void {
     // Implement your remove user logic here
     console.log(`Removing user: ${user.name}`);
     // Example of removing user from the list
     this.courses = this.courses.filter((u) => u !== user);
     this.isDropdownOpen = false; // Close dropdown after action
+  }
+
+  openStudentsDialog() {
+    const dialogRef = this.dialog.open(DialogUserList);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      //console.log(`Dialog result: ${result}`);
+    });
   }
 }

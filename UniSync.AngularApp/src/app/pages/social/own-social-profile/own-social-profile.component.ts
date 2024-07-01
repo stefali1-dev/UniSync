@@ -14,9 +14,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLinkActive } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'vex-social-profile',
   templateUrl: './own-social-profile.component.html',
   animations: [fadeInUp400ms, fadeInRight400ms, scaleIn400ms, stagger40ms],
   standalone: true,
@@ -31,7 +31,9 @@ import { RouterOutlet } from '@angular/router';
     RouterOutlet
   ]
 })
-export class SocialProfileComponent implements OnInit {
+export class OwnSocialProfileComponent implements OnInit {
+  userId!: string | null;
+
   links: Link[] = [
     {
       label: 'ABOUT',
@@ -49,7 +51,8 @@ export class SocialProfileComponent implements OnInit {
   };
   constructor(
     private userService: UserService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private route: ActivatedRoute
   ) {
     let userId = this.storageService.getUser().userId;
 
@@ -75,7 +78,9 @@ export class SocialProfileComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userId = this.route.snapshot.paramMap.get('userId');
+  }
 
   onProfileImageChange(event: any): void {
     const file = event.target.files[0];

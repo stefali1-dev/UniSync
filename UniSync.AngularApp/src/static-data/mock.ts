@@ -2,7 +2,7 @@ import { Chat, ChatMessage } from 'src/app/pages/chat/chat.component';
 
 export const recentChats: Chat[] = [
   {
-    id: '1',
+    id: 'df0eb722-2722-4312-8300-58c36cea1b24',
     imageUrl:
       'https://www.galda-verlag.de/wp-content/uploads/2018/06/top-7-books-that-changed-the-world.jpg',
     name: 'Group 1A1',
@@ -12,7 +12,7 @@ export const recentChats: Chat[] = [
     nrOfParticipants: 5
   },
   {
-    id: '2',
+    id: 'd43f0d77-3164-49fb-9e64-82d1ec3ffb68',
     imageUrl:
       'https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109',
     name: 'Professor John',
@@ -22,7 +22,7 @@ export const recentChats: Chat[] = [
     nrOfParticipants: 2
   },
   {
-    id: '3',
+    id: 'fe373755-4c6f-467a-a110-b5be0332ca9a',
     imageUrl:
       'https://cdn.britannica.com/85/13085-050-C2E88389/Corpus-Christi-College-University-of-Cambridge-England.jpg',
     name: 'Year 1',

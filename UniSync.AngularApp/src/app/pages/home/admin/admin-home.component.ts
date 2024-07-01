@@ -36,10 +36,10 @@ export class AdminHomeComponent implements OnInit {
   loadMockData(): void {
     // Mock data pentru statistici generale
     this.statistics = {
-      totalUsers: 1500,
-      totalStudents: 1200,
-      totalTeachers: 80,
-      activeCourses: 50,
+      totalUsers: 58,
+      totalStudents: 40,
+      totalTeachers: 15,
+      activeCourses: 10,
       totalDepartments: 5
     };
   }

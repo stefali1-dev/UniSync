@@ -206,8 +206,8 @@ export class TimetableStudentComponent implements OnInit {
   getTimetableEntries() {
     let user = this.storageService.getUser();
 
-    if (user.role !== 'Professor') {
-      console.log('User not a professor!');
+    if (user.role !== 'Student') {
+      console.log('User not a student!');
       return;
     }
 

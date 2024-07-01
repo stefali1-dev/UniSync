@@ -5,7 +5,7 @@ const routes: VexRoutes = [
     path: '',
     loadComponent: () =>
       import('./own-social-profile/own-social-profile.component').then(
-        (m) => m.SocialProfileComponent
+        (m) => m.OwnSocialProfileComponent
       ),
     data: {
       toolbarShadowEnabled: true

@@ -1,39 +1,42 @@
+// @ts-nocheck
+
 import { Component, OnInit } from '@angular/core';
 import { scaleIn400ms } from '@vex/animations/scale-in.animation';
 import { fadeInRight400ms } from '@vex/animations/fade-in-right.animation';
-import { TableColumn } from '@vex/interfaces/table-column.interface';
-import { contactsData } from 'src/static-data/contacts';
-import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  UntypedFormControl,
+  Validators
+} from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { stagger40ms } from '@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
-import { AsyncPipe } from '@angular/common';
-import { ContactsDataTableComponent } from 'src/app/pages/contacts/contacts-table/contacts-data-table/contacts-data-table.component';
-import { ContactsTableMenuComponent } from 'src/app/pages/contacts/contacts-table/contacts-table-menu/contacts-table-menu.component';
-
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { UserService } from 'src/app/_services/user.service';
 import { Router } from '@angular/router';
-import { StudentService } from 'src/app/_services/student.service';
 import { ChangeDetectorRef } from '@angular/core';
+
 import { TimetableService } from 'src/app/_services/timetable.service';
 
-export interface Contact {
-  id: number;
-  imageSrc: string;
-  name: string;
-  email: string;
-  role: string;
-  phone?: string;
-  bio?: string;
-  birthday?: string;
-  selected: boolean;
+export interface TimetableEntry {
+  classroom: string;
+  courseId: string;
+  courseName: string;
+  courseType: string;
+  dayOfWeek: number; // 0 represents Sunday, 1 represents Monday, and so on
+  professorId: string;
+  professorName: string;
+  studentGroup: string;
+  timeInterval: string;
+  timetableEntryId: string;
 }
 
 @Component({
-  selector: 'student-list-table',
+  selector: 'timetable-entry-list',
   templateUrl: './timetable-entry-list.component.html',
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
   styles: [
@@ -49,213 +52,110 @@ export interface Contact {
     MatIconModule,
     ReactiveFormsModule,
     MatSidenavModule,
-    ContactsTableMenuComponent,
-    ContactsDataTableComponent,
-    AsyncPipe
+    AsyncPipe,
+    NgFor,
+    NgIf
   ]
 })
 export class TimetableEntryListComponent implements OnInit {
+  activeEntry: TimetableEntry | null = null;
+  isDropdownOpen = false;
+
+  selectedModal: string = '';
+  addEntryForm: FormGroup;
+
+  timetableEntries: TimetableEntry[] = [];
   searchCtrl = new UntypedFormControl();
 
   searchStr$ = this.searchCtrl.valueChanges.pipe(debounceTime(10));
 
   menuOpen = false;
 
-  activeCategory:
-    | 'frequently'
-    | 'starred'
-    | 'all'
-    | 'family'
-    | 'friends'
-    | 'colleagues'
-    | 'business' = 'all';
-  // tableData = contactsData;
-
-  tableData: Contact[] = [];
-
-  tableColumns: TableColumn<Contact>[] = [
-    {
-      label: '',
-      property: 'selected',
-      type: 'checkbox',
-      cssClasses: ['w-6']
-    },
-    {
-      label: '',
-      property: 'imageSrc',
-      type: 'image',
-      cssClasses: ['min-w-9']
-    },
-    {
-      label: 'NAME',
-      property: 'name',
-      type: 'text',
-      cssClasses: ['font-medium']
-    },
-    {
-      label: 'EMAIL',
-      property: 'email',
-      type: 'text',
-      cssClasses: ['text-secondary']
-    },
-    {
-      label: 'ROLE',
-      property: 'role',
-      type: 'text',
-      cssClasses: ['text-secondary']
-    },
-    {
-      label: '',
-      property: 'starred',
-      type: 'button',
-      cssClasses: ['text-secondary', 'w-10']
-    },
-    {
-      label: '',
-      property: 'menu',
-      type: 'button',
-      cssClasses: ['text-secondary', 'w-10']
-    }
-  ];
-
   constructor(
     private dialog: MatDialog,
-    private userService: UserService,
     private router: Router,
-    private studentService: StudentService,
+    private timetableService: TimetableService,
     private changeDetectorRef: ChangeDetectorRef,
-    private timetableService: TimetableService
-  ) {}
+    private formBuilder: FormBuilder
+  ) {
+    this.addEntryForm = this.formBuilder.group({
+      timeInterval: ['', Validators.required],
+      courseId: ['', Validators.required],
+      courseName: ['', Validators.required],
+      courseType: ['', Validators.required],
+      professorId: ['', Validators.required],
+      professorName: ['', Validators.required],
+      classroom: ['', Validators.required],
+      dayOfWeek: [
+        0,
+        [Validators.required, Validators.min(0), Validators.max(6)]
+      ],
+      studentGroup: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {
-    this.getAllStudents();
-
-    // this.tableData = [
-    //   {
-    //     id: 1,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=1',
-    //     name: 'Alice Johnson',
-    //     email: 'alice.johnson@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 2,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=2',
-    //     name: 'Bob Miller',
-    //     email: 'bob.miller@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 3,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=3',
-    //     name: 'Charlie Brown',
-    //     email: 'charlie.brown@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 4,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=4',
-    //     name: 'David Smith',
-    //     email: 'david.smith@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 5,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=5',
-    //     name: 'Ella Davis',
-    //     email: 'ella.davis@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 6,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=6',
-    //     name: 'Frank Wilson',
-    //     email: 'frank.wilson@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 7,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=7',
-    //     name: 'Grace Lee',
-    //     email: 'grace.lee@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 8,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=8',
-    //     name: 'Henry Adams',
-    //     email: 'henry.adams@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 9,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=9',
-    //     name: 'Isabella Turner',
-    //     email: 'isabella.turner@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   },
-    //   {
-    //     id: 10,
-    //     imageSrc: 'https://i.pravatar.cc/150?img=10',
-    //     name: 'Jack Harris',
-    //     email: 'jack.harris@gmail.com',
-    //     role: 'Student',
-    //     selected: false
-    //   }
-    // ];
-  }
-
-  openContact(id?: Contact['id']) {
-    console.log('Clicked contact!');
-    this.router.navigate(['apps/evaluation/' + id]);
-  }
-
-  toggleStar(id: Contact['id']) {
-    const contact = this.tableData.find((c) => c.id === id);
-
-    // if (contact) {
-    //   contact.starred = !contact.starred;
-    // }
-  }
-
-  setData(data: Contact[]) {
-    this.tableData = data;
-    this.menuOpen = false;
+    this.getAllTimetableEntries();
   }
 
   openMenu() {
     this.menuOpen = true;
   }
-  onEnterPressed(request: string) {
-    this.studentService.searchStudents(request).subscribe({
-      next: (students) => {
-        console.log(students);
 
-        let searchedContacts: Contact[] = [];
+  openModal(modalName: string) {
+    this.selectedModal = modalName;
+  }
 
-        for (const searchedUser of students) {
-          let searchedContact: Contact = {
-            id: 1,
-            imageSrc: 'assets/img/avatars/1.jpg',
-            name: searchedUser.firstName + ' ' + searchedUser.lastName,
-            role: 'student',
-            email: searchedUser.email,
-            selected: false
-          };
+  closeModal() {
+    this.selectedModal = '';
+  }
 
-          searchedContacts.push(searchedContact);
+  addTimetableEntry() {
+    if (this.addEntryForm.valid) {
+      // Perform the logic to add a timetable entry using the form data
+      console.log(this.addEntryForm.value);
+      this.addEntryForm.reset();
+
+      let timetableEntry = {
+        timeInterval: this.addEntryForm.value.timeInterval,
+        courseId: this.addEntryForm.value.courseId,
+        courseName: this.addEntryForm.value.courseName,
+        courseType: this.addEntryForm.value.courseType,
+        professorId: this.addEntryForm.value.professorId,
+        professorName: this.addEntryForm.value.professorName,
+        classroom: this.addEntryForm.value.classroom,
+        dayOfWeek: this.addEntryForm.value.dayOfWeek, // 0 represents Sunday, 1 represents Monday, and so on
+        studentGroup: this.addEntryForm.value.studentGroup
+      };
+
+      this.timetableService.addTimetableEntry(timetableEntry).subscribe({
+        next: (res) => {
+          console.log(res);
         }
+      });
 
-        this.tableData = searchedContacts;
+      this.closeModal();
+    }
+  }
+
+  onEnterPressed(request: string) {
+    // this.timetableService.searchTimetableEntries(request).subscribe({
+    //   next: (entries) => {
+    //     console.log(entries);
+    //     this.timetableEntries = entries;
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // });
+  }
+
+  getAllTimetableEntries() {
+    this.timetableService.getAllTimetableEntries().subscribe({
+      next: (data) => {
+        this.timetableEntries = data.value;
+
+        console.log(this.timetableEntries);
       },
       error: (err) => {
         console.log(err);
@@ -263,31 +163,20 @@ export class TimetableEntryListComponent implements OnInit {
     });
   }
 
-  getAllStudents() {
-    this.studentService.getAllStudents().subscribe({
-      next: (students) => {
-        let retreivedStudents: Contact[] = [];
+  toggleDropdown(entry: TimetableEntry): void {
+    if (this.activeEntry === entry && this.isDropdownOpen) {
+      this.isDropdownOpen = false;
+    } else {
+      this.activeEntry = entry;
+      this.isDropdownOpen = true;
+    }
+  }
 
-        students.forEach((s) => {
-          let student: Contact = {
-            id: s.userId,
-            imageSrc:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXJA32WU4rBpx7maglqeEtt3ot1tPIRWptxA&s',
-            name: `${s.firstName} ${s.lastName}`,
-            email: s.email,
-            role: 'Student',
-            selected: false
-          };
-
-          retreivedStudents.push(student);
-        });
-
-        this.tableData = retreivedStudents;
-        //this.changeDetectorRef.detectChanges();
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
+  removeEntry(entry: TimetableEntry): void {
+    // Implement your remove entry logic here
+    console.log(`Removing entry: ${entry.subject}`);
+    // Example of removing entry from the list
+    this.timetableEntries = this.timetableEntries.filter((e) => e !== entry);
+    this.isDropdownOpen = false; // Close dropdown after action
   }
 }

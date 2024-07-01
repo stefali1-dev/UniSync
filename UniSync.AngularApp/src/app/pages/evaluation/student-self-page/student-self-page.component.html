@@ -25,7 +25,12 @@
         <div class="mb-2">
           <span class="font-bold">Grades:</span>
           <ul class="list-disc ml-4">
-            <li *ngFor="let evaluation of course.evaluations">{{ evaluation.grade }}</li>
+            <li *ngFor="let evaluation of course.evaluations" class="flex flex-col sm:flex-row sm:items-center mb-2">
+              <div class="text-lg font-semibold mr-2">{{ evaluation.grade }}</div>
+              <div class="text-gray-600 text-sm mx-2">• {{ evaluation.dateTime | date: 'shortDate' }}</div>
+              <!-- <div class="text-gray-600 text-sm mx-2">• {{ evaluation.type }}</div> -->
+              <div class="text-gray-600 text-sm italic mx-2">• {{ evaluation.comment }}</div>
+            </li>
           </ul>
         </div>
       </div>

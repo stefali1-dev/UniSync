@@ -11,8 +11,9 @@ import { NgIf } from '@angular/common';
 })
 export class EditProfileComponent implements OnInit {
   profileForm: FormGroup;
-  profileImageUrl: string = 'assets/default-profile-image.jpg';
-  coverImageUrl: string = 'assets/default-cover-image.jpg';
+  profileImageUrl: string =
+    'https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a751a180c6edec28086e13_Loki%20Bright-p-500.png';
+  coverImageUrl: string = 'assets/img/demo/landscape.jpg';
 
   constructor(private fb: FormBuilder) {
     this.profileForm = this.fb.group({
@@ -30,8 +31,7 @@ export class EditProfileComponent implements OnInit {
     // Implement logic to fetch user profile data from your backend
     // For now, we'll use dummy data
     const userData = {
-      email: 'user@example.com',
-      phone: '+40 123 456 789',
+      email: 'student1@example.com',
       bio: 'A passionate student at the Faculty of Computer Science in Iasi.'
     };
 

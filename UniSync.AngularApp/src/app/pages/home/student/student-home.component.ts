@@ -186,31 +186,9 @@ export class StudentHomeComponent implements OnInit {
       this.studentName = 'John';
       this.dailySchedule = [
         {
-          TimeInterval: '08:00 - 09:30',
-          CourseId: 'CS101',
-          CourseName: 'Introduction to Programming',
-          CourseType: 'Lecture',
-          ProfessorId: 'P001',
-          ProfessorName: 'Dr. John Smith',
-          Classroom: 'A101',
-          DayOfWeek: 1,
-          StudentGroup: 'CS1A'
-        },
-        {
-          TimeInterval: '10:00 - 11:30',
-          CourseId: 'MA201',
-          CourseName: 'Linear Algebra',
-          CourseType: 'Seminar',
-          ProfessorId: 'P002',
-          ProfessorName: 'Dr. Emily Johnson',
-          Classroom: 'B205',
-          DayOfWeek: 1,
-          StudentGroup: 'MA2B'
-        },
-        {
-          TimeInterval: '13:00 - 14:30',
+          TimeInterval: '08:00 - 10:00',
           CourseId: 'PH301',
-          CourseName: 'Quantum Mechanics',
+          CourseName: 'Data Structures',
           CourseType: 'Laboratory',
           ProfessorId: 'P003',
           ProfessorName: 'Dr. Michael Brown',
@@ -242,7 +220,7 @@ export class StudentHomeComponent implements OnInit {
         },
         {
           courseId: 'MA201',
-          courseName: 'Linear Algebra',
+          courseName: 'Software Engineering',
           courseNumber: 'MA201-02',
           credits: '3',
           description:
@@ -252,7 +230,7 @@ export class StudentHomeComponent implements OnInit {
         },
         {
           courseId: 'PH301',
-          courseName: 'Quantum Mechanics',
+          courseName: 'Data Structures',
           courseNumber: 'PH301-01',
           credits: '4',
           description:
@@ -267,22 +245,22 @@ export class StudentHomeComponent implements OnInit {
           courseId: 'CS101',
           type: 'Midterm',
           courseName: 'Introduction to Programming',
-          grade: 10,
+          grade: 9,
           dateTime: new Date('2024-10-15T14:00:00'),
           comment: 'Good understanding of basic concepts.'
         },
         {
           courseId: 'MA201',
           type: 'Quiz',
-          courseName: 'Linear Algebra',
-          grade: 7,
+          courseName: 'Software Engineering',
+          grade: 8,
           dateTime: new Date('2024-09-30T10:30:00')
         },
         {
           courseId: 'PH301',
           type: 'Lab Report',
-          courseName: 'Quantum Mechanics',
-          grade: 4,
+          courseName: 'Data Structures',
+          grade: 6,
           dateTime: new Date('2024-11-05T16:45:00'),
           comment: 'Well-structured report with minor calculation errors.'
         }

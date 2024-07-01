@@ -13,10 +13,12 @@ namespace UniSync.Api.Controllers
     public class TimetableEntryController : ApiControllerBase
     {
         private readonly ITimetableEntryService timetableEntryService;
+        private readonly ITimetableEntryRepository timetableEntryRepository;
 
-        public TimetableEntryController(ITimetableEntryService timetableEntryService)
+        public TimetableEntryController(ITimetableEntryService timetableEntryService, ITimetableEntryRepository timetableEntryRepository)
         {
             this.timetableEntryService = timetableEntryService;
+            this.timetableEntryRepository = timetableEntryRepository;
         }
 
         [HttpPost]
@@ -55,6 +57,21 @@ namespace UniSync.Api.Controllers
             try
             {
                 var timetableEntries = await timetableEntryService.GetTimetableEntriesByStudentGroupName(studentGroupName);
+                return Ok(timetableEntries);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> GetAllTimetableEntries()
+        {
+            try
+            {
+                var timetableEntries = await timetableEntryRepository.GetAllAsync();
                 return Ok(timetableEntries);
             }
             catch (Exception ex)

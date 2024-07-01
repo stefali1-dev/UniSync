@@ -61,8 +61,8 @@ export class ProfessorHomeComponent implements OnInit {
       {
         TimeInterval: '10:00-12:00',
         CourseId: '1',
-        CourseName: 'Matematică',
-        CourseType: 'Curs',
+        CourseName: 'Data Structures',
+        CourseType: 'Course',
         ProfessorId: 'P1',
         ProfessorName: this.teacherName,
         Classroom: 'C101',
@@ -72,8 +72,8 @@ export class ProfessorHomeComponent implements OnInit {
       {
         TimeInterval: '14:00-16:00',
         CourseId: '2',
-        CourseName: 'Algebră',
-        CourseType: 'Seminar',
+        CourseName: 'Introduction to Programming',
+        CourseType: 'Laboratory',
         ProfessorId: 'P1',
         ProfessorName: this.teacherName,
         Classroom: 'S201',
@@ -86,24 +86,24 @@ export class ProfessorHomeComponent implements OnInit {
     this.taughtCourses = [
       {
         courseId: '1',
-        courseName: 'Matematică',
+        courseName: 'Data Structures',
         courseNumber: 'MATH101',
         credits: '5',
-        description: 'Curs de matematică',
+        description: 'Curs de Data Structures',
         semester: '1'
       },
       {
         courseId: '2',
-        courseName: 'Algebră',
-        courseNumber: 'MATH201',
+        courseName: 'Introduction to Programming',
+        courseNumber: '',
         credits: '6',
-        description: 'Curs de algebră',
+        description: 'Curs de Introduction to Programming',
         semester: '1'
       },
       {
         courseId: '3',
-        courseName: 'Analiză',
-        courseNumber: 'MATH301',
+        courseName: 'Software Engineering',
+        courseNumber: '',
         credits: '5',
         description: 'Curs de analiză',
         semester: '2'
@@ -114,7 +114,7 @@ export class ProfessorHomeComponent implements OnInit {
     this.pendingEvaluations = [
       {
         courseId: '1',
-        courseName: 'Matematică',
+        courseName: 'Data Structures',
         grade: 0,
         dateTime: new Date(),
         studentId: 'S1',
@@ -122,7 +122,7 @@ export class ProfessorHomeComponent implements OnInit {
       },
       {
         courseId: '1',
-        courseName: 'Matematică',
+        courseName: 'Data Structures',
         grade: 0,
         dateTime: new Date(),
         studentId: 'S2',
@@ -130,7 +130,7 @@ export class ProfessorHomeComponent implements OnInit {
       },
       {
         courseId: '2',
-        courseName: 'Algebră',
+        courseName: 'Introduction to Programming',
         grade: 0,
         dateTime: new Date(),
         studentId: 'S3',

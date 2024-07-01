@@ -8,8 +8,8 @@ import { debounceTime } from 'rxjs/operators';
 import { stagger40ms } from '@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
 import { AsyncPipe } from '@angular/common';
-import { ContactsDataTableComponent } from '../contacts-table/contacts-data-table/contacts-data-table.component';
-import { ContactsTableMenuComponent } from '../contacts-table/contacts-table-menu/contacts-table-menu.component';
+import { ContactsDataTableComponent } from '../../contacts/contacts-table/contacts-data-table/contacts-data-table.component';
+import { ContactsTableMenuComponent } from '../../contacts/contacts-table/contacts-table-menu/contacts-table-menu.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +31,7 @@ export interface Contact {
 }
 
 @Component({
+  selector: 'student-list-table',
   templateUrl: './users-list.component.html',
   animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
   styles: [
@@ -117,18 +118,19 @@ export class UsersListComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private userService: UserService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private studentService: StudentService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.getAllUsers();
+    this.getAllStudents();
   }
 
   openContact(id?: Contact['id']) {
     console.log('Clicked contact!');
-    this.router.navigate(['apps/evaluation/' + id]);
+    this.router.navigate(['apps/profile/' + id]);
   }
 
   toggleStar(id: Contact['id']) {
@@ -148,18 +150,18 @@ export class UsersListComponent implements OnInit {
     this.menuOpen = true;
   }
   onEnterPressed(request: string) {
-    this.userService.getSearchedUsers(request).subscribe({
-      next: (data) => {
-        console.log(data.users);
+    this.studentService.searchStudents(request).subscribe({
+      next: (students) => {
+        console.log(students);
 
         let searchedContacts: Contact[] = [];
 
-        for (const searchedUser of data.users) {
+        for (const searchedUser of students) {
           let searchedContact: Contact = {
-            id: 1,
+            id: searchedUser.userId,
             imageSrc: searchedUser.userPhoto,
             name: searchedUser.firstName + ' ' + searchedUser.lastName,
-            role: searchedUser.roles[0],
+            role: 'student',
             email: searchedUser.email,
             selected: false
           };
@@ -175,25 +177,25 @@ export class UsersListComponent implements OnInit {
     });
   }
 
-  getAllUsers() {
-    this.userService.getAllUsers().subscribe({
-      next: (data) => {
-        let retreivedUsers: Contact[] = [];
+  getAllStudents() {
+    this.studentService.getAllStudents().subscribe({
+      next: (students) => {
+        let retreivedStudents: Contact[] = [];
 
-        data.users.forEach((u) => {
+        students.forEach((s) => {
           let student: Contact = {
-            id: u.userId,
-            imageSrc: u.userPhoto,
-            name: `${u.firstName} ${u.lastName}`,
-            email: u.email,
-            role: u.roles[0],
+            id: s.userId,
+            imageSrc: s.userPhoto,
+            name: `${s.firstName} ${s.lastName}`,
+            email: s.email,
+            role: 'Student',
             selected: false
           };
 
-          retreivedUsers.push(student);
+          retreivedStudents.push(student);
         });
 
-        this.tableData = retreivedUsers;
+        this.tableData = retreivedStudents;
         //this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
