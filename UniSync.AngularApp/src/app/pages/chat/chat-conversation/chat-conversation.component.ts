@@ -28,6 +28,7 @@ import { MessageService } from '../../../_services/message.service';
 import { ChatComponent } from '../chat.component';
 import { ChannelService } from '../../../_services/channel.service';
 import { Router } from '@angular/router';
+import { convo1, convo2, convo3, recentChats } from 'src/static-data/mock';
 
 @Component({
   selector: 'vex-chat-conversation',
@@ -93,39 +94,53 @@ export class ChatConversationComponent implements OnInit {
           throw new Error('Chat id not found!');
         }
 
-        this.chatService.getPreviousMessages(chatId);
+        if (chatId === '1') {
+          this.chat = recentChats[0];
+          this.chatService.messages = convo1;
+          this.chatService.messages$.next(convo1);
+        } else if (chatId === '2') {
+          this.chat = recentChats[1];
+          this.chatService.messages = convo2;
+          this.chatService.messages$.next(convo2);
+        } else if (chatId === '3') {
+          this.chat = recentChats[2];
+          this.chatService.messages = convo3;
+          this.chatService.messages$.next(convo3);
+        } else {
+          this.chatService.getPreviousMessages(chatId);
 
-        this.chatService.chats$.subscribe((chats) => {
-          if (chats.length > 0) {
-            this.chatService.messages$.subscribe((res) => {
-              //console.log(res)
-            });
+          this.chatService.chats$.subscribe((chats) => {
+            if (chats.length > 0) {
+              this.chatService.messages$.subscribe((res) => {
+                //console.log(res)
+              });
 
-            this.chatService.connectedUsers$.subscribe((res) => {
-              //console.log(res);
-            });
+              this.chatService.connectedUsers$.subscribe((res) => {
+                //console.log(res);
+              });
 
-            this.cd.detectChanges();
-            const chat = this.chatService.getChat(chatId);
+              this.cd.detectChanges();
+              const chat = this.chatService.getChat(chatId);
 
-            if (!chat) {
-              throw new Error(`Chat with id ${chatId} not found!`);
+              if (!chat) {
+                throw new Error(`Chat with id ${chatId} not found!`);
+              }
+
+              this.chat = chat;
+              this.chat.unreadCount = 0;
+              //this.filterMessages(chatId);
+              this.cd.detectChanges();
+
+              //console.log(this.messages);
+
+              this.scrollToBottom();
+            } else {
+              console.log('No chats available yet');
+
+              this.router.navigate(['apps/chat']);
             }
-
-            this.chat = chat;
-            this.chat.unreadCount = 0;
-            //this.filterMessages(chatId);
-            this.cd.detectChanges();
-
-            //console.log(this.messages);
-
-            this.scrollToBottom();
-          } else {
-            console.log('No chats available yet');
-
-            this.router.navigate(['apps/chat']);
-          }
-        });
+          });
+        }
       });
   }
 

@@ -1,39 +1,83 @@
 <vex-page-layout>
-  <vex-page-layout-header class="flex flex-col items-start justify-center">
-    <div class="container">
-      <h2 class="title m-0">Simple - Large Header & Tabbed</h2>
-      <vex-breadcrumbs
-        [crumbs]="[
-          'Page Layouts',
-          'Simple',
-          'Large Header & Tabbed'
-        ]"></vex-breadcrumbs>
+  <vex-page-layout-header class="flex flex-col h-40 items-start justify-center">
+    <div class="container mt-4">
+      <h1 class="text-5xl font-bold">Data Structures</h1>
+
+      <div class="flex flex-row">
+        <p class="text-gray-500 text-xl mt-4">Course Information</p>
+        <!-- <button mat-icon-button color="primary" class="mt-2 ml-3 w-9 h-9 rounded-full bg-blue-500" (click)="toggleEdit()">
+          <mat-icon svgIcon="mat:edit"></mat-icon>
+        </button> -->
+      </div>
+
     </div>
   </vex-page-layout-header>
 
-  <vex-page-layout-content class="p-0 container">
+  <vex-page-layout-content class="p-0 container mt-6">
     <mat-tab-group>
-      <mat-tab label="Main Tab">
-        <div class="p-6">
-          <p>
-            Tab1
-          </p>
+      <!-- Description -->
+      <mat-tab label="Description">
+        <div class="p-8">
+          <ng-container *ngIf="!isEditMode; else editDescription">
+            <p class="text-lg leading-relaxed">
+              The <strong>Data Structures</strong> course explores fundamental concepts related to data organization and manipulation. It covers various data structures commonly used in solving computational problems, including:
+            </p>
+            <ul class="list-disc ml-8 mt-4">
+              <li class="text-lg leading-relaxed">Arrays: Fundamental data structure for storing elements.</li>
+              <li class="text-lg leading-relaxed">Linked Lists: Dynamic structures for efficient insertions and deletions.</li>
+              <li class="text-lg leading-relaxed">Stacks and Queues: Abstract data types for managing data in specific orders.</li>
+              <li class="text-lg leading-relaxed">Trees: Understanding tree structures and traversal techniques.</li>
+            </ul>
+            <p class="text-lg leading-relaxed mt-6">
+              Students will learn how to implement these structures in different programming languages and explore their practical applications.
+            </p>
+          </ng-container>
+          <ng-template #editDescription>
+            <textarea [(ngModel)]="courseData.description" rows="10" class="w-full p-2 border border-gray-300 rounded"></textarea>
+          </ng-template>
         </div>
       </mat-tab>
-      <mat-tab label="Side Tab">
-        <div class="p-6">
-          <p>
-            Tab2
-          </p>
+
+      <!-- Evaluation -->
+      <mat-tab label="Evaluation">
+        <div class="p-8">
+          <ng-container *ngIf="!isEditMode; else editEvaluation">
+            <p class="text-lg leading-relaxed">
+              The course evaluation consists of two components:
+            </p>
+            <ul class="list-disc ml-8 mt-4">
+              <li class="text-lg leading-relaxed">
+                <strong>Ongoing Laboratory Evaluation:</strong> Throughout the semester, there will be three laboratory exams assessing practical skills and understanding of course material.
+              </li>
+              <li class="text-lg leading-relaxed">
+                <strong>Final Exam:</strong> At the end of the semester, a comprehensive final exam will take place. To pass, students need a minimum score of 4.5 in the final exam and a median score of at least 4.5 across the three laboratory exams.
+              </li>
+            </ul>
+          </ng-container>
+          <ng-template #editEvaluation>
+            <textarea [(ngModel)]="courseData.evaluation" rows="10" class="w-full p-2 border border-gray-300 rounded"></textarea>
+          </ng-template>
         </div>
       </mat-tab>
-      <mat-tab label="Extra Tab">
-        <div class="p-6">
-          <p>
-            Tab3
-          </p>
+
+      <!-- Laboratory -->
+      <mat-tab label="Laboratory">
+        <div class="p-8">
+          <ng-container *ngIf="!isEditMode; else editLaboratory">
+            <p class="text-lg leading-relaxed">
+              In the laboratory sessions, students will delve deeper into the algorithms presented during the course. Expect practical exercises, problem-solving, and collaborative learning. These sessions will enhance your understanding of data structures and their real-world applications.
+            </p>
+          </ng-container>
+          <ng-template #editLaboratory>
+            <textarea [(ngModel)]="courseData.laboratory" rows="10" class="w-full p-2 border border-gray-300 rounded"></textarea>
+          </ng-template>
         </div>
       </mat-tab>
     </mat-tab-group>
+
+    <div *ngIf="isEditMode" class="flex justify-end mt-4">
+      <button mat-button class="mr-4" (click)="toggleEdit()">Close</button>
+      <button mat-raised-button color="primary" (click)="saveChanges()">Save</button>
+    </div>
   </vex-page-layout-content>
 </vex-page-layout>

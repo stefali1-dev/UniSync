@@ -71,8 +71,8 @@ export const appRoutes: VexRoutes = [
             path: 'timetable',
             loadComponent: () =>
               import(
-                './pages/timetable/timetable-professor/timetable-professor.component'
-              ).then((m) => m.TimetableComponent)
+                './pages/timetable/timetable-student/timetable-student.component'
+              ).then((m) => m.TimetableStudentComponent)
           }
         ]
       },

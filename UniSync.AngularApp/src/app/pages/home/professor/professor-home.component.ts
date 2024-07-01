@@ -43,7 +43,7 @@ interface TimetableEntry {
   templateUrl: './professor-home.component.html'
 })
 export class ProfessorHomeComponent implements OnInit {
-  teacherName: string = 'Prof. Smith';
+  teacherName: string = 'Prof. Popescu';
   dailySchedule: TimetableEntry[] = [];
   taughtCourses: CourseView[] = [];
   pendingEvaluations: EvaluationView[] = [];

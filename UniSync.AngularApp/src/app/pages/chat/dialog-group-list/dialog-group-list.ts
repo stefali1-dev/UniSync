@@ -62,7 +62,9 @@ export class DialogGroupList implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getInitialContacts(10);
+    //this.getInitialContacts(10);
+
+    this.onEnterPressed('a');
   }
 
   onEnterPressed(request: string) {
@@ -76,9 +78,9 @@ export class DialogGroupList implements OnInit {
           let contact: Contact = {
             id: user.userId,
             imageSrc: user.userPhoto,
-            name: user.firstName + ' ' + user.lastMessage,
+            name: user.firstName + ' ' + user.lastName,
             email: user.email,
-            role: 'student',
+            role: 'Student',
             selected: false
           };
 
@@ -103,9 +105,9 @@ export class DialogGroupList implements OnInit {
           let contact: Contact = {
             id: user.userId,
             imageSrc: user.userPhoto,
-            name: user.firstName + ' ' + user.lastMessage,
+            name: user.firstName + ' ' + user.lastName,
             email: user.email,
-            role: 'student',
+            role: 'Student',
             selected: false
           };
 

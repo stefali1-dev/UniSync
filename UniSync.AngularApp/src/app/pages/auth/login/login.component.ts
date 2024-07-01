@@ -91,8 +91,17 @@ export class LoginComponent {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.storageService.getUser().roles;
-        this.router.navigate(['/home']);
+
+        let role = this.storageService.getUser().role;
+
+        this.router.navigate(['/home/student']);
+        // if (role === 'Student') {
+        //   this.router.navigate(['/home/student']);
+        // } else if (role === 'Professor') {
+        //   this.router.navigate(['/home/professor']);
+        // } else if (role === 'Admin') {
+        //   this.router.navigate(['/home/admin']);
+        // }
       },
       error: (err) => {
         console.log(err);

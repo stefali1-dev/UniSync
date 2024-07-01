@@ -33,8 +33,8 @@ export class NavigationLoaderService {
       {
         type: 'link',
         label: 'Chat',
-        route: '/apps/chat',
-        icon: 'mat:chat'
+        route: '/apps/chat'
+        //icon: 'mat:chat'
       },
       {
         type: 'link',
@@ -60,23 +60,13 @@ export class NavigationLoaderService {
             type: 'link',
             label: 'All Users',
             route: '/apps/contacts',
-            icon: 'mat:contacts',
-            badge: {
-              value: '16',
-              bgClass: 'bg-cyan-600',
-              textClass: 'text-white'
-            }
+            icon: 'mat:contacts'
           },
           {
             type: 'link',
             label: 'My Profile',
             route: '/apps/profile',
-            icon: 'mat:person_outline',
-            badge: {
-              value: '16',
-              bgClass: 'bg-cyan-600',
-              textClass: 'text-white'
-            }
+            icon: 'mat:person_outline'
           }
         ]
       }

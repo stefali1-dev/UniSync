@@ -48,21 +48,27 @@
         <div class="pt-2">
           <div class="flex items-center px-4 pb-2 gap-2">
             <button
-              class="text-primary-600 bg-primary-100 dark:text-primary-200 dark:bg-primary-700/20 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-primary-200 hover:dark:bg-primary-700/30 transition flex-1 text-center relative"
+              [ngClass]="{'text-primary-600 bg-primary-100 dark:text-primary-200 dark:bg-primary-700/20 font-semibold': !showOfficial,
+                          'text-gray-400 font-medium': showOfficial}"
+              class="text-sm px-4 py-2 rounded-lg hover:bg-primary-200 hover:dark:bg-primary-700/30 transition flex-1 text-center relative"
               matRipple
-              type="button">
+              type="button"
+              (click)="toggleShowOfficial(false)">
               All
             </button>
             <button
-              class="text-gray-400 font-medium text-sm px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition flex-1 text-center relative"
+              [ngClass]="{'text-primary-600 bg-primary-100 dark:text-primary-200 dark:bg-primary-700/20 font-semibold': showOfficial,
+                          'text-gray-400 font-medium': !showOfficial}"
+              class="text-sm px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition flex-1 text-center relative"
               matRipple
-              type="button">
+              type="button"
+              (click)="toggleShowOfficial(true)">
               Official
             </button>
           </div>
 
           <div class="space-y-1">
-            <ng-container *ngFor="let chat of this.chatService.chats$ | async">
+            <ng-container *ngFor="let chat of filteredChats$ | async">
               <a
                 #rla="routerLinkActive"
                 [ngClass]="{

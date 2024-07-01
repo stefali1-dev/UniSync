@@ -52,7 +52,8 @@ export class DialogUserList implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getInitialContacts(10);
+    //this.getInitialContacts(10);
+    this.onEnterPressed('a');
   }
 
   onEnterPressed(request: string) {
@@ -66,9 +67,9 @@ export class DialogUserList implements OnInit {
           let contact: Contact = {
             id: user.userId,
             imageSrc: user.userPhoto,
-            name: user.firstName + ' ' + user.lastMessage,
+            name: user.firstName + ' ' + user.lastName,
             email: user.email,
-            role: 'student',
+            role: 'Student',
             selected: false
           };
 
@@ -93,9 +94,9 @@ export class DialogUserList implements OnInit {
           let contact: Contact = {
             id: user.userId,
             imageSrc: user.userPhoto,
-            name: user.firstName + ' ' + user.lastMessage,
+            name: user.firstName + ' ' + user.lastName,
             email: user.email,
-            role: 'student',
+            role: 'Student',
             selected: false
           };
 
@@ -126,7 +127,7 @@ export class DialogUserList implements OnInit {
       next: (data) => {
         console.log(data);
 
-        this.router.navigate(['apps/chat/' + data.channel.channelId]);
+        this.router.navigate(['apps/chat/']);
       },
       error: (err) => {
         return '';

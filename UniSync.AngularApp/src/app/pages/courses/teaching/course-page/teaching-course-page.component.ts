@@ -1,12 +1,21 @@
-import { Component, OnInit, DestroyRef, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  DestroyRef,
+  inject,
+  ChangeDetectorRef
+} from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { VexPageLayoutContentDirective } from '@vex/components/vex-page-layout/vex-page-layout-content.directive';
 import { VexBreadcrumbsComponent } from '@vex/components/vex-breadcrumbs/vex-breadcrumbs.component';
 import { VexPageLayoutHeaderDirective } from '@vex/components/vex-page-layout/vex-page-layout-header.directive';
 import { VexPageLayoutComponent } from '@vex/components/vex-page-layout/vex-page-layout.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatIconModule } from '@angular/material/icon';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vex-page-layout-simple-large-header-tabbed',
@@ -17,12 +26,47 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     VexPageLayoutHeaderDirective,
     VexBreadcrumbsComponent,
     VexPageLayoutContentDirective,
-    MatTabsModule
+    MatTabsModule,
+    MatIconModule,
+    NgIf,
+    FormsModule,
+    NgFor
   ]
 })
 export class TeachingCoursePageComponent implements OnInit {
-  constructor(private route: ActivatedRoute) {}
+  courseId!: string;
+
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  uploadedFiles: File[] = [];
+  isEditMode = false;
+  courseData = {
+    description: `The <strong>Data Structures</strong> course explores fundamental concepts related to data organization and manipulation. It covers various data structures commonly used in solving computational problems, including:
+                  <ul class="list-disc ml-8 mt-4">
+                    <li class="text-lg leading-relaxed">Arrays: Fundamental data structure for storing elements.</li>
+                    <li class="text-lg leading-relaxed">Linked Lists: Dynamic structures for efficient insertions and deletions.</li>
+                    <li class="text-lg leading-relaxed">Stacks and Queues: Abstract data types for managing data in specific orders.</li>
+                    <li class="text-lg leading-relaxed">Trees: Understanding tree structures and traversal techniques.</li>
+                  </ul>
+                  Students will learn how to implement these structures in different programming languages and explore their practical applications.`,
+    evaluation: `The course evaluation consists of two components:
+                  <ul class="list-disc ml-8 mt-4">
+                    <li class="text-lg leading-relaxed">
+                      <strong>Ongoing Laboratory Evaluation:</strong> Throughout the semester, there will be three laboratory exams assessing practical skills and understanding of course material.
+                    </li>
+                    <li class="text-lg leading-relaxed">
+                      <strong>Final Exam:</strong> At the end of the semester, a comprehensive final exam will take place. To pass, students need a minimum score of 4.5 in the final exam and a median score of at least 4.5 across the three laboratory exams.
+                    </li>
+                  </ul>`,
+    laboratory: `In the laboratory sessions, students will delve deeper into the algorithms presented during the course. Expect practical exercises, problem-solving, and collaborative learning. These sessions will enhance your understanding of data structures and their real-world applications.`
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit() {
     this.route.paramMap
@@ -36,6 +80,35 @@ export class TeachingCoursePageComponent implements OnInit {
         if (!courseId) {
           throw new Error('Chat id not found!');
         }
+
+        this.courseId = courseId;
       });
+  }
+
+  toggleEdit() {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  saveChanges() {
+    // Send the modified data to the server
+    //this.courseData
+    console.log('sal');
+
+    this.toggleEdit();
+
+    this.router.navigate(['/apps/courses/teaching/' + this.courseId]);
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+
+      this.uploadedFiles.push(file);
+
+      console.log(this.uploadedFiles);
+
+      this.changeDetectorRef.detectChanges();
+    }
   }
 }

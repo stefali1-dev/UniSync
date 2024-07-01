@@ -9,6 +9,14 @@ import { MessageService } from '../../_services/message.service';
 import { UserService } from '../../_services/user.service';
 import { ChannelService } from '../../_services/channel.service';
 import { ChannelCreationDto } from 'src/app/_interfaces/channelCreationDto';
+import {
+  receiverGuid,
+  receiverPhotoUrl,
+  recentChats,
+  recentChats2,
+  senderGuid,
+  senderPhotoUrl
+} from 'src/static-data/mock';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +50,15 @@ export class ChatService {
     private userService: UserService,
     private channelService: ChannelService
   ) {
+    if (
+      this.storageService.getUser().userId ===
+      '7fef5c57-29de-4852-9729-979475c08417'
+    ) {
+      this.chats = recentChats2;
+    } else {
+      this.chats = recentChats;
+    }
+
     this.start();
     this.connection.on(
       'ReceiveMessage',
@@ -50,22 +67,34 @@ export class ChatService {
         channelId: string,
         message: string,
         messageTime: string,
-        senderPhotoUrl: string
+        senderPhotoUr: string
       ) => {
         // TODO: remove hardcode
 
         console.log(`Received message: ${message}`);
+
+        let chatUsersId = this.storageService.getUser().userId;
+        let photoUrl = '';
+
+        if (chatUsersId === senderGuid) {
+          photoUrl = receiverPhotoUrl;
+        } else if (chatUsersId === receiverGuid) {
+          photoUrl = senderPhotoUrl;
+        }
 
         let receivedMmessage: ChatMessage = {
           id: channelId,
           senderId: userId,
           message: message,
           messageTime: messageTime,
-          senderPhotoUrl: senderPhotoUrl
+          senderPhotoUrl: photoUrl
         };
 
         this.messages = [...this.messages, receivedMmessage];
         this.messages$.next(this.messages);
+
+        this.chats[0].lastMessage = receivedMmessage.message;
+        this.chats[0].timestamp = 'a moment ago';
       }
     );
 
@@ -79,106 +108,7 @@ export class ChatService {
     //this.getPreviousMessages();
     this.getChats();
 
-    // this.chats = [
-    //   {
-    //     id: '1',
-    //     imageUrl: 'https://gcdnb.pbrd.co/images/YbWP8CcDbavg.jpg?o=1',
-    //     name: '1A1 Group',
-    //     lastMessage: 'Thanks! Got any homework?',
-    //     unreadCount: 0,
-    //     timestamp: '3 minutes ago',
-    //     nrOfParticipants: 5
-    //   },
-    //   {
-    //     id: '2',
-    //     imageUrl: 'https://gcdnb.pbrd.co/images/Mm99t6Di9bZO.jpg?o=1',
-    //     name: 'Semian A',
-    //     lastMessage: 'Next day course..',
-    //     unreadCount: 2,
-    //     timestamp: '5 gours ago',
-    //     nrOfParticipants: 3
-    //   },
-    //   {
-    //     id: '3',
-    //     imageUrl: 'https://gcdnb.pbrd.co/images/SIjzUOoFLI6J.jpg?o=1',
-    //     name: 'Year 1',
-    //     lastMessage: 'The optionals are intresting',
-    //     unreadCount: 1,
-    //     timestamp: '6 hours ago',
-    //     nrOfParticipants: 10
-    //   },
-    //   {
-    //     id: '4',
-    //     imageUrl:
-    //       'https://images.squarespace-cdn.com/content/v1/58cfd41c17bffcb09bd654f0/1618331670353-X33MH2UJL8BOGXAZN541/unsplash-image-8IKf54pc3qk.jpg?format=750w',
-    //     name: 'HangoutGroup',
-    //     lastMessage: 'Lets go next week..',
-    //     unreadCount: 0,
-    //     timestamp: '2 days ago',
-    //     nrOfParticipants: 8
-    //   }
-    // ];
-
     //this.chatsSubject.next(this.chats);
-
-    // this.messages = [
-    //   {
-    //     id: '1',
-    //     senderId: 'user1',
-    //     message: 'Hi there!',
-    //     messageTime: '2024-06-23T11:50:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=1'
-    //   },
-    //   {
-    //     id: '2',
-    //     senderId: 'user2',
-    //     message: 'Hello! How are you?',
-    //     messageTime: '2024-06-23T11:51:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=60'
-    //   },
-    //   {
-    //     id: '3',
-    //     senderId: 'user1',
-    //     message: 'Doing well, thanks! How about you?',
-    //     messageTime: '2024-06-23T11:52:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=1'
-    //   },
-    //   {
-    //     id: '4',
-    //     senderId: 'user2',
-    //     message: "I'm good too. Any plans for the weekend?",
-    //     messageTime: '2024-06-23T11:53:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=60'
-    //   },
-    //   {
-    //     id: '5',
-    //     senderId: 'user1',
-    //     message: 'Not sure yet. Maybe catching up on some reading.',
-    //     messageTime: '2024-06-23T11:54:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=1'
-    //   },
-    //   {
-    //     id: '6',
-    //     senderId: 'user2',
-    //     message: 'Sounds relaxing! I have a family gathering.',
-    //     messageTime: '2024-06-23T11:55:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=60'
-    //   },
-    //   {
-    //     id: '7',
-    //     senderId: 'user1',
-    //     message: 'Family time is important. Enjoy!',
-    //     messageTime: '2024-06-23T11:56:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=1'
-    //   },
-    //   {
-    //     id: '8',
-    //     senderId: 'user2',
-    //     message: 'Thanks! Got any homework?',
-    //     messageTime: '2024-06-23T11:57:00',
-    //     senderPhotoUrl: 'https://i.pravatar.cc/150?img=60'
-    //   }
-    // ];
 
     // this.messages$.next(this.messages);
   }
@@ -235,13 +165,22 @@ export class ChatService {
       next: (data) => {
         console.log(data.messages);
 
+        let chatUsersId = this.storageService.getUser().userId;
+        let photoUrl = '';
+
+        if (chatUsersId === senderGuid) {
+          photoUrl = receiverPhotoUrl;
+        } else if (chatUsersId === receiverGuid) {
+          photoUrl = senderPhotoUrl;
+        }
+
         for (const message of data.messages) {
           let chatMessage: ChatMessage = {
             id: message.messageId,
             senderId: message.chatUserId,
             message: message.content,
             messageTime: message.timestamp,
-            senderPhotoUrl: message.senderPhotoUrl
+            senderPhotoUrl: photoUrl
           };
 
           this.previousMessages.push(chatMessage);
@@ -267,7 +206,7 @@ export class ChatService {
           let chat: Chat = {
             id: channel.channelId,
             imageUrl:
-              'https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+              'https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a74f4afec11d8c4c9a3dc5_Drew%20Cano-p-500.png',
             name: channel.channelName,
             lastMessage: '',
             unreadCount: 0,
@@ -283,9 +222,17 @@ export class ChatService {
               if (chatUsersId != currentUserId) {
                 this.userService.getUserById(chatUsersId).subscribe({
                   next: (data) => {
-                    chat.name = data.user.firstName + ' ' + data.user.lastName;
+                    if (chatUsersId === senderGuid) {
+                      chat.name = 'John Doe';
+                      chat.imageUrl = senderPhotoUrl;
+                    } else if (chatUsersId === receiverGuid) {
+                      chat.name = 'Michael Williams';
+                      chat.imageUrl = receiverPhotoUrl;
+                    }
+                    //chat.name = data.user.firstName + ' ' + data.user.lastName;
 
-                    this.chats.push(chat);
+                    //this.chats.push(chat);
+                    this.chats = [chat, ...this.chats];
                     this.chatsSubject.next(this.chats);
                   },
                   error: (err) => {
@@ -295,7 +242,8 @@ export class ChatService {
               }
             });
           } else {
-            this.chats.push(chat);
+            //this.chats.push(chat);
+            this.chats = [chat, ...this.chats];
             this.chatsSubject.next(this.chats);
           }
         });
@@ -304,7 +252,15 @@ export class ChatService {
         if (err.status == 404) {
           // Handle other errors or log them to the console
           //console.error(err);
-          this.chats = [];
+
+          if (
+            this.storageService.getUser().userId ===
+            '7fef5c57-29de-4852-9729-979475c08417'
+          ) {
+            this.chats = recentChats2;
+          } else {
+            this.chats = recentChats;
+          }
           this.chatsSubject.next(this.chats);
         }
       }
@@ -338,7 +294,14 @@ export class ChatService {
   clearAllInfo() {
     this.clearMessageHistory();
 
-    this.chats = [];
+    if (
+      this.storageService.getUser().userId ===
+      '7fef5c57-29de-4852-9729-979475c08417'
+    ) {
+      this.chats = recentChats2;
+    } else {
+      this.chats = recentChats;
+    }
     this.chatsSubject.next(this.chats);
 
     this.messages = [];

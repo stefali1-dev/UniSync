@@ -7,8 +7,8 @@ import {
   OnInit
 } from '@angular/core';
 import { fadeInUp400ms } from '@vex/animations/fade-in-up.animation';
-import { Observable, of } from 'rxjs';
-import { delay, filter, startWith, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { trackById } from '@vex/utils/track-by';
 import { stagger80ms } from '@vex/animations/stagger.animation';
 import {
@@ -92,6 +92,11 @@ export class ChatComponent implements OnInit {
   mobileQuery$ = this.layoutService.ltMd$;
   drawerOpen$ = this.chatService.drawerOpen$;
 
+  showOfficial = false;
+
+  showOfficial$ = new BehaviorSubject<boolean>(false);
+  filteredChats$!: Observable<Chat[]>;
+
   trackById = trackById;
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -136,12 +141,27 @@ export class ChatComponent implements OnInit {
     //     console.log(err);
     //   }
     // });
+
+    this.filteredChats$ = combineLatest([
+      this.chatService.chats$,
+      this.showOfficial$
+    ]).pipe(
+      map(([chats, showOfficial]) => {
+        if (showOfficial) {
+          return chats.filter((chat) => chat.id === '1' || chat.id === '3');
+        }
+        return chats;
+      })
+    );
   }
 
   drawerChange(drawerOpen: boolean) {
     this.chatService.drawerOpen.next(drawerOpen);
   }
-
+  toggleShowOfficial(show: boolean) {
+    this.showOfficial = show;
+    this.showOfficial$.next(show);
+  }
   openDrawer() {
     this.chatService.drawerOpen.next(true);
     this.cd.markForCheck();
