@@ -11,7 +11,7 @@ UniSync is a secure web platform designed to streamline essential functionalitie
 - [Architecture](#architecture)
 - [Technologies Used](#technologies-used)
 - [Application Complexity](#application-complexity)
-- [Demo](#demo)
+- [Demo](#video-demo)
 
 ## Problem Statement
 
